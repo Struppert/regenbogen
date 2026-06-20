@@ -6,7 +6,13 @@ from regenbogen.system.core.wahrscheinlichkeit_use_case import (
 )
 from regenbogen.system.ports.logging_port import EventLogger, LogEvent
 from regenbogen.system.ports.standort_port import StandortKoordinaten, StandortPort
-from regenbogen.system.ports.wetterapi_port import WetterApiMessung, WetterApiPort
+from datetime import date
+
+from regenbogen.system.ports.wetterapi_port import (
+    StundlicheWetterApiMessung,
+    WetterApiMessung,
+    WetterApiPort,
+)
 
 
 class RecordingLogger(EventLogger):
@@ -44,6 +50,11 @@ class FakeWetterApi(WetterApiPort):
             direct_radiation=300.0,
             temperature_2m=12.0,
         )
+
+    def hole_stundliche_messungen(
+        self, koordinaten: StandortKoordinaten, datum: date
+    ) -> list[StundlicheWetterApiMessung]:
+        return []
 
 
 def test_use_case_schreibt_systemische_log_events():

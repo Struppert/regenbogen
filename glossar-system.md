@@ -162,6 +162,22 @@ Projektionen:
 
 Migrationsstatus: canonical
 
+### StundlicheWetterApiMessung
+
+**Eintragstiefe:** minimal
+
+Bedeutung: Port-DTO das eine WetterApiMessung mit ihrem UTC-Zeitpunkt verbindet.
+Transportcontainer zwischen WetterApiPort und TagesPrognoseUseCase.
+Kein Fachbegriff — technisches Transportobjekt im system/ports-Raum.
+
+Invariante: zeitpunkt_utc ist immer timezone-aware (UTC).
+
+Projektionen:
+- Code: src/regenbogen/system/ports/wetterapi_port.py
+- Tests: tests/system/test_tagesprognose_use_case.py
+
+Migrationsstatus: canonical
+
 ---
 
 Metasystem-Begriffe der Agenten-Box (Agenten-Box, Evidence, H-Code, SP-Code,

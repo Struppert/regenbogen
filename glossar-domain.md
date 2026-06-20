@@ -228,6 +228,52 @@ Faktor in [0, 1] fuer die Eignung des vorhandenen Niederschlags zur Bildung eine
 
 **Migrationsstatus:** canonical
 
+### TagesPrognose
+
+**Semantischer Raum:** domain
+**Eintragstiefe:** minimal
+
+**Bedeutung:**
+Geordnete Folge von Stunden-Bewertungen aller Tagstunden (positiver Sonnenstand)
+des aktuellen Kalendertags an einem Beobachtungsort.
+
+**Invarianten:**
+- Enthält ausschliesslich Stunden mit positivem Sonnenstand.
+- Nachtstunden sind nicht enthalten.
+- Mondbögen sind explizit ausgeschlossen — dieser Begriff gilt nur fuer normalen Sonnen-Regenbogen.
+- Reihenfolge: aufsteigend nach Stunde.
+
+**Projektionen:**
+- Code: src/regenbogen/domain/tagesprognose.py
+- Tests: tests/domain/test_tagesprognose.py
+
+**Migrationsstatus:** canonical
+
+### PrognoseStunde
+
+**Semantischer Raum:** domain
+**Eintragstiefe:** minimal
+
+**Bedeutung:**
+Bewertung eines einzelnen Zeitslots (eine Tagstunde) am Beobachtungsort mit
+Regenbogen-Wahrscheinlichkeit und Sichtbarkeit.
+
+**Invarianten:**
+- stunde liegt in [0, 23] (lokale Stunde des Beobachtungsorts).
+- wahrscheinlichkeit liegt in [0, 100].
+- sichtbarkeit liegt in [0, 100].
+- Eine PrognoseStunde mit wahrscheinlichkeit = 0 ist ein gueltiges Ergebnis.
+
+**Abgrenzung:**
+PrognoseStunde ist keine Prognoseunsicherheit und kein Konfidenzintervall.
+Sie ist eine Punktbewertung nach dem Regenbogen-Modell fuer diesen Zeitslot.
+
+**Projektionen:**
+- Code: src/regenbogen/domain/tagesprognose.py
+- Tests: tests/domain/test_tagesprognose.py
+
+**Migrationsstatus:** canonical
+
 ---
 
 ## 4. Bekannte Lücken

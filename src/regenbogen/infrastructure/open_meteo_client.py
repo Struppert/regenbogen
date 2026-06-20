@@ -1,7 +1,11 @@
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
+
 import httpx
 
 from regenbogen.system.ports.standort_port import StandortKoordinaten
 from regenbogen.system.ports.wetterapi_port import (
+    StundlicheWetterApiMessung,
     WetterApiMessung,
     WetterApiNichtErreichbar,
     WetterApiPort,
@@ -49,6 +53,85 @@ class OpenMeteoClient(WetterApiPort):
             ) from exc
 
         return self._parse_response(response.json())
+
+    def hole_stundliche_messungen(
+        self,
+        koordinaten: StandortKoordinaten,
+        datum: date,
+    ) -> list[StundlicheWetterApiMessung]:
+        try:
+            response = httpx.get(
+                self.BASE_URL,
+                params={
+                    "latitude": koordinaten.latitude,
+                    "longitude": koordinaten.longitude,
+                    "hourly": ",".join(
+                        [
+                            "temperature_2m",
+                            "precipitation",
+                            "rain",
+                            "showers",
+                            "snowfall",
+                            "weather_code",
+                            "cloud_cover",
+                            "visibility",
+                            "direct_radiation",
+                            "sunshine_duration",
+                        ]
+                    ),
+                    "timezone": koordinaten.zeitzone,
+                    "start_date": datum.isoformat(),
+                    "end_date": datum.isoformat(),
+                },
+                timeout=10.0,
+            )
+            response.raise_for_status()
+        except httpx.ConnectError as exc:
+            raise WetterApiNichtErreichbar(f"Nicht erreichbar: {exc}") from exc
+        except httpx.HTTPStatusError as exc:
+            raise WetterApiNichtErreichbar(
+                f"API-Fehler: {exc.response.status_code}"
+            ) from exc
+
+        return self._parse_hourly_response(response.json(), koordinaten.zeitzone)
+
+    def _parse_hourly_response(
+        self,
+        data: dict,
+        zeitzone: str,
+    ) -> list[StundlicheWetterApiMessung]:
+        hourly = data.get("hourly", {})
+        times: list[str] = hourly.get("time", [])
+        tz = ZoneInfo(zeitzone)
+        utc = ZoneInfo("UTC")
+        result = []
+        for i, time_str in enumerate(times):
+            lokaler_zeitpunkt = datetime.fromisoformat(time_str).replace(tzinfo=tz)
+            zeitpunkt_utc = lokaler_zeitpunkt.astimezone(utc)
+            messung = WetterApiMessung(
+                sonnenschein_sekunden=float(
+                    (hourly.get("sunshine_duration") or [])[i] or 0.0
+                ),
+                niederschlag_mm=float((hourly.get("precipitation") or [])[i] or 0.0),
+                rain_mm=float((hourly.get("rain") or [])[i] or 0.0),
+                showers_mm=float((hourly.get("showers") or [])[i] or 0.0),
+                snowfall_cm=float((hourly.get("snowfall") or [])[i] or 0.0),
+                weather_code=int((hourly.get("weather_code") or [])[i] or 0),
+                cloud_cover=float((hourly.get("cloud_cover") or [])[i] or 100.0),
+                visibility_m=(
+                    float(v)
+                    if (v := (hourly.get("visibility") or [])[i]) is not None
+                    else None
+                ),
+                direct_radiation=float(
+                    (hourly.get("direct_radiation") or [])[i] or 0.0
+                ),
+                temperature_2m=float((hourly.get("temperature_2m") or [])[i] or 0.0),
+            )
+            result.append(
+                StundlicheWetterApiMessung(zeitpunkt_utc=zeitpunkt_utc, messung=messung)
+            )
+        return result
 
     def _parse_response(self, data: dict) -> WetterApiMessung:
         current = data.get("current", {})

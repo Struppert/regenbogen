@@ -22,6 +22,10 @@ Die zweite Größe beantwortet:
 `Wie gut dürfte ein solcher Regenbogen unter den aktuellen Bedingungen zu
 sehen sein?`
 
+Das Modell wendet dieselben Berechnungen auf alle Tagstunden des aktuellen Tages an
+und liefert damit eine `TagesPrognose` — eine geordnete Folge von `PrognoseStunde`-Werten
+für jede Stunde mit positivem Sonnenstand. Daraus wird die Spitzenstunde abgeleitet.
+
 ## Modellgrenze
 
 Das Modell ist bewusst heuristisch. Es ist kein vollständiges optisches oder
@@ -298,9 +302,23 @@ implementierten Laufmodell des Programms.
 Das aktuelle Modell ist absichtlich klein und erklärbar:
 
 - ein Beobachtungsort
-- ein aktueller Wetterzeitpunkt
+- ein aktueller Wetterzeitpunkt oder alle Tagstunden des aktuellen Tages
 - eine lokale Sonnenstandsberechnung
 - heuristische Kopplung von Niederschlag, Licht und Sichtbedingungen
+
+Das Modell unterscheidet zwei Betriebsmodi:
+
+- **Einzelzeitpunkt**: liefert `WetterErgebnis` mit aktuellem Stand
+- **Tagesprognose**: liefert `TagesPrognose` mit allen Tagstunden (positiver Sonnenstand)
+
+Für die Tagesprognose werden stündliche Wetterdaten von Open-Meteo abgerufen.
+Die Modellrechnung (Modellteil A–D) ist dabei pro Stunde identisch mit dem Einzelmodus.
+Nachtstunden (Sonnenstand ≤ 0°) werden gefiltert — ohne Sonnenlicht ist kein
+Sonnen-Regenbogen möglich.
+
+Ergibt die Prognose keine Stunde mit positiver Wahrscheinlichkeit, lautet die
+semantische Aussage "Heute kein Regenbogen zu erwarten" — nicht "Fehler" und
+nicht "leeres Ergebnis".
 
 Damit ist es stark genug, um echte meteorologische Modellierungsschritte
 vorzubereiten, aber klein genug, um fachliche Änderungen kontrolliert und

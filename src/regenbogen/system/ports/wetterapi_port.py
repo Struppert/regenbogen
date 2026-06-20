@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from datetime import date, datetime
 
 from regenbogen.system.ports.standort_port import StandortKoordinaten
 
@@ -20,6 +21,14 @@ class WetterApiMessung:
     temperature_2m: float = 0.0
 
 
+@dataclass(frozen=True)
+class StundlicheWetterApiMessung:
+    """Port-DTO: WetterApiMessung mit UTC-Zeitpunkt fuer stündliche Abfragen."""
+
+    zeitpunkt_utc: datetime
+    messung: WetterApiMessung
+
+
 class WetterApiNichtErreichbar(Exception):
     """API nicht erreichbar. Recoverable."""
 
@@ -34,4 +43,12 @@ class WetterApiPort(ABC):
         self,
         koordinaten: StandortKoordinaten,
     ) -> WetterApiMessung:
+        raise NotImplementedError
+
+    @abstractmethod
+    def hole_stundliche_messungen(
+        self,
+        koordinaten: StandortKoordinaten,
+        datum: date,
+    ) -> list[StundlicheWetterApiMessung]:
         raise NotImplementedError

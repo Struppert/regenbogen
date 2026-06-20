@@ -1,5 +1,6 @@
-from regenbogen.cli.gui_format import formatiere_wetter
+from regenbogen.cli.gui_format import formatiere_tagesprognose, formatiere_wetter
 from regenbogen.domain.regenbogen_geometrie import Sonnenstand
+from regenbogen.domain.tagesprognose import PrognoseStunde, TagesPrognose
 from regenbogen.domain.wetter import Wetterzustand
 from regenbogen.system.core.wahrscheinlichkeit_use_case import WetterErgebnis
 
@@ -52,3 +53,49 @@ def test_formatiert_bedeckt():
         ergebnis(Wetterzustand(sonnenschein=False, regen=False), 0)
     )
     assert "Bedeckt" in ausgabe
+
+
+def prognose_mit_stunden(*stunden) -> TagesPrognose:
+    return TagesPrognose(ort="Berlin", stunden=stunden)
+
+
+def test_tagesprognose_zeigt_tabelle_mit_stunden():
+    prognose = prognose_mit_stunden(
+        PrognoseStunde(stunde=14, wahrscheinlichkeit=62, sichtbarkeit=48),
+        PrognoseStunde(stunde=15, wahrscheinlichkeit=78, sichtbarkeit=61),
+        PrognoseStunde(stunde=16, wahrscheinlichkeit=31, sichtbarkeit=20),
+    )
+    ausgabe = formatiere_tagesprognose(prognose)
+    assert "14:00" in ausgabe
+    assert "15:00" in ausgabe
+    assert "62" in ausgabe
+    assert "78" in ausgabe
+
+
+def test_tagesprognose_markiert_spitze():
+    prognose = prognose_mit_stunden(
+        PrognoseStunde(stunde=14, wahrscheinlichkeit=30, sichtbarkeit=20),
+        PrognoseStunde(stunde=15, wahrscheinlichkeit=78, sichtbarkeit=61),
+    )
+    ausgabe = formatiere_tagesprognose(prognose)
+    assert "← Spitze" in ausgabe
+    zeilen = ausgabe.splitlines()
+    spitzen_zeile = [z for z in zeilen if "← Spitze" in z]
+    assert len(spitzen_zeile) == 1
+    assert "15:00" in spitzen_zeile[0]
+
+
+def test_tagesprognose_keine_chance_gibt_eigene_meldung():
+    prognose = prognose_mit_stunden(
+        PrognoseStunde(stunde=13, wahrscheinlichkeit=0, sichtbarkeit=0),
+        PrognoseStunde(stunde=14, wahrscheinlichkeit=0, sichtbarkeit=0),
+    )
+    ausgabe = formatiere_tagesprognose(prognose)
+    assert "kein Regenbogen" in ausgabe
+    assert "13:00" not in ausgabe
+
+
+def test_tagesprognose_leere_stunden_gibt_eigene_meldung():
+    prognose = TagesPrognose(ort="Berlin", stunden=())
+    ausgabe = formatiere_tagesprognose(prognose)
+    assert "kein Regenbogen" in ausgabe
