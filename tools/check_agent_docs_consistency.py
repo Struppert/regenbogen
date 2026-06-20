@@ -230,6 +230,9 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Testpflicht",
         "Abbruchbedingungen",
         "Abschlusskriterien",
+        "Erfahrungsbericht",
+        "erfahrungsbericht-protokoll.md",
+        "tmp/erfahrungsberichte",
     ],
 }
 
@@ -859,7 +862,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     # Modus bestimmen
-    mode = args.mode or ("instantiated" if args.strict_placeholders else "template")
+    mode = args.mode or "instantiated"
 
     findings: list[Finding] = []
     findings.extend(check_required_files(mode))
