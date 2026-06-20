@@ -43,6 +43,13 @@ Nicht laden wenn nur Fachdomänenbegriffe geändert werden
 ### <Begriff>
 
 **Semantischer Raum:** system
+**Eintragstiefe:** vollständig | minimal
+
+Eintragstiefe-Definition:
+  minimal      = Bedeutung + Projektionen + Migrationsstatus vorhanden.
+                 Alle anderen Felder bewusst weggelassen, nicht vergessen.
+  vollständig  = alle Felder unten vorhanden.
+  Upgrade auf vollständig erfordert keinen Sprechakt — nur Pflege.
 
 **Kompetenzfrage:**
 Beschreibt dieser Begriff wie das System korrekt operiert,
@@ -80,6 +87,8 @@ ohne eine konkrete technische Plattform festzulegen?
 
 ### WetterApiNichtErreichbar
 
+**Eintragstiefe:** minimal
+
 Bedeutung: Die Wetter-API ist voruebergehend nicht erreichbar. Recoverable.
 
 Invariante: Retry bis zu dreimal erlaubt.
@@ -92,6 +101,8 @@ Migrationsstatus: canonical
 
 ### OrtNichtGefunden
 
+**Eintragstiefe:** minimal
+
 Bedeutung: Der angefragte Ort ist unbekannt. Terminal. Kein Retry.
 
 Projektionen:
@@ -101,6 +112,8 @@ Projektionen:
 Migrationsstatus: canonical
 
 ### WetterErgebnis
+
+**Eintragstiefe:** minimal
 
 Bedeutung: Systemsemantisches Ergebnisobjekt fuer Einstiegspunkte.
 
@@ -115,6 +128,8 @@ Migrationsstatus: canonical
 
 ### PostleitzahlUnbekannt
 
+**Eintragstiefe:** minimal
+
 Bedeutung: Die eingegebene Postleitzahl kann nicht in Koordinaten uebersetzt werden.
 
 Projektionen:
@@ -124,6 +139,8 @@ Projektionen:
 Migrationsstatus: canonical
 
 ### LogEvent
+
+**Eintragstiefe:** minimal
 
 Bedeutung: Systemisches Laufzeitereignis, das fuer Diagnosezwecke protokolliert werden darf.
 
@@ -135,6 +152,8 @@ Migrationsstatus: canonical
 
 ### EventLogger
 
+**Eintragstiefe:** minimal
+
 Bedeutung: Port, ueber den Systemcode Laufzeitereignisse an eine technische Logging-Implementierung uebergibt.
 
 Projektionen:
@@ -145,111 +164,9 @@ Migrationsstatus: canonical
 
 ---
 
-**Metasystem-Begriffe der Agenten-Box**
-
-Diese Begriffe beschreiben das Agenten-Metasystem. Sie stehen bewusst im
-Systemglossar, damit `AGENTS.md` und `AGENTS-COMPACT.md` nicht zum Handbuch
-werden.
-
-### Agenten-Box
-
-Bedeutung: Vollständiger Satz lokaler Markdown-Artefakte, Regeln und Tools, der
-einen Zielprojekt-Artefaktraum für Agentenarbeit operationalisiert.
-
-Invariante: Eine instanziierte Agenten-Box ist lokale Projektwahrheit; sie darf
-nicht auf eine externe gemeinsame Basis als operative Autorität verweisen.
-
-### Instanziierungs-Sprechakt
-
-Bedeutung: Einmaliger initialer Sprechakt, der eine Template-Box in einem
-Zielprojekt materialisiert.
-
-Invariante: Der Nachweis liegt in `.agent-box/instantiation.md`; erneute
-Instanziierung ist ohne explizite menschliche Freigabe verboten.
-
-### Projektanzeigename
-
-Bedeutung: Menschlicher Name des Projekts, z. B. `Regenbogen`.
-
-Invariante: Der Projektanzeigename ist nicht automatisch ein Python-Importname.
-
-### Python-Package-Name
-
-Bedeutung: Python-Import- und Pfadname unter `src`, z. B.
-`regenbogen`.
-
-Invariante: Der Python-Package-Name ist kleingeschrieben und ein gültiger
-Python-Identifier.
-
-### Produktcode-Raum
-
-Bedeutung: Codeprojektion unter `src/regenbogen/`.
-
-Invariante: Produktive semantische Räume werden dort als Paketpfade
-materialisiert.
-
-### Operationsraum
-
-Bedeutung: Artefakträume wie `tools/`, `docs/`, `tests/` und `tmp/`, die
-Agentenarbeit prüfen, dokumentieren oder protokollieren.
-
-Invariante: Operationsräume sind nicht selbst Quelle fachlicher Bedeutung.
-
-### Projektionsraum
-
-Bedeutung: Konkreter Artefaktbereich, in dem eine Bedeutung sichtbar wird, z. B.
-Code, Tests, Sprechakte, Pläne oder Evidence.
-
-Invariante: Änderungen an Bedeutung müssen ihre relevanten Projektionen nennen.
-
-### Evidence
-
-Bedeutung: Nachweis, welche Prüfung, Beobachtung oder Entscheidung zu einem
-Agentenergebnis geführt hat.
-
-Invariante: Evidence wird in dieser Box als Markdown geführt.
-
-### Sprechakt-Artefakt
-
-Bedeutung: Markdown-Dokument, das eine menschliche Festlegung dokumentiert.
-
-Invariante: Jedes normale Sprechakt-Artefakt hat einen Status: offen,
-festgelegt, abgelehnt oder superseded.
-
-### Known Breach
-
-Bedeutung: Bewusst klassifizierter Regelbruch mit Begründung und Folgeplan.
-
-Invariante: Ein Known Breach entschärft nur die benannte Kante, nicht die ganze
-Datei oder den ganzen Raum.
-
-### Migration Bridge
-
-Bedeutung: Benannte Übergangsbrücke für laufende Symbol-, Bedeutungs- oder
-Kompatibilitätsmigrationen.
-
-Invariante: Eine Bridge darf nicht mechanisch umgedeutet werden.
-
-### H-Code
-
-Bedeutung: Kennung eines HARD-Abbruchs.
-
-Invariante: H-Codes bezeichnen Stoppbedingungen, nicht Empfehlungen.
-
-### SP-Code
-
-Bedeutung: Kennung einer Sprechaktklasse.
-
-Invariante: SP-Codes verlangen menschliche Festlegung, nicht agentische
-Erfindung.
-
-### Semantic Working Set
-
-Bedeutung: Menge der Begriffe, Dateien, Regeln und Projektionen, die ein Agent
-für eine Aufgabe gleichzeitig korrekt halten muss.
-
-Invariante: Wenn das Semantic Working Set zu groß oder unscharf wird, muss die
-Aufgabe geschnitten werden.
+Metasystem-Begriffe der Agenten-Box (Agenten-Box, Evidence, H-Code, SP-Code,
+Semantic Working Set usw.) stehen in `glossar-meta.md`.
+Laderegel: nur bei Agenten-Box-Arbeit laden, nicht bei normaler Produktarbeit.
 
 ---
 

@@ -18,6 +18,29 @@ Systemänderung              → folgt aus menschlicher Entscheidung über Muste
 Ein Agent darf diese Matrix lesen, um bekannte Muster zu erkennen.
 Er darf sie nicht ohne explizite Freigabe schreiben oder ändern.
 
+### 1.1 Muster-Schwelle
+
+Ein Muster gilt als systemic und wird in diese Matrix aufgenommen, wenn
+mindestens eine der folgenden Bedingungen erfüllt ist:
+
+```text
+- dasselbe Muster tritt in mindestens 2 unabhängigen Sessions mit
+  gleichem Kern auf, oder
+- ein HARD-Abbruch wurde durch dieses Muster verursacht, oder
+- ein Mensch markiert den Bericht ausdrücklich als systemisches Muster.
+```
+
+Nicht-systemische Einzelbeobachtungen bleiben im Erfahrungsbericht.
+Sie werden nicht automatisch hier eingetragen.
+
+Jeder Erfahrungsbericht der als Kandidat gilt, trägt folgenden Hinweis:
+
+```text
+Learning-Matrix-Kandidat:     ja | nein
+Muster-ID:                    M-<NR> oder leer
+Übernommen in Learning-Matrix: ja | nein
+```
+
 ---
 
 ## 2. Format eines Eintrags
@@ -113,24 +136,7 @@ ist die Matrix kein Lernwerkzeug mehr — sie ist ein versteckter Regeländerung
 
 ---
 
-## Eingangspfad aus Erfahrungsberichten
-
-Ein Erfahrungsbericht wird Kandidat für die Learning-Matrix, wenn mindestens
-eine Bedingung erfüllt ist:
-
-```text
-- dasselbe Muster tritt in mindestens zwei Erfahrungsberichten auf
-- ein HARD-Abbruch wurde durch dieses Muster verursacht
-- ein Mensch markiert den Bericht ausdrücklich als systemisches Muster
-```
-
-Jeder Kandidat erhält im Erfahrungsbericht einen stabilen Hinweis:
-
-```text
-Learning-Matrix-Kandidat: ja/nein
-Muster-ID:
-Übernommen in Learning-Matrix: ja/nein
-```
+Muster-Schwelle und Kandidat-Format: Abschnitt 1.1.
 
 Die Learning-Matrix ist kein Regelwerk. Ein Matrix-Eintrag wird erst operativ,
 wenn ein Mensch daraus eine Änderung an `AGENTS.md`, `package-schema.md`,

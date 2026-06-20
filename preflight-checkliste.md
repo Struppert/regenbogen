@@ -39,7 +39,32 @@ Nicht ersetzter Platzhalter in aktiver Regel → Abbruch H7.
 
 ---
 
-## 2. Kurzform
+## 2. Risikoklassen-Weiche
+
+Vor dem Preflight bestimmen: welche Risikoklasse hat diese Aufgabe?
+
+**SICHER** (Definition: `AGENTS.md` Abschnitt 6):
+
+```text
+Dokumentation, Kommentare, Lint, tote Imports entfernen,
+bestehende Tests für bestehendes Verhalten ergänzen,
+lokale Refactorings ohne neue Begriffe, Tippfehler beheben.
+```
+
+→ Fast-Path: nur **P1** (AGENTS-COMPACT lesen), **P7** (Checker), **P8** (Testpflicht).
+P2–P6, P9–P11 entfallen.
+
+**MITTEL oder höher** (Definition: `AGENTS.md` Abschnitt 6):
+
+→ Vollständiger Preflight P1–P11.
+
+**Zweifel über Risikoklasse:**
+
+→ Vollständiger Preflight.
+
+---
+
+## 3. Kurzform (vollständiger Preflight)
 
 ```text
 P1   AGENTS-COMPACT.md lesen
@@ -62,7 +87,7 @@ Nicht raten.
 
 ---
 
-## 3. P1 — AGENTS-COMPACT.md lesen
+## 4. P1 — AGENTS-COMPACT.md lesen
 
 ```text
 Ist AGENTS-COMPACT.md vorhanden?
@@ -76,7 +101,7 @@ Wenn relevante Platzhalter nicht ersetzt: HARD-Abbruch H7.
 
 ---
 
-## 4. P2 — AGENTS.md lesen
+## 5. P2 — AGENTS.md lesen
 
 ```text
 Welche Safe-Task-Klasse hat die Aufgabe?
@@ -91,7 +116,7 @@ Task-Schnitt prüfen. Danach noch unklar: Sprechakt oder HARD-Abbruch.
 
 ---
 
-## 5. P3 — package-schema.md gezielt prüfen
+## 6. P3 — package-schema.md gezielt prüfen
 
 Nicht das ganze Projekt laden. Nur die betroffenen Raumregeln.
 
@@ -111,7 +136,7 @@ Wenn `package-schema.md` fehlt: HARD-Abbruch.
 
 ---
 
-## 6. P4 — Semantische Räume bestimmen
+## 7. P4 — Semantische Räume bestimmen
 
 Für jede betroffene Datei:
 
@@ -130,7 +155,7 @@ Task-Schnitt oder Schemafehler.
 
 ---
 
-## 7. P5 — Glossar gezielt laden
+## 8. P5 — Glossar gezielt laden
 
 Ladeprotokoll: `glossar-README.md`
 
@@ -180,9 +205,7 @@ Nicht laden:
 
 ---
 
-## 8. P6 — Import-/Layer-Checker ausführen
-
-## 8. P6 — MODELL-README bei Modellarbeit prüfen
+## 9. P6 — MODELL-README bei Modellarbeit prüfen
 
 Wenn die Aufgabe das implementierte Modell berührt, zusätzlich prüfen:
 
@@ -211,7 +234,7 @@ Task-Schnitt T1 prüfen.
 Wenn der Begriff aktiv nötig bleibt: Sprechakt SP7.
 ```
 
-## 9. P7 — Import-/Layer-Checker ausführen
+## 10. P7 — Import-/Layer-Checker ausführen
 
 ```bash
 python tools/check_import_layers.py --preflight src tests tools
@@ -238,7 +261,7 @@ Der Checker ist Alarm, nicht Architekturautorität.
 
 ---
 
-## 10. P8 — Testpflicht ableiten
+## 11. P8 — Testpflicht ableiten
 
 ```bash
 tools/resolve_test_obligations.py --changed-file <path>
@@ -261,7 +284,7 @@ Wenn keine Tests nötig: Begründung als Evidence notieren (Testfreiheitsformat:
 
 ---
 
-## 11. P9 — Schreibrechte prüfen
+## 12. P9 — Schreibrechte prüfen
 
 Kanonische Quelle: `AGENTS.md` Abschnitt 9.
 
@@ -278,7 +301,7 @@ Wenn geschützte Datei ohne Freigabe geändert werden müsste: HARD-Abbruch H1.
 
 ---
 
-## 12. P10 — Task-Schnitt prüfen
+## 13. P10 — Task-Schnitt prüfen
 
 Task-Schnitt bei:
 
@@ -304,7 +327,7 @@ Vollständiges Protokoll: `task-schnitt.md`
 
 ---
 
-## 13. P11 — Plan anlegen
+## 14. P11 — Plan anlegen
 
 Nichttriviale Änderungen brauchen Plan:
 
@@ -322,7 +345,7 @@ Kein Plan außerhalb von `docs/plans/`.
 
 ---
 
-## 14. Preflight-Evidence
+## 15. Preflight-Evidence
 
 Für nichttriviale Änderungen:
 
@@ -343,7 +366,7 @@ Preflight:
 
 ---
 
-## 15. Schlussregel
+## 16. Schlussregel
 
 Preflight endet nur mit einem dieser Zustände:
 

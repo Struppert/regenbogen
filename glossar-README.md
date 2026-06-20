@@ -15,9 +15,13 @@ glossar-domain.md      → Fachdomänenbegriffe
                           Autorität: Domänenexperte (nicht-technisch)
                           Raum: domain/
 
-glossar-system.md      → System-Semantics-Begriffe
+glossar-system.md      → System-Semantics-Begriffe (Produktbegriffe)
                           Autorität: Systemarchitekt
                           Raum: system/
+
+glossar-meta.md        → Agenten-Metasystem-Begriffe
+                          Autorität: wer die Agenten-Box pflegt
+                          Nur bei Agenten-Box-Arbeit laden
 
 migration-bridges.md   → Symbole mit Migrationsstatus und Bridge-Funktion
                           Nicht nach Bedeutung geordnet — nach Status
@@ -29,10 +33,11 @@ package-schema.md      → Raumregeln, Importmatrix, Known Breaches
 Diese Dokumente sind **keine Redundanz**. Jedes beantwortet eine andere Frage:
 
 ```text
-glossar-domain.md:   Was bedeutet dieser Begriff fachlich?
-glossar-system.md:   Wie verhält sich das System in diesem Zustand?
+glossar-domain.md:    Was bedeutet dieser Begriff fachlich?
+glossar-system.md:    Wie verhält sich das System in diesem Zustand?
+glossar-meta.md:      Was bedeutet dieser Begriff im Agenten-Betrieb?
 migration-bridges.md: Darf dieser Begriff mechanisch angefasst werden?
-package-schema.md:   Welche Importe sind in diesem Raum erlaubt?
+package-schema.md:    Welche Importe sind in diesem Raum erlaubt?
 ```
 
 ---
@@ -52,10 +57,17 @@ Welche Begriffe werden in dieser Iteration
 
 ```text
 Für jeden aktiven Begriff:
-  domain/   → glossar-domain.md laden
-  system/   → glossar-system.md laden
-  Beide     → beide laden (Signal für Task-Schnitt T5)
-  Unbekannt → Sprechakt SP7 oder Task-Schnitt T1
+  domain/              → glossar-domain.md laden
+  system/              → glossar-system.md laden
+  Agenten-Box-Arbeit   → glossar-meta.md laden
+  Beide (domain+system)→ beide laden (Signal für Task-Schnitt T5)
+  Unbekannt            → Sprechakt SP7 oder Task-Schnitt T1
+
+glossar-meta.md wird NUR bei Agenten-Box-Arbeit geladen:
+  Arbeit an AGENTS.md, AGENTS-COMPACT.md, preflight-checkliste.md,
+  Glossar-Struktur, Ladeprotokoll, Sprechakt-Protokoll,
+  Instanziierung oder Dokumentdrift im Metasystem.
+  Nicht bei normaler Fach- oder Produktsystemarbeit.
 ```
 
 **Schritt 3: Migrationsstatus prüfen**

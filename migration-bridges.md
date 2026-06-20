@@ -75,6 +75,12 @@ do-not-touch-mechanically
 
 ## 4. Bridge-Registry
 
+> **ACHTUNG FÜR AGENTEN:** Einträge in dieser Registry sind KEINE Arbeitsgrundlage.
+> Sie beschreiben semantische Altlasten oder laufende Migrationen.
+> Ein Bridge-Symbol in neuem Code ist standardmäßig HARD-Abbruch H2,
+> sofern die Änderungsregel des Eintrags nicht explizit etwas anderes erlaubt.
+> Dokumentiert = bekannt, nicht = erlaubt.
+
 Bekannte Bridge-Begriffe dieses Projekts eintragen.
 
 Format:
@@ -106,8 +112,14 @@ Vor jeder Änderung, die einen Begriff aus der Bridge-Registry berührt:
 4. Bei do-not-touch-mechanically: STOPP.
    Änderung nur mit explizitem Auftrag und Sprechakt SP6.
 5. Bei allow-read-only: lesen erlaubt, nicht neu einführen.
-6. Bei do-not-introduce: prüfen ob bestehendes Vorkommen entfernt werden soll.
-   Wenn ja: Ablaufplan prüfen. Wenn kein Plan: Sprechakt SP6.
+6. Bei do-not-introduce oder allow-read-only: aktiv prüfen:
+   a. Erscheint dieses Symbol als neues Vorkommen im geplanten Diff?
+   b. Erweitere ich seinen Geltungsbereich (neue Funktion, neuer Modulpfad,
+      neues Argument, neuer Rückgabetyp)?
+   c. Mache ich aus passiver Kompatibilität wieder aktive Semantik?
+   Wenn ja zu einer dieser Fragen: HARD-Abbruch H2.
+7. Ein Bridge-Symbol ist keine Lösung für einen fehlenden kanonischen Begriff.
+   Wenn kein kanonischer Begriff verfügbar ist: Task-Schnitt T1, dann SP7.
 ```
 
 ---

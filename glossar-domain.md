@@ -50,6 +50,13 @@ Jeder Glossareintrag hat folgende Felder:
 ### <Begriff>
 
 **Semantischer Raum:** domain
+**Eintragstiefe:** vollständig | minimal
+
+Eintragstiefe-Definition:
+  minimal      = Bedeutung + Projektionen + Migrationsstatus vorhanden.
+                 Alle anderen Felder bewusst weggelassen, nicht vergessen.
+  vollständig  = alle Felder unten vorhanden.
+  Upgrade auf vollständig erfordert keinen Sprechakt — nur Pflege.
 
 **Kompetenzfrage:**
 Kann ein Domänenexperte (nicht-technisch) diesen Begriff vollständig beurteilen
@@ -89,6 +96,7 @@ ohne Systemlaufzeit, Infrastruktur oder Retry-Mechanismen zu kennen?
 ### Wetterzustand
 
 **Semantischer Raum:** domain
+**Eintragstiefe:** minimal
 
 **Bedeutung:**
 Beobachtete Kombination von Wetterphaenomenen zu einem Zeitpunkt an einem Ort.
@@ -108,6 +116,7 @@ Mehrere Phaenomene koennen gleichzeitig auftreten.
 ### SonnenscheinAnteil
 
 **Semantischer Raum:** domain
+**Eintragstiefe:** minimal
 
 **Bedeutung:**
 Anteil einer Bezugsstunde, in der direkte Sonneneinstrahlung beobachtet wurde.
@@ -143,6 +152,7 @@ optische Eignung. `Sonnenstand` beschreibt die geometrische Position der Sonne.
 ### RegenbogenWahrscheinlichkeit
 
 **Semantischer Raum:** domain
+**Eintragstiefe:** minimal
 
 **Bedeutung:**
 Prozentwert in [0, 100] fuer die Wahrscheinlichkeit eines Regenbogens.
@@ -160,6 +170,7 @@ Prozentwert in [0, 100] fuer die Wahrscheinlichkeit eines Regenbogens.
 ### Sonnenstand
 
 **Semantischer Raum:** domain
+**Eintragstiefe:** minimal
 
 **Bedeutung:**
 Position der Sonne relativ zum Beobachter, beschrieben durch Sonnenhoehe und Sonnenazimut.
@@ -173,6 +184,7 @@ Position der Sonne relativ zum Beobachter, beschrieben durch Sonnenhoehe und Son
 ### SonnenstandsFaktor
 
 **Semantischer Raum:** domain
+**Eintragstiefe:** minimal
 
 **Bedeutung:**
 Faktor in [0, 1], der ausdrueckt, ob der Sonnenstand fuer einen sichtbaren Hauptregenbogen guenstig ist.
@@ -191,6 +203,7 @@ Faktor in [0, 1], der ausdrueckt, ob der Sonnenstand fuer einen sichtbaren Haupt
 ### RegenbogenSichtbarkeit
 
 **Semantischer Raum:** domain
+**Eintragstiefe:** minimal
 
 **Bedeutung:**
 Score in [0, 100], der die erwartete Sichtbarkeit eines normalen Sonnen-Regenbogens beschreibt.
@@ -204,6 +217,7 @@ Score in [0, 100], der die erwartete Sichtbarkeit eines normalen Sonnen-Regenbog
 ### TropfenQualitaet
 
 **Semantischer Raum:** domain
+**Eintragstiefe:** minimal
 
 **Bedeutung:**
 Faktor in [0, 1] fuer die Eignung des vorhandenen Niederschlags zur Bildung eines sichtbaren Regenbogens.

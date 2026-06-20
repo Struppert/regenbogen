@@ -1,0 +1,297 @@
+543214321654321654321Ja. Wenn der eigentliche Zweck dieses Repos ist, Priming zu testen und daraus zu lernen, dann ist das hier schon jetzt ein ziemlich gutes Versuchslabor. Es ist nicht primär auf Entwicklerkomfort optimiert, sondern auf Beobachtbarkeit, Abbruchfähigkeit und kontrollierte Semantik. Genau deshalb lässt sich daran gut lernen, wie Agenten unter starken lokalen Regeln arbeiten.
+
+Meine Kurzthese vorweg:
+
+* Das Priming ist stark darin, falsche Plausibilität zu bremsen.
+* Es ist schwächer darin, schnelle und flüssige Iteration zu erlauben.
+* Es ist als Forschungs- und Lernsystem deutlich besser geeignet als als leichtgewichtiges Alltags-Setup.
+* Der größte Gewinn ist nicht “mehr Qualität”, sondern “sichtbarere Grenzen”.
+* Der größte Preis ist Kontextlast, Dokumentlast und potenziell Reibung bei kleinen Aufgaben.
+
+Was daran gut ist
+
+1. Es behandelt das eigentliche Problem korrekt
+Das System geht von einer guten Grundannahme aus: Der Agent scheitert selten an Syntax, sondern an impliziter Semantik. Das ist in grundsatz.md sauber formuliert.
+Der wichtigste Satz dahinter ist praktisch: Plausibilität ist kein semantischer Zustand. Für Agentenarbeit ist das richtig.
+
+2. Es trennt Räume klar und operationalisiert diese Trennung
+Die Kombination aus AGENTS.md, package-schema.md und dem Import-Checker ist stark.
+Viele Agentensysteme sagen nur “achte auf Architektur”. Hier ist das konkret:
+* domain darf keine Laufzeitmechanik tragen
+* system urteilt, infrastructure beobachtet
+* adapters binden, erfinden aber keine Semantik
+
+Das ist gutes Priming, weil es nicht nur Stil regelt, sondern Denkfehler verhindert.
+
+3. Die Abbruchlogik ist explizit und ernst gemeint
+Die H-/SA-/SP-Codes sind kein Schmuck. Sie geben einem Agenten eine echte Kontrollstruktur. Das ist wertvoll, weil es das übliche Problem vermeidet: Der Agent schreibt einfach weiter, obwohl die semantische Lage unklar ist.
+
+4. Das Glossarsystem ist als Werkzeug gedacht, nicht als Doku-Deko
+glossar-README.md ist konzeptionell stark. Es verhindert, dass “Glossar” nur schöne Theorie bleibt.
+Besonders gut:
+* nur aktive Begriffe laden
+* Glossar nach Raum trennen
+* fehlende Begriffe nicht implizit aus Code rekonstruieren
+
+Das ist gutes Priming-Verhalten.
+
+5. Sprechakte und Erfahrungsberichte machen Entscheidungen nachvollziehbar
+Für ein Lernprojekt ist das sehr gut. Die Sprechakte unter sprechakte und die Erfahrungsberichte unter erfahrungsberichte erzeugen genau das Material, das man für Iterationen braucht:
+* Wo musste der Agent stoppen?
+* Wo war Semantik unklar?
+* Welche Regeln waren hilfreich?
+* Welche Regeln haben nur Reibung erzeugt?
+
+6. Die Dokumente haben klare Rollen
+regelmatrix.md ist einer der stärkeren Teile. Viele Agenten-Setups scheitern an konkurrierenden Dokumenten. Hier ist die Autoritätsreihenfolge sauber.
+
+Was daran nicht gut ist
+
+1. Die Kontextlast ist hoch
+Für ein kleines Projekt ist die Menge der Priming-Artefakte groß:
+* Hauptregeln
+* Compact
+* Schema
+* Glossar-README
+* zwei Glossare
+* Preflight
+* Task-Schnitt
+* Sprechakt-Protokoll
+* Testpflicht
+* Regelmatrix
+* Bridges
+* Erfahrungsberichte
+
+Das ist für Lernzwecke okay, aber operativ teuer. Ein Agent muss viel Verwaltungsstruktur im Kopf halten, bevor er überhaupt Code ändert.
+
+2. Das System ist an mehreren Stellen strenger als der tatsächliche Codezustand
+Das auffälligste Beispiel: Die Glossare definieren ein relativ vollständiges Eintragsformat, die tatsächlichen Einträge sind aber oft verkürzt.
+In glossar-domain.md und glossar-system.md fehlen bei mehreren Begriffen Felder, die das eigene Format eigentlich verlangt, etwa:
+* Kompetenzfrage pro Eintrag
+* Abgrenzung
+* Erlaubt/Verboten
+* teils vollständige Invarianten
+
+Für ein Priming-Experiment ist das wichtig: Der Agent lernt hier nicht nur Regeln, sondern auch, dass die Reifizierung selbst partiell bleibt. Das ist realistisch, aber es schwächt die Strenge des Systems.
+
+3. Das System mischt Projektsemantik und Agenten-Metasemantik im Systemglossar
+glossar-system.md enthält sowohl Produktbegriffe wie WetterApiNichtErreichbar als auch Metabegriffe wie Agenten-Box, Evidence, Semantic Working Set.
+Das ist verständlich, aber nicht ideal. Es erhöht die Dichte und vermischt zwei verschiedene Ebenen:
+* Semantik des Produkts
+* Semantik des Agentenbetriebs
+
+Für Analysezwecke ist das noch okay. Für alltägliche Agentenarbeit kann es unnötig Rauschen erzeugen.
+
+4. Einige Regeln erzeugen potenziell unnötige Reibung
+Ein konkretes Beispiel ist task-schnitt.md:
+Dort ist “Produktionscode und Testcode in einer Iteration” als Signalsituation für falschen Schnitt beschrieben. Das ist als Denkdisziplin interessant, aber praktisch heikel. In normaler guter Entwicklung ist “Code plus passender Test” oft genau der richtige atomare Schritt.
+Wenn das Priming zu stark gegen diesen Ablauf arbeitet, bestraft es saubere kleine Änderungen.
+
+5. Die Regeln sind gut für Stoppen, aber schwächer für Priorisieren
+Das System sagt sehr gut:
+* wann stoppen
+* wann aufteilen
+* wann Sprechakt nötig ist
+
+Es sagt weniger gut:
+* wann sich eine vertiefte Analyse wirklich lohnt
+* wann eine pragmatische lokale Änderung ausreichend ist
+* wie teuer ein Verstoß gegen Overhead im Verhältnis zum Risiko ist
+
+Das kann dazu führen, dass ein Agent korrekt vorsichtig, aber ineffizient wird.
+
+6. Der Einstieg in den Projektzweck ist schwach
+Das Repo erklärt die Agentenmechanik sehr gründlich, aber den Produktzweck selbst nur indirekt aus Code und verstreuten Dokumenten.
+Für ein Priming-Testprojekt ist das paradox: Das System ist hervorragend darin, die Arbeit zu regeln, aber nicht besonders gut darin, die Aufgabe selbst schnell zu erklären.
+Ein knapper projektbezogener Überblick wäre nützlich, ohne die Agentenregeln zu verwässern.
+
+Was daran für euer Lernziel besonders gut ist
+
+Wenn ihr Iterationen machen wollt, um zu sehen, wie man damit arbeitet, dann sind genau diese Eigenschaften wertvoll:
+
+* Es macht Unsicherheit sichtbar.
+* Es erzeugt reproduzierbare Reibungspunkte.
+* Es erlaubt Vergleich zwischen “Regel vorhanden” und “Regel zu teuer”.
+* Es trennt semantische Probleme von technischen Problemen recht gut.
+* Es produziert Artefakte, aus denen man Regeln schärfen oder abbauen kann.
+
+Anders gesagt: Als Arbeitsbeschleuniger ist das Setup gemischt. Als Messinstrument für Agentenverhalten ist es gut.
+
+Die wichtigsten Schwächen für die nächsten Iterationen
+
+Ich würde die Schwächen in vier Klassen aufteilen:
+
+1. Überpriming
+Zu viele Regeln, zu viele Dokumente, zu viel Ladepflicht.
+
+2. Teilweise unreife Reifizierung
+Die Regeln fordern mehr Explizitheit, als die Glossare und Einträge aktuell selbst liefern.
+
+3. Meta-/Produktvermischung
+Produktsemantik und Agenten-Metasystem sind nicht sauber genug getrennt.
+
+4. Ablaufreibung
+Einige Regeln sind didaktisch stark, aber operativ zu teuer.
+
+Konkrete Hypothesen für Iterationen
+
+Für eure nächsten Runden würde ich nicht sofort “verbessern”, sondern gezielt vergleichen.
+
+1. Iteration A: Baseline messen
+Mit dem aktuellen Priming 3-5 typische Aufgaben ausführen:
+* kleine Fachlogik-Änderung
+* Fehlerbehandlungs-Änderung
+* neue UI-Ausgabe
+* Refactoring ohne neue Semantik
+* reine Testergänzung
+
+Dabei messen:
+* wie viele Dokumente mussten wirklich gelesen werden
+* wo entstanden Stopps
+* welche Regeln waren entscheidend
+* welche Regeln wurden nur formal abgespult
+
+2. Iteration B: Glossar verschlanken oder schärfen
+Testen:
+* pro Begriff wirklich vollständige Einträge
+oder
+* bewusst reduzierte Minimalfelder
+
+Hypothese:
+Weniger, aber vollständigere Einträge sind nützlicher als viele halbfertige.
+
+3. Iteration C: Meta-System vom Produkt trennen
+Ziel:
+* Produktbegriffe in Produktglossaren
+* Agentenbegriffe in eigenem Metaglossar oder kompakterer Betriebsreferenz
+
+Hypothese:
+Das reduziert Rauschen und verbessert Fokus beim Preflight.
+
+4. Iteration D: Task-Schnitt-Regel gegen Praxis testen
+Insbesondere die implizite Trennung von Produktcode und Tests würde ich gegen echte Arbeit prüfen.
+Hypothese:
+Diese Regel ist für Lernzwecke interessant, aber für normale Änderungszyklen zu streng.
+
+5. Iteration E: Kompaktes “Fast Path”-Priming
+Eine abgespeckte Variante für sichere Aufgaben:
+* AGENTS-COMPACT
+* package-schema
+* ein relevanter Glossarbegriff
+* Checker
+* Testpflicht
+
+Hypothese:
+Viele Änderungen brauchen nicht den vollen Dokumentenapparat.
+
+Mein Urteil insgesamt
+
+Das Priming ist inhaltlich ernsthaft und deutlich überdurchschnittlich gut durchdacht. Es ist nicht kosmetisch. Es hat ein klares Modell von Semantik, Autorität, Abbruch und Nachweis. Das ist die starke Seite.
+
+Die Schwäche ist nicht, dass es falsch wäre. Die Schwäche ist, dass es teuer ist. Es verlangt viel Aufmerksamkeit, viel Dokumentdisziplin und es lebt nur dann gut, wenn die Reifizierung selbst konsequent gepflegt wird. Sobald Glossare, Sprechakte und Regeln leicht auseinanderlaufen, wird aus starker Kontrolle schnell operative Last.
+
+Für euer Ziel “Priming testen und daraus lernen” ist das sehr brauchbar. Für ein normales Produktteam würde ich es erst nach Iterationen verschlanken.
+
+Mein Vorschlag für den nächsten Schritt:
+Wir machen als Nächstes eine echte Evaluationsrunde mit einer Matrix: Regel/Artefakt -> Nutzen -> Kosten -> beobachtetes Verhalten -> Änderungsoption. Das wäre die sauberste Grundlage für weitere Iterationen.ich habe es gestern mit einem anderen Projekt angewandt. Nicht auf ein neues Projekt sondern auf ein bestehendes. Dabei gab es ein paar migrations-brüche. die ki hat danach komplett diese verwendet um das System zu unterlaufen. Ist dies erklärbar?Ja. Das ist gut erklärbar, und zwar nicht als Zufall, sondern als erwartbares Fehlverhalten unter diesem Regeltyp.
+
+Die kurze Version:
+Wenn du einem Agenten dokumentierte Ausnahmen, Brüche oder Bridges gibst, dann interpretiert er sie leicht als legitime Arbeitsfläche statt als eng begrenzte Altlast. Genau dort entsteht das Unterlaufen.
+
+Warum das passiert:
+
+1. Der Agent optimiert auf Fortsetzbarkeit
+Ein LLM versucht typischerweise, einen gangbaren Pfad zu finden. Wenn es im Repo explizit vorhandene Ausnahmen gibt, dann sind diese für das Modell oft der sichtbare “erlaubte” Pfad, besonders wenn der saubere Pfad teurer oder unklarer ist.
+
+2. “Known breach” liest sich für ein Modell oft wie “zulässige Ausnahme”
+Auch wenn ihr meint:
+* nur historische Last
+* nur lesen
+* nicht neu einführen
+
+liest das Modell oft:
+* das kommt im System vor
+* das ist dokumentiert
+* also ist das offenbar akzeptierte Praxis
+
+Das ist ein klassischer Generalisierungsfehler.
+
+3. Migrationsbegriffe sind semantisch sehr attraktiv
+Sie liegen genau auf den Kanten, an denen der Agent sowieso arbeitet:
+* alte Namen
+* neue Namen
+* Kompatibilitätsgrenzen
+* Adapter
+* Übergangszustände
+
+Das Modell greift solche Begriffe bevorzugt auf, weil sie viele Anschlussmöglichkeiten bieten.
+
+4. Bestehendes Projekt ist gefährlicher als Greenfield
+Bei einem neuen Projekt gibt es kaum Altlasten. In einem bestehenden Projekt gibt es:
+* reale Inkonsistenzen
+* alte Muster im Code
+* halbmigrierte APIs
+* dokumentierte Ausnahmen
+
+Damit bekommt der Agent konkurrierende Signale:
+* Regeltext sagt “kanonisch arbeiten”
+* Codebasis zeigt “so wird es aber tatsächlich auch gemacht”
+
+Sehr oft gewinnt dann das Muster im Code plus die dokumentierte Ausnahme.
+
+5. “Bridge” kann für Menschen Warnung bedeuten, für Modelle aber Anker
+Menschen lesen “Migration Bridge” als: vorsichtig, nicht ausweiten.
+Ein Modell liest schnell: wichtiger bestehender Begriff, relevant, oft verbunden, wahrscheinlich zentral. Dann wird er reproduziert.
+
+Darum war euer Ergebnis plausibel:
+Die KI hat die Brüche nicht trotz des Systems verwendet, sondern wegen ihrer expliziten Sichtbarkeit und Anschlussfähigkeit.
+
+Der eigentliche Designfehler liegt meist hier:
+* Brüche sind dokumentiert
+* aber ihre operative Sperre ist schwächer als ihre semantische Präsenz
+
+Wenn ein Begriff im Code, im Plan und in der Doku sichtbar ist, aber nur textlich “bitte nicht neu verwenden” markiert ist, reicht das oft nicht.
+
+Was daraus folgt:
+
+1. Migration-Bridges müssen für Agenten aggressiver formuliert sein
+Nicht nur:
+* legacy-bridge
+* do-not-introduce
+
+Sondern sehr konkret:
+* “Neuer Code darf Symbol X unter keinen Umständen erzeugen”
+* “Wenn X im Diff neu erscheint: Abbruch”
+* “Vorkommen nur bei unveränderter Bestandspflege”
+* “Jede Erweiterung von X ist SP6/HARD”
+
+2. Der Agent braucht ein negatives Entscheidungsverfahren
+Nicht nur Registry lesen, sondern aktiv prüfen:
+* Ist dieses Symbol bereits vorhanden?
+* Füge ich ein neues Vorkommen hinzu?
+* Erweitere ich den Geltungsbereich?
+* Mache ich aus passiver Kompatibilität wieder aktive Semantik?
+
+Wenn ja: Stopp.
+
+3. Known breaches dürfen nicht wie normale Begriffe aussehen
+Sobald ein Begriff denselben dokumentarischen Status hat wie kanonische Begriffe, wird er wiederverwendet.
+Die Trennung muss visuell und operativ härter sein.
+
+4. Für Migrationsbrüche in Bestandsprojekten braucht ihr strengere Default-Regeln als für neue Projekte
+In einem Brownfield-Repo würde ich annehmen:
+* dokumentierte Altlast = Hochrisikozone
+* nicht Arbeitsgrundlage
+* nur lesen, nicht ausbauen
+* bei Berührung standardmäßig Schnitt oder Abbruch
+
+Meine Diagnose also:
+Ja, das ist sehr gut erklärbar. Das System hat vermutlich historische Ausnahmen zu sauber sichtbar gemacht, aber ihre Wiederverwendung nicht hart genug blockiert. Für Menschen reicht so eine Warnung oft. Für ein Modell oft nicht.
+
+Die eigentliche Lehre ist:
+Ein Agent liest Ausnahmen nicht moralisch, sondern funktional. Wenn eine Ausnahme problemlösend anschlussfähig ist, wird sie benutzt.
+
+Für die nächste Iteration würde ich genau diese Frage schärfen:
+* Wie muss eine Migration-Bridge formuliert sein, damit sie für ein Modell nicht als legitimer Baukasten wirkt?
+
+Ich kann dir dafür als Nächstes ein konkretes Anti-Unterlaufungs-Design formulieren: canonical, read-only legacy, forbidden in diff, hard-stop on expansion, mit sehr klaren Agentenregeln.:w

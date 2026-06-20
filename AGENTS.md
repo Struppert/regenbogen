@@ -542,6 +542,31 @@ H10 Autonomieregel verletzt: Code-Typ in Raum X setzt Wissen aus Raum Y voraus,
     aber Experte für X kann Y nicht beurteilen — ohne Sprechakt nicht lösbar
 ```
 
+#### H10 — Erkennungsregeln
+
+H10 auslösen wenn mindestens eine der folgenden Bedingungen zutrifft:
+
+```text
+1. Ein domain-Typ enthält ein Feld dessen Name aus Infrastruktur- oder
+   System-Vokabular stammt (retry_count, http_status, db_id, request_id).
+
+2. Eine domain-Funktion gibt einen Wert zurück, der nur mit Kenntnis eines
+   Laufzeitprotokolls (Retry, Transaktion, HTTP-Zyklus) korrekt
+   interpretierbar ist.
+
+3. Eine Invariante eines domain-Begriffs im Glossar kann nur ein
+   Systemarchitekt, nicht ein Domänenexperte beurteilen.
+
+4. Ein system-Begriff setzt im Glossar oder im Code voraus, dass der
+   Beurteiler konkrete Plattformdetails (DB-Typ, HTTP-Library,
+   Queue-Semantik) kennt.
+```
+
+Prüfhilfe: Kompetenzfrage des Glossareintrags lesen.
+Wenn die Antwort ein Systemarchitekt statt ein Domänenexperte liefern muss
+(für domain-Begriffe) oder ein Plattformexperte statt ein Systemarchitekt
+(für system-Begriffe): H10.
+
 ### SOFT-Abbruch
 
 Der Agent stoppt mit Evidence. Fortsetzung nach Preflight möglich.

@@ -7,10 +7,22 @@
 ## 0. Platzhalter
 
 ```text
-Regenbogen  regenbogen  src  tests
-docs             tools            python tools/check_import_layers.py --preflight src tests tools
-python -m ruff check .       python -m ruff format --check .
-python -m mypy src  python -m pytest       python tools/check_agent_docs_consistency.py --instantiated && python tools/check_import_layers.py --preflight src tests tools && python tools/resolve_test_obligations.py --selfcheck --instantiated && python -m pytest
+Projektname:       Regenbogen
+Python-Package:    regenbogen
+Source-Root:       src
+Test-Root:         tests
+Docs-Root:         docs
+Tools-Root:        tools
+
+Import-Check:      python tools/check_import_layers.py --preflight src tests tools
+Lint:              python -m ruff check .
+Format-Check:      python -m ruff format --check .
+Typecheck:         python -m mypy src
+Tests:             python -m pytest
+Vollvalidierung:   python tools/check_agent_docs_consistency.py --instantiated &&
+                   python tools/check_import_layers.py --preflight src tests tools &&
+                   python tools/resolve_test_obligations.py --selfcheck --instantiated &&
+                   python -m pytest
 ```
 
 Nicht ersetzter Platzhalter in aktiver Regel → Abbruch H7.
