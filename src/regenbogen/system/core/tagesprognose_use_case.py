@@ -3,7 +3,11 @@ from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
 from regenbogen.domain.regenbogen import berechne_regenbogen_wahrscheinlichkeit
-from regenbogen.domain.regenbogen_geometrie import berechne_sonnenstands_faktor
+from regenbogen.domain.regenbogen_geometrie import (
+    azimut_zu_himmelsrichtung,
+    berechne_regenbogen_azimut,
+    berechne_sonnenstands_faktor,
+)
 from regenbogen.domain.regenbogen_optik import (
     RegenbogenOptikFaktoren,
     berechne_regenbogen_sichtbarkeit,
@@ -44,6 +48,8 @@ class TagesPrognoseUseCase:
         stundliche_messungen = self._hole_mit_retry(koordinaten, lokales_datum)
 
         stunden = []
+        bester_sonnenstand = None
+        beste_wahrscheinlichkeit = -1
         for sm in stundliche_messungen:
             sonnenstand = berechne_sonnenstand(sm.zeitpunkt_utc, koordinaten)
             if sonnenstand.sonnenhoehe_grad <= 0:
@@ -59,8 +65,19 @@ class TagesPrognoseUseCase:
                     stunde=lokale_stunde, wahrscheinlichkeit=w, sichtbarkeit=s
                 )
             )
+            if w > beste_wahrscheinlichkeit:
+                beste_wahrscheinlichkeit = w
+                bester_sonnenstand = sonnenstand
 
-        return TagesPrognose(ort=ort, stunden=tuple(stunden))
+        blickrichtung = None
+        if bester_sonnenstand is not None and beste_wahrscheinlichkeit > 0:
+            blickrichtung = azimut_zu_himmelsrichtung(
+                berechne_regenbogen_azimut(bester_sonnenstand)
+            )
+
+        return TagesPrognose(
+            ort=ort, stunden=tuple(stunden), blickrichtung=blickrichtung
+        )
 
     def _hole_mit_retry(
         self,

@@ -12,6 +12,7 @@ class PrognoseStunde:
 class TagesPrognose:
     ort: str
     stunden: tuple[PrognoseStunde, ...]
+    blickrichtung: str | None = None
 
     @property
     def spitzenstunde(self) -> PrognoseStunde | None:

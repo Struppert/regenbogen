@@ -1,3 +1,4 @@
+from regenbogen.domain.tagesprognose import TagesPrognose
 from regenbogen.system.core.wahrscheinlichkeit_use_case import WetterErgebnis
 
 
@@ -13,14 +14,17 @@ def formatiere_wetter(ergebnis: WetterErgebnis) -> str:
         teile.append(f"Regen ({round(ergebnis.zustand.regen_intensitaet * 100)} %)")
     wetter_text = ", ".join(teile) if teile else "Bedeckt, kein Niederschlag"
 
-    return (
-        f"Wetter: {wetter_text}\n"
-        f"Regenbogen: {ergebnis.wahrscheinlichkeit} %\n"
-        f"Sichtbarkeit: {ergebnis.sichtbarkeit} %"
-    )
+    zeilen = [
+        f"Wetter: {wetter_text}",
+        f"Regenbogen: {ergebnis.wahrscheinlichkeit} %",
+        f"Sichtbarkeit: {ergebnis.sichtbarkeit} %",
+    ]
+    if ergebnis.blickrichtung:
+        zeilen.append(f"Blickrichtung: {ergebnis.blickrichtung}")
+    return "\n".join(zeilen)
 
 
-def formatiere_tagesprognose(prognose) -> str:
+def formatiere_tagesprognose(prognose: TagesPrognose) -> str:
     """Stündliche Tagesprognose als kompakte Tabelle."""
     kopf = f"Regenbogen-Prognose für {prognose.ort}"
     if not prognose.hat_regenbogen_chance:
@@ -35,5 +39,9 @@ def formatiere_tagesprognose(prognose) -> str:
             f"  Wahrscheinlichkeit {stunde.wahrscheinlichkeit:3d} %"
             f"  Sichtbarkeit {stunde.sichtbarkeit:3d} %"
             f"{markierung}"
+        )
+    if prognose.blickrichtung and spitze is not None:
+        zeilen.append(
+            f"Beste Chance: {spitze.stunde:02d}:00 — schau nach {prognose.blickrichtung}"
         )
     return kopf + "\n" + "\n".join(zeilen)

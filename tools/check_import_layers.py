@@ -113,9 +113,9 @@ FORBIDDEN_IMPORTS: dict[str, set[str]] = {
     # adapters: yes -> domain, system, infrastructure, adapters; decision -> shared;
     # no -> cli/tools
     "adapters": {"cli", "shared", "tools"},
-    # cli: yes -> system, adapters, cli; decision/init -> domain/infrastructure/shared;
+    # cli: yes -> system, adapters, cli, domain; init -> infrastructure; decision -> shared;
     # no -> tools
-    "cli": {"domain", "infrastructure", "shared", "tools"},
+    "cli": {"infrastructure", "shared", "tools"},
     # tests: yes -> alle Projekträume. Tests sind Projektionen, keine Semantikquelle.
     "tests": set(),
     # tools: yes -> shared; no -> produktive Projekträume

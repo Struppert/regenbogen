@@ -99,3 +99,50 @@ def test_tagesprognose_leere_stunden_gibt_eigene_meldung():
     prognose = TagesPrognose(ort="Berlin", stunden=())
     ausgabe = formatiere_tagesprognose(prognose)
     assert "kein Regenbogen" in ausgabe
+
+
+def test_formatiere_wetter_zeigt_blickrichtung():
+    e = WetterErgebnis(
+        ort="Berlin",
+        postleitzahl=None,
+        zustand=Wetterzustand(
+            sonnenschein=True,
+            regen=True,
+            sonnenschein_intensitaet=0.7,
+            regen_intensitaet=0.4,
+        ),
+        sonnenstand=Sonnenstand(sonnenhoehe_grad=20.0, sonnenazimut_grad=250.0),
+        wahrscheinlichkeit=60,
+        sichtbarkeit=50,
+        blickrichtung="Nordost",
+    )
+    ausgabe = formatiere_wetter(e)
+    assert "Blickrichtung: Nordost" in ausgabe
+
+
+def test_formatiere_wetter_keine_blickrichtung_bei_null():
+    e = WetterErgebnis(
+        ort="Berlin",
+        postleitzahl=None,
+        zustand=Wetterzustand(sonnenschein=False, regen=False),
+        sonnenstand=Sonnenstand(sonnenhoehe_grad=20.0, sonnenazimut_grad=250.0),
+        wahrscheinlichkeit=0,
+        sichtbarkeit=0,
+        blickrichtung=None,
+    )
+    ausgabe = formatiere_wetter(e)
+    assert "Blickrichtung" not in ausgabe
+
+
+def test_tagesprognose_zeigt_blickrichtung_footer():
+    prognose = TagesPrognose(
+        ort="Berlin",
+        stunden=(
+            PrognoseStunde(stunde=14, wahrscheinlichkeit=30, sichtbarkeit=20),
+            PrognoseStunde(stunde=15, wahrscheinlichkeit=78, sichtbarkeit=61),
+        ),
+        blickrichtung="Südost",
+    )
+    ausgabe = formatiere_tagesprognose(prognose)
+    assert "schau nach Südost" in ausgabe
+    assert "15:00" in ausgabe

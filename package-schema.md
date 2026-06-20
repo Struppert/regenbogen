@@ -329,8 +329,8 @@ Projektspezifisch eintragen.
 **Importregeln**
 
 ```text
-darf importieren:   system-Services, adapters, cli
-nur mit Ausnahme:  domain, infrastructure-Konfiguration (init), shared
+darf importieren:   domain, system-Services, adapters, cli
+nur mit Ausnahme:  infrastructure-Konfiguration (init), shared
 darf nicht:         tools
 ```
 
@@ -445,7 +445,7 @@ domain            yes      no       no       no        no     decision
 system            yes      yes      no       no        no     decision
 infrastructure    decision ports    yes      no        no     decision
 adapters          yes      yes      yes      yes       no     decision
-cli               decision yes      init     yes       yes    decision
+cli               yes      yes      init     yes       yes    decision
 tests             yes      yes      yes      yes       yes    yes
 tools             no       no       no       no        no     yes
 shared            no       no       no       no        no     yes

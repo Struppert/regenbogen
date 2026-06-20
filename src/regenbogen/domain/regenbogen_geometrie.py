@@ -9,6 +9,35 @@ class Sonnenstand:
     sonnenazimut_grad: float
 
 
+_HIMMELSRICHTUNGEN_16 = [
+    "Nord",
+    "NNO",
+    "Nordost",
+    "ONO",
+    "Ost",
+    "OSO",
+    "Südost",
+    "SSO",
+    "Süd",
+    "SSW",
+    "Südwest",
+    "WSW",
+    "West",
+    "WNW",
+    "Nordwest",
+    "NNW",
+]
+
+
+def berechne_regenbogen_azimut(sonnenstand: Sonnenstand) -> float:
+    return (sonnenstand.sonnenazimut_grad + 180.0) % 360.0
+
+
+def azimut_zu_himmelsrichtung(azimut_grad: float) -> str:
+    index = round(azimut_grad / 22.5) % 16
+    return _HIMMELSRICHTUNGEN_16[index]
+
+
 def berechne_sonnenstands_faktor(sonnenstand: Sonnenstand) -> float:
     """Geometrischer Faktor fuer den primaeren Regenbogen."""
     hoehe = sonnenstand.sonnenhoehe_grad

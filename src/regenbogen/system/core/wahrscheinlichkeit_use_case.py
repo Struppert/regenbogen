@@ -5,6 +5,8 @@ from datetime import datetime
 from regenbogen.domain.regenbogen import berechne_regenbogen_wahrscheinlichkeit
 from regenbogen.domain.regenbogen_geometrie import (
     Sonnenstand,
+    azimut_zu_himmelsrichtung,
+    berechne_regenbogen_azimut,
     berechne_sonnenstands_faktor,
 )
 from regenbogen.domain.regenbogen_optik import (
@@ -39,6 +41,7 @@ class WetterErgebnis:
     sonnenstand: Sonnenstand
     wahrscheinlichkeit: int
     sichtbarkeit: int
+    blickrichtung: str | None = None
 
 
 class RegenbogenWahrscheinlichkeitUseCase:
@@ -99,6 +102,12 @@ class RegenbogenWahrscheinlichkeitUseCase:
             )
         )
 
+        blickrichtung = None
+        if wahrscheinlichkeit > 0:
+            blickrichtung = azimut_zu_himmelsrichtung(
+                berechne_regenbogen_azimut(sonnenstand)
+            )
+
         return WetterErgebnis(
             ort=ort,
             postleitzahl=postleitzahl,
@@ -106,6 +115,7 @@ class RegenbogenWahrscheinlichkeitUseCase:
             sonnenstand=sonnenstand,
             wahrscheinlichkeit=wahrscheinlichkeit,
             sichtbarkeit=sichtbarkeit,
+            blickrichtung=blickrichtung,
         )
 
     def _hole_messung_mit_retry(
