@@ -13,10 +13,7 @@ def berechne_regenbogen_wahrscheinlichkeit(
     if not zustand.sonnenschein or not zustand.regen:
         return 0
 
-    basis = (
-        zustand.sonnenschein_intensitaet * 0.6
-        + zustand.regen_intensitaet * 0.4
-    )
+    basis = zustand.sonnenschein_intensitaet * 0.6 + zustand.regen_intensitaet * 0.4
 
     if sonnenstand is not None:
         basis *= berechne_sonnenstands_faktor(sonnenstand)

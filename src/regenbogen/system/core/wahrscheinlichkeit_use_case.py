@@ -144,7 +144,11 @@ class RegenbogenWahrscheinlichkeitUseCase:
     ) -> int:
         optik = leite_optische_bedingungen_ab(messung)
         wasser_mm = messung.rain_mm + messung.showers_mm
-        if wasser_mm <= 0.0 and messung.niederschlag_mm > 0.0 and messung.snowfall_cm <= 0.0:
+        if (
+            wasser_mm <= 0.0
+            and messung.niederschlag_mm > 0.0
+            and messung.snowfall_cm <= 0.0
+        ):
             wasser_mm = messung.niederschlag_mm
         regen_faktor = min(wasser_mm, 5.0) / 5.0
         return berechne_regenbogen_sichtbarkeit(

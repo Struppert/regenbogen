@@ -101,7 +101,7 @@ Sonnen-Regenbogen. Schnee oder Eis werden deutlich abgewertet.
 
 Aktuell nutzt das Programm:
 
-- Standortdaten aus einer kleinen lokalen Demo-Zuordnung
+- Standortdaten aus einer PLZ-Aufloesung fuer deutsche Postleitzahlen
 - aktuelle Wetterdaten von Open-Meteo
 
 Die Wetterabfrage verwendet insbesondere:
@@ -120,19 +120,24 @@ Die Wetterabfrage verwendet insbesondere:
 Diese Werte werden nicht unveraendert an den Benutzer durchgereicht, sondern in
 fachliche Begriffe und heuristische Faktoren uebersetzt.
 
-## Orte und Grenzen der Demo
+## Orte und Grenzen der Standortauflosung
 
-Die aktuelle Standortauflosung ist bewusst klein gehalten. Im Standardlauf sind
-nur wenige Orte beziehungsweise Postleitzahlen hinterlegt:
+Die Standortauflosung nutzt fuer deutsche Postleitzahlen einen externen
+PLZ-Dienst. Fuer bekannte Beispielorte gibt es zusaetzlich lokale Fallbacks,
+damit das Programm auch ohne erfolgreiche PLZ-Abfrage fuer diese Orte
+ausprobierbar bleibt.
+
+Lokale Fallbacks existieren aktuell fuer:
 
 - `Berlin` / `10115`
 - `Muenchen` / `80331`
+- `Kirchentellinsfurt` / `72138`
 
 Unbekannte Eingaben fuehren derzeit zu einem terminalen Standortfehler.
 
 Weitere Grenzen des Beispiels:
 
-- keine vollstaendige Geocoding-Loesung
+- keine vollstaendige freie Texteingabe fuer beliebige Ortsnamen
 - keine echte Regenfront-Erkennung
 - kein Radar
 - keine astronomisch exakte Spezialoptik
@@ -187,7 +192,9 @@ Die Installationshinweise stehen in [INSTALLATION.md](air-file://gvmdc6n3maq77b7
 
 Kurz:
 
-- fuer die Wetterabfrage wird `httpx` benoetigt
+- Dependencies werden ueber `pyproject.toml` installiert
+- `uv` wird fuer die lokale `.venv` verwendet
+- fuer Wetter- und PLZ-HTTP-Zugriffe wird `httpx` benoetigt
 - fuer die GUI wird eine Python-Installation mit Tk-Unterstuetzung benoetigt
 
 ## Nutzung
@@ -195,11 +202,12 @@ Kurz:
 ### CLI
 
 ```bash
-PYTHONPATH=src python -m regenbogen.cli.main Berlin
-PYTHONPATH=src python -m regenbogen.cli.main Berlin --plz 10115
+.venv/bin/regenbogen Berlin
+.venv/bin/regenbogen Berlin --plz 10115
+.venv/bin/regenbogen Kirchentellinsfurt --plz 72138
 ```
 
-Die Befehle werden aus dem Projektroot gestartet. Die CLI gibt die berechnete
+Die Befehle werden nach der Installation aus dem Projektroot gestartet. Die CLI gibt die berechnete
 Regenbogen-Wahrscheinlichkeit als Prozentwert aus.
 
 Moegliche Fehlerfaelle:
@@ -210,7 +218,7 @@ Moegliche Fehlerfaelle:
 ### GUI
 
 ```bash
-PYTHONPATH=src python -m regenbogen.cli.gui_main
+.venv/bin/regenbogen-gui
 ```
 
 Die GUI fragt Ort und optionale Postleitzahl ab und zeigt anschliessend:

@@ -73,15 +73,15 @@ SCAN_ROOTS = SOURCE_ROOTS + TEST_ROOTS + TOOLS_ROOTS
 # Wenn package-schema.md einen neuen Raum einführt: hier nachziehen —
 # sonst läuft der Checker mit veralteter Konfiguration (check_agent_docs_consistency prüft das).
 LAYER_BY_PACKAGE_PART: dict[str, str] = {
-    "domain":         "domain",
-    "system":         "system",
+    "domain": "domain",
+    "system": "system",
     "infrastructure": "infrastructure",
-    "adapters":       "adapters",
-    "cli":            "cli",
-    "entrypoints":    "cli",
-    "shared":         "shared",
-    "tools":          "tools",
-    "tests":          "tests",
+    "adapters": "adapters",
+    "cli": "cli",
+    "entrypoints": "cli",
+    "shared": "shared",
+    "tools": "tools",
+    "tests": "tests",
 }
 
 # Raum → verbotene Zielräume.
@@ -102,32 +102,24 @@ LAYER_BY_PACKAGE_PART: dict[str, str] = {
 FORBIDDEN_IMPORTS: dict[str, set[str]] = {
     # domain: yes -> domain; decision -> shared; alles andere no
     "domain": {"system", "infrastructure", "adapters", "cli", "shared", "tools"},
-
     # system: yes -> domain, system; decision -> shared; no -> infra/adapters/cli/tools
     "system": {"infrastructure", "adapters", "cli", "shared", "tools"},
-
     # system.ports ist ein Unterraum von system. Es darf wie system keine
     # konkreten Implementierungsräume importieren.
     "system.ports": {"infrastructure", "adapters", "cli", "shared", "tools"},
-
     # infrastructure: yes -> infrastructure; ports -> system.ports;
     # decision -> domain/shared; no -> adapters/cli/tools; system.* sonst verboten
     "infrastructure": {"domain", "system", "adapters", "cli", "shared", "tools"},
-
     # adapters: yes -> domain, system, infrastructure, adapters; decision -> shared;
     # no -> cli/tools
     "adapters": {"cli", "shared", "tools"},
-
     # cli: yes -> system, adapters, cli; decision/init -> domain/infrastructure/shared;
     # no -> tools
     "cli": {"domain", "infrastructure", "shared", "tools"},
-
     # tests: yes -> alle Projekträume. Tests sind Projektionen, keine Semantikquelle.
     "tests": set(),
-
     # tools: yes -> shared; no -> produktive Projekträume
     "tools": {"domain", "system", "infrastructure", "adapters", "cli"},
-
     # shared: yes -> shared; no -> alle anderen produktiven Projekträume
     "shared": {"domain", "system", "infrastructure", "adapters", "cli", "tools"},
 }
@@ -170,6 +162,7 @@ KNOWN_BREACHES: dict[str, list[dict[str, str]]] = {
 # ---------------------------------------------------------------------------
 # Datenmodell
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class ClassifiedModule:
@@ -214,6 +207,7 @@ Finding = ImportFinding | UnknownLayerFinding | PublicApiFinding
 # ---------------------------------------------------------------------------
 # Hilfsfunktionen
 # ---------------------------------------------------------------------------
+
 
 def iter_python_files(paths: Iterable[Path]) -> Iterable[Path]:
     for root in paths:
@@ -274,25 +268,45 @@ def public_api_lines_in_top_level_init(path: Path) -> list[tuple[int, str]]:
 
     lines: list[tuple[int, str]] = []
     for node in tree.body:
-        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant) \
-                and isinstance(node.value.value, str):
+        if (
+            isinstance(node, ast.Expr)
+            and isinstance(node.value, ast.Constant)
+            and isinstance(node.value.value, str)
+        ):
             continue
         if isinstance(node, ast.Pass):
             continue
         if isinstance(node, ast.Assign):
             names = [t.id for t in node.targets if isinstance(t, ast.Name)]
-            if names and all(name in {"__version__", "__author__", "__license__"} for name in names):
+            if names and all(
+                name in {"__version__", "__author__", "__license__"} for name in names
+            ):
                 continue
             if "__all__" in names:
                 lines.append((node.lineno, "__all__ definiert öffentliche API."))
                 continue
         if isinstance(node, (ast.Import, ast.ImportFrom)):
-            lines.append((node.lineno, "Import/Re-Export im Top-Level-__init__.py ist öffentliche API."))
+            lines.append(
+                (
+                    node.lineno,
+                    "Import/Re-Export im Top-Level-__init__.py ist öffentliche API.",
+                )
+            )
             continue
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            lines.append((node.lineno, "Definition im Top-Level-__init__.py ist öffentliche API."))
+            lines.append(
+                (
+                    node.lineno,
+                    "Definition im Top-Level-__init__.py ist öffentliche API.",
+                )
+            )
             continue
-        lines.append((getattr(node, "lineno", 0), "Nicht-leerer Inhalt im Top-Level-__init__.py ist öffentliche API."))
+        lines.append(
+            (
+                getattr(node, "lineno", 0),
+                "Nicht-leerer Inhalt im Top-Level-__init__.py ist öffentliche API.",
+            )
+        )
     return lines
 
 
@@ -342,7 +356,12 @@ def path_to_project_module(path: Path) -> str | None:
 def is_system_ports_module(module: str) -> bool:
     parts = module.split(".")
     # <package>.system.ports[.*]
-    return len(parts) >= 3 and parts[0] == PROJECT_PACKAGE and parts[1] == "system" and parts[2] == "ports"
+    return (
+        len(parts) >= 3
+        and parts[0] == PROJECT_PACKAGE
+        and parts[1] == "system"
+        and parts[2] == "ports"
+    )
 
 
 def classify_module(module: str) -> ClassifiedModule:
@@ -354,30 +373,47 @@ def classify_module(module: str) -> ClassifiedModule:
     """
     parts = module.split(".")
     if not parts:
-        return ClassifiedModule(module=module, layer=None,
-                                is_project_internal=False, unclassified_reason=None)
+        return ClassifiedModule(
+            module=module,
+            layer=None,
+            is_project_internal=False,
+            unclassified_reason=None,
+        )
 
     if parts[0] != PROJECT_PACKAGE:
-        return ClassifiedModule(module=module, layer=None,
-                                is_project_internal=False, unclassified_reason=None)
+        return ClassifiedModule(
+            module=module,
+            layer=None,
+            is_project_internal=False,
+            unclassified_reason=None,
+        )
 
     if is_system_ports_module(module):
-        return ClassifiedModule(module=module, layer="system.ports",
-                                is_project_internal=True, unclassified_reason=None)
+        return ClassifiedModule(
+            module=module,
+            layer="system.ports",
+            is_project_internal=True,
+            unclassified_reason=None,
+        )
 
     for part in parts[1:]:
         layer = LAYER_BY_PACKAGE_PART.get(part)
         if layer:
-            return ClassifiedModule(module=module, layer=layer,
-                                    is_project_internal=True, unclassified_reason=None)
+            return ClassifiedModule(
+                module=module,
+                layer=layer,
+                is_project_internal=True,
+                unclassified_reason=None,
+            )
 
     reason = (
         f"Projektinternes Modul '{module}' enthält kein klassifizierbares Pfadsegment. "
         f"Bekannte Segmente: {sorted(LAYER_BY_PACKAGE_PART)}. "
         f"package-schema.md und LAYER_BY_PACKAGE_PART prüfen."
     )
-    return ClassifiedModule(module=module, layer=None,
-                            is_project_internal=True, unclassified_reason=reason)
+    return ClassifiedModule(
+        module=module, layer=None, is_project_internal=True, unclassified_reason=reason
+    )
 
 
 def extract_imports(path: Path) -> list[tuple[str, int, str]]:
@@ -401,8 +437,9 @@ def extract_imports(path: Path) -> list[tuple[str, int, str]]:
     return imports
 
 
-def is_known_breach(path: Path, source_layer: str, target_layer: str,
-                    imported_module: str) -> bool:
+def is_known_breach(
+    path: Path, source_layer: str, target_layer: str, imported_module: str
+) -> bool:
     """
     Prüft ob genau diese Kante als Known Breach klassifiziert ist.
 
@@ -432,48 +469,73 @@ def check_file(path: Path) -> list[Finding]:
 
     source_module = path_to_project_module(path)
     if source_module is None:
-        findings.append(UnknownLayerFinding(
-            file=path, module="<unknown>", line=0,
-            message="Datei liegt außerhalb der bekannten SOURCE_ROOTS.",
-        ))
+        findings.append(
+            UnknownLayerFinding(
+                file=path,
+                module="<unknown>",
+                line=0,
+                message="Datei liegt außerhalb der bekannten SOURCE_ROOTS.",
+            )
+        )
         return findings
 
     if is_top_level_package_init(path):
         for line, message in public_api_lines_in_top_level_init(path):
-            findings.append(PublicApiFinding(
-                file=path, module=source_module, line=line, message=message,
-            ))
+            findings.append(
+                PublicApiFinding(
+                    file=path,
+                    module=source_module,
+                    line=line,
+                    message=message,
+                )
+            )
         return findings
 
     source_classified = classify_module(source_module)
     if source_classified.unclassified_reason:
-        findings.append(UnknownLayerFinding(
-            file=path, module=source_module, line=0,
-            message=source_classified.unclassified_reason,
-        ))
+        findings.append(
+            UnknownLayerFinding(
+                file=path,
+                module=source_module,
+                line=0,
+                message=source_classified.unclassified_reason,
+            )
+        )
         return findings
     if source_classified.layer is None:
-        findings.append(UnknownLayerFinding(
-            file=path, module=source_module, line=0,
-            message="Quelldatei keinem semantischen Raum zugeordnet.",
-        ))
+        findings.append(
+            UnknownLayerFinding(
+                file=path,
+                module=source_module,
+                line=0,
+                message="Quelldatei keinem semantischen Raum zugeordnet.",
+            )
+        )
         return findings
 
     source_layer = source_classified.layer
 
     for imported_module, line, import_type in extract_imports(path):
         if import_type == "syntax_error":
-            findings.append(UnknownLayerFinding(
-                file=path, module=imported_module, line=line,
-                message="Datei kann nicht geparst werden.",
-            ))
+            findings.append(
+                UnknownLayerFinding(
+                    file=path,
+                    module=imported_module,
+                    line=line,
+                    message="Datei kann nicht geparst werden.",
+                )
+            )
             continue
 
         if import_type == "relative":
-            findings.append(UnknownLayerFinding(
-                file=path, module=imported_module, line=line,
-                message="Relativer Import: für Layer-Checks bitte absolute Imports verwenden.",
-            ))
+            findings.append(
+                UnknownLayerFinding(
+                    file=path,
+                    module=imported_module,
+                    line=line,
+                    message="Relativer Import: für Layer-Checks bitte absolute Imports verwenden.",
+                )
+            )
             continue
 
         target_classified = classify_module(imported_module)
@@ -481,14 +543,20 @@ def check_file(path: Path) -> list[Finding]:
             continue
 
         if target_classified.unclassified_reason:
-            findings.append(UnknownLayerFinding(
-                file=path, module=imported_module, line=line,
-                message=target_classified.unclassified_reason,
-            ))
+            findings.append(
+                UnknownLayerFinding(
+                    file=path,
+                    module=imported_module,
+                    line=line,
+                    message=target_classified.unclassified_reason,
+                )
+            )
             continue
 
         target_layer = target_classified.layer
-        target_policy_layer = "system" if target_layer == "system.ports" else target_layer
+        target_policy_layer = (
+            "system" if target_layer == "system.ports" else target_layer
+        )
 
         # Sonderregel der Matrix: infrastructure darf system.ports importieren,
         # aber kein anderes system.*.
@@ -496,14 +564,19 @@ def check_file(path: Path) -> list[Finding]:
             continue
 
         forbidden_targets = FORBIDDEN_IMPORTS.get(source_layer, set())
-        if target_policy_layer in forbidden_targets and \
-                not is_known_breach(path, source_layer, target_policy_layer, imported_module):
-            findings.append(ImportFinding(
-                file=path, source_layer=source_layer,
-                imported_module=imported_module, target_layer=target_layer,
-                line=line,
-                message=f"Verbotener Import: '{source_layer}' darf '{target_layer}' nicht importieren.",
-            ))
+        if target_policy_layer in forbidden_targets and not is_known_breach(
+            path, source_layer, target_policy_layer, imported_module
+        ):
+            findings.append(
+                ImportFinding(
+                    file=path,
+                    source_layer=source_layer,
+                    imported_module=imported_module,
+                    target_layer=target_layer,
+                    line=line,
+                    message=f"Verbotener Import: '{source_layer}' darf '{target_layer}' nicht importieren.",
+                )
+            )
 
     return findings
 
@@ -549,6 +622,7 @@ def check_source_roots_exist() -> list[str]:
 # Output-Modi
 # ---------------------------------------------------------------------------
 
+
 def print_findings_standard(findings: list[Finding]) -> None:
     for finding in findings:
         if isinstance(finding, ImportFinding):
@@ -591,7 +665,9 @@ def print_preflight(findings: list[Finding], files_checked: int) -> None:
     has_public_api = any(isinstance(f, PublicApiFinding) for f in findings)
     if has_import_error or has_unknown_error:
         print("ABBRUCH: Semantische Layer-Verletzungen gefunden.")
-        print("Gemäß AGENTS.md §10 HARD-Abbruch H2: Import-/Layer-Verletzung ohne klassifizierten Bruch.\n")
+        print(
+            "Gemäß AGENTS.md §10 HARD-Abbruch H2: Import-/Layer-Verletzung ohne klassifizierten Bruch.\n"
+        )
     elif has_public_api:
         print("ABBRUCH: Öffentliche API-Fläche berührt.")
         print("Gemäß AGENTS.md §10 H9: Public-API-Änderung braucht Freigabe.\n")
@@ -609,7 +685,9 @@ def print_preflight(findings: list[Finding], files_checked: int) -> None:
             print(f"  Modul: `{f.module}`")
             print("  Typ: `public_api_surface`")
             print(f"  Befund: {f.message}")
-            print("  Aktion: Freigabe nach H9 prüfen oder Top-Level-__init__.py leer halten.")
+            print(
+                "  Aktion: Freigabe nach H9 prüfen oder Top-Level-__init__.py leer halten."
+            )
         else:
             print(f"- Datei: `{f.file}:{f.line}`")
             print(f"  Modul: `{f.module}`")
@@ -618,29 +696,35 @@ def print_preflight(findings: list[Finding], files_checked: int) -> None:
     print("\nReferenz: AGENTS.md §4, package-schema.md")
 
 
-
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Prüft Python-Imports gegen semantische Layer-Regeln."
     )
     parser.add_argument(
-        "paths", nargs="*", type=Path, default=SCAN_ROOTS,
+        "paths",
+        nargs="*",
+        type=Path,
+        default=SCAN_ROOTS,
         help="Dateien oder Verzeichnisse. Default: SOURCE_ROOTS + TEST_ROOTS + TOOLS_ROOTS.",
     )
     parser.add_argument(
-        "--template", action="store_true",
+        "--template",
+        action="store_true",
         help="Template-Modus: Platzhalter-Konfiguration erlaubt, Exit 0 ohne Lauf.",
     )
     parser.add_argument(
-        "--preflight", action="store_true",
+        "--preflight",
+        action="store_true",
         help="Agenten-Modus: kompakter Output, Evidence-Format, klare Exit-Codes.",
     )
     parser.add_argument(
-        "--list-known-breaches", action="store_true",
+        "--list-known-breaches",
+        action="store_true",
         help="Listet bekannte Brüche und beendet sich mit 0.",
     )
 
@@ -679,7 +763,9 @@ def main(argv: list[str] | None = None) -> int:
     if config_errors:
         for err in config_errors:
             print(f"KONFIGURATIONSFEHLER: {err}", file=sys.stderr)
-        print("Import-Layer-Check: KONFIGURATION UNVOLLSTÄNDIG (Exit 2)", file=sys.stderr)
+        print(
+            "Import-Layer-Check: KONFIGURATION UNVOLLSTÄNDIG (Exit 2)", file=sys.stderr
+        )
         print("Im Template-Repository: --template verwenden.", file=sys.stderr)
         return 2
 
@@ -696,7 +782,6 @@ def main(argv: list[str] | None = None) -> int:
         files_checked += 1
         findings.extend(check_file(path))
 
-
     if args.preflight:
         print_preflight(findings, files_checked)
         return 1 if findings else 0
@@ -704,7 +789,9 @@ def main(argv: list[str] | None = None) -> int:
     if findings:
         print_findings_standard(findings)
         print()
-        print(f"Import-Layer-Check: FAILED ({len(findings)} finding(s), {files_checked} Dateien geprüft)")
+        print(
+            f"Import-Layer-Check: FAILED ({len(findings)} finding(s), {files_checked} Dateien geprüft)"
+        )
         return 1
 
     print(f"Import-Layer-Check: OK ({files_checked} Dateien geprüft)")

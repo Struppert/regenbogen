@@ -41,9 +41,7 @@ def berechne_sonnenstand(
     assert utc_offset is not None
     timezone_offset_stunden = utc_offset.total_seconds() / 3600.0
     zeit_offset = (
-        zeitgleichung
-        + 4.0 * koordinaten.longitude
-        - 60.0 * timezone_offset_stunden
+        zeitgleichung + 4.0 * koordinaten.longitude - 60.0 * timezone_offset_stunden
     )
     wahre_sonnenzeit = stunde * 60.0 + zeit_offset
     stundenwinkel = math.radians(wahre_sonnenzeit / 4.0 - 180.0)

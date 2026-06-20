@@ -61,6 +61,7 @@ POST_CHECKS = [
     "python tools/resolve_test_obligations.py --selfcheck --instantiated",
 ]
 
+
 @dataclass(frozen=True)
 class Replacement:
     name: str
@@ -95,7 +96,9 @@ def derive_python_package_name(display_name: str) -> str:
     value = re.sub(r"[^0-9A-Za-z_]", "_", value)
     value = re.sub(r"_+", "_", value).strip("_").lower()
     if not value:
-        raise SystemExit("Aus project-display-name konnte kein Python-Package-Name abgeleitet werden.")
+        raise SystemExit(
+            "Aus project-display-name konnte kein Python-Package-Name abgeleitet werden."
+        )
     return value
 
 
@@ -120,7 +123,11 @@ def validate_python_package_name(value: str) -> str:
 
 def build_replacements(args: argparse.Namespace) -> list[Replacement]:
     display_name = non_empty(args.project_display_name, "--project-display-name")
-    package_name = args.python_package_name.strip() if args.python_package_name else derive_python_package_name(display_name)
+    package_name = (
+        args.python_package_name.strip()
+        if args.python_package_name
+        else derive_python_package_name(display_name)
+    )
     package_name = validate_python_package_name(package_name)
 
     values = {
@@ -130,9 +137,11 @@ def build_replacements(args: argparse.Namespace) -> list[Replacement]:
         "TEST_ROOT": non_empty(args.test_root, "--test-root"),
         "DOCS_ROOT": non_empty(args.docs_root, "--docs-root"),
         "TOOLS_ROOT": non_empty(args.tools_root, "--tools-root"),
-        "IMPORT_LAYER_CHECK_CMD": args.import_layer_check_cmd or "python tools/check_import_layers.py --preflight src tests tools",
+        "IMPORT_LAYER_CHECK_CMD": args.import_layer_check_cmd
+        or "python tools/check_import_layers.py --preflight src tests tools",
         "PYTHON_LINT_CMD": args.python_lint_cmd or "python -m ruff check .",
-        "PYTHON_FORMAT_CHECK_CMD": args.python_format_check_cmd or "python -m ruff format --check .",
+        "PYTHON_FORMAT_CHECK_CMD": args.python_format_check_cmd
+        or "python -m ruff format --check .",
         "PYTHON_TYPECHECK_CMD": args.python_typecheck_cmd or "python -m mypy src",
         "PYTHON_TEST_CMD": args.python_test_cmd or "python -m pytest",
         "FULL_VALIDATION_CMD": args.full_validation_cmd or "python -m pytest",
@@ -169,7 +178,10 @@ def create_directories(values: dict[str, str]) -> list[Path]:
         Path(values["SOURCE_ROOT"]),
         Path(values["TEST_ROOT"]),
         Path(values["SOURCE_ROOT"]) / values["PYTHON_PACKAGE_NAME"],
-        Path(values["SOURCE_ROOT"]) / values["PYTHON_PACKAGE_NAME"] / "system" / "ports",
+        Path(values["SOURCE_ROOT"])
+        / values["PYTHON_PACKAGE_NAME"]
+        / "system"
+        / "ports",
     ]
     created: list[Path] = []
     for d in dirs:
@@ -189,7 +201,9 @@ def remove_generic_bridge_example() -> bool:
     end = "<!-- TEMPLATE-BRIDGE-EXAMPLE-END -->"
     if marker in text and end in text:
         pattern = re.compile(re.escape(marker) + r".*?" + re.escape(end), re.DOTALL)
-        new = pattern.sub("<!-- Kein aktiver Bridge-Eintrag nach Instanziierung. -->", text)
+        new = pattern.sub(
+            "<!-- Kein aktiver Bridge-Eintrag nach Instanziierung. -->", text
+        )
     else:
         # Ältere Template-Fassung ohne Marker: den BR-001-Beispielblock entfernen.
         pattern = re.compile(
@@ -216,9 +230,17 @@ def fill_test_commands(values: dict[str, str]) -> bool:
     # v0.2: Beim initialen Sprechakt wird jede Testgruppe konservativ auf den
     # Projekt-Testbefehl gesetzt. Feinere Befehle sind spätere Projektarbeit.
     labels = [
-        "domain-tests", "negative-domain-tests", "system-tests", "policy-tests",
-        "infrastructure-tests", "contract-or-fake-tests", "adapter-tests",
-        "mapping-tests", "cli-tests", "smoke-tests", "affected-product-tests",
+        "domain-tests",
+        "negative-domain-tests",
+        "system-tests",
+        "policy-tests",
+        "infrastructure-tests",
+        "contract-or-fake-tests",
+        "adapter-tests",
+        "mapping-tests",
+        "cli-tests",
+        "smoke-tests",
+        "affected-product-tests",
     ]
     for label in labels:
         new = re.sub(
@@ -233,7 +255,12 @@ def fill_test_commands(values: dict[str, str]) -> bool:
     return False
 
 
-def write_instantiation_markdown(values: dict[str, str], changed_files: list[Path], created_dirs: list[Path], checks: list[str]) -> None:
+def write_instantiation_markdown(
+    values: dict[str, str],
+    changed_files: list[Path],
+    created_dirs: list[Path],
+    checks: list[str],
+) -> None:
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     changed = "\n".join(f"- {p.as_posix()}" for p in changed_files) or "- keine"
     created = "\n".join(f"- {p.as_posix()}" for p in created_dirs) or "- keine"
@@ -250,23 +277,23 @@ Formatregel: Markdown only
 ## Festgelegte Werte
 
 ```text
-PROJECT_DISPLAY_NAME = {values['PROJECT_DISPLAY_NAME']}
-PYTHON_PACKAGE_NAME  = {values['PYTHON_PACKAGE_NAME']}
-SOURCE_ROOT          = {values['SOURCE_ROOT']}
-TEST_ROOT            = {values['TEST_ROOT']}
-DOCS_ROOT            = {values['DOCS_ROOT']}
-TOOLS_ROOT           = {values['TOOLS_ROOT']}
+PROJECT_DISPLAY_NAME = {values["PROJECT_DISPLAY_NAME"]}
+PYTHON_PACKAGE_NAME  = {values["PYTHON_PACKAGE_NAME"]}
+SOURCE_ROOT          = {values["SOURCE_ROOT"]}
+TEST_ROOT            = {values["TEST_ROOT"]}
+DOCS_ROOT            = {values["DOCS_ROOT"]}
+TOOLS_ROOT           = {values["TOOLS_ROOT"]}
 ```
 
 ## Befehle
 
 ```text
-IMPORT_LAYER_CHECK_CMD  = {values['IMPORT_LAYER_CHECK_CMD']}
-PYTHON_LINT_CMD         = {values['PYTHON_LINT_CMD']}
-PYTHON_FORMAT_CHECK_CMD = {values['PYTHON_FORMAT_CHECK_CMD']}
-PYTHON_TYPECHECK_CMD    = {values['PYTHON_TYPECHECK_CMD']}
-PYTHON_TEST_CMD         = {values['PYTHON_TEST_CMD']}
-FULL_VALIDATION_CMD     = {values['FULL_VALIDATION_CMD']}
+IMPORT_LAYER_CHECK_CMD  = {values["IMPORT_LAYER_CHECK_CMD"]}
+PYTHON_LINT_CMD         = {values["PYTHON_LINT_CMD"]}
+PYTHON_FORMAT_CHECK_CMD = {values["PYTHON_FORMAT_CHECK_CMD"]}
+PYTHON_TYPECHECK_CMD    = {values["PYTHON_TYPECHECK_CMD"]}
+PYTHON_TEST_CMD         = {values["PYTHON_TEST_CMD"]}
+FULL_VALIDATION_CMD     = {values["FULL_VALIDATION_CMD"]}
 ```
 
 ## Geänderte Dateien
@@ -296,8 +323,8 @@ def instantiate_checks(commands: list[str], values: dict[str, str]) -> list[str]
     for cmd in commands:
         expanded.append(
             cmd.replace("<SOURCE_ROOT>", values["SOURCE_ROOT"])
-               .replace("<TEST_ROOT>", values["TEST_ROOT"])
-               .replace("<TOOLS_ROOT>", values["TOOLS_ROOT"])
+            .replace("<TEST_ROOT>", values["TEST_ROOT"])
+            .replace("<TOOLS_ROOT>", values["TOOLS_ROOT"])
         )
     return expanded
 
@@ -328,8 +355,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--full-validation-cmd")
     parser.add_argument("--skip-post-checks", action="store_true")
     parser.add_argument(
-        "--force", action="store_true",
-        help="Erlaubt erneuten Lauf trotz .agent-box/instantiation.md. Nur mit Freigabe."
+        "--force",
+        action="store_true",
+        help="Erlaubt erneuten Lauf trotz .agent-box/instantiation.md. Nur mit Freigabe.",
     )
     return parser.parse_args(argv)
 
@@ -350,7 +378,9 @@ def main(argv: list[str]) -> int:
     remove_generic_bridge_example()
     fill_test_commands(values)
     checks = instantiate_checks(POST_CHECKS, values)
-    write_instantiation_markdown(values, changed, created, checks if not args.skip_post_checks else [])
+    write_instantiation_markdown(
+        values, changed, created, checks if not args.skip_post_checks else []
+    )
 
     if not args.skip_post_checks:
         run_post_checks(checks)

@@ -19,9 +19,7 @@ def leite_optische_bedingungen_ab(messung: WetterApiMessung) -> OptischeBedingun
         tropfen_qualitaet=_tropfen_qualitaet(messung),
         direktlicht_faktor=_direktlicht_faktor(messung.direct_radiation),
         sicht_faktor=_sicht_faktor(messung.visibility_m),
-        hintergrund_kontrast_faktor=_hintergrund_kontrast_faktor(
-            messung.cloud_cover
-        ),
+        hintergrund_kontrast_faktor=_hintergrund_kontrast_faktor(messung.cloud_cover),
         niederschlags_phasen_faktor=_niederschlags_phasen_faktor(messung),
     )
 

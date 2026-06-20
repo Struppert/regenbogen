@@ -29,7 +29,9 @@ class FakeStandort(StandortPort):
 
 
 class FakeWetterApi(WetterApiPort):
-    def hole_aktuelle_messung(self, koordinaten: StandortKoordinaten) -> WetterApiMessung:
+    def hole_aktuelle_messung(
+        self, koordinaten: StandortKoordinaten
+    ) -> WetterApiMessung:
         return WetterApiMessung(
             sonnenschein_sekunden=1800.0,
             niederschlag_mm=2.0,

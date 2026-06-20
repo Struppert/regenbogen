@@ -7,7 +7,7 @@ from regenbogen.infrastructure.event_logger import (
     configure_logging,
 )
 from regenbogen.infrastructure.open_meteo_client import OpenMeteoClient
-from regenbogen.infrastructure.plz_lookup import DemoStandortLookup
+from regenbogen.infrastructure.plz_lookup import PlzStandortLookup
 from regenbogen.system.core.wahrscheinlichkeit_use_case import (
     RegenbogenWahrscheinlichkeitUseCase,
 )
@@ -18,7 +18,7 @@ def create_regenbogen_use_case() -> RegenbogenWahrscheinlichkeitUseCase:
     configure_logging()
     return RegenbogenWahrscheinlichkeitUseCase(
         api=OpenMeteoClient(),
-        standort=DemoStandortLookup(),
+        standort=PlzStandortLookup(),
         sleep=time.sleep,
         clock=lambda: datetime.now(ZoneInfo("Europe/Berlin")),
         logger=StdlibEventLogger(),

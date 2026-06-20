@@ -23,9 +23,10 @@ def test_kein_direktlicht_ergibt_null():
 
 
 def test_schneephase_ergibt_null():
-    assert berechne_regenbogen_sichtbarkeit(
-        _faktoren(niederschlags_phasen_faktor=0.0)
-    ) == 0
+    assert (
+        berechne_regenbogen_sichtbarkeit(_faktoren(niederschlags_phasen_faktor=0.0))
+        == 0
+    )
 
 
 def test_alle_faktoren_guenstig_ergeben_hohen_score():
