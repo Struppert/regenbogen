@@ -198,6 +198,16 @@ Autonomieregel prüfen:
   Nein → H10, Sprechakt nötig.
 ```
 
+**Schritt 5: UI-Text bei cli/-Änderungen prüfen (→ M-6)**
+
+```text
+Wenn die Aufgabe cli/ berührt und Werte angezeigt werden:
+  Stimmt der angezeigte Text mit dem Glossarbegriff überein?
+  Ist der Wert ein Anteil, eine Intensität, eine Wahrscheinlichkeit
+  oder ein technisches API-Feld?
+  Checker und Tests finden diesen Fehlertyp nicht — nur Glossarabgleich.
+```
+
 Nicht laden:
 - ganzes Glossar reflexhaft
 - historisch relevante Begriffe die jetzt nicht aktiv gebraucht werden
@@ -259,6 +269,17 @@ Befehl fehlt oder trifft keine Aussage:
 
 Der Checker ist Alarm, nicht Architekturautorität.
 
+**Format-Check Scope (→ M-1)**
+
+```text
+ruff format --check meldet Verstöße auf tool-Dateien die nicht berührt wurden:
+  Das ist ein passiver Altbefund — SA6, nicht SA2.
+  Nicht durch unerlaubte Nebenreparatur verdecken.
+  Separaten Format-Schnitt mit expliziter Freigabe für tools/ beantragen.
+
+SA2 gilt nur wenn geänderter Code (src/, tests/) den Format-Check nicht besteht.
+```
+
 ---
 
 ## 11. P8 — Testpflicht ableiten
@@ -277,6 +298,17 @@ Tooling geändert?
 Öffentliche API geändert?
 Fehlerbehandlung geändert?
 Dependency geändert?
+```
+
+**Umgebungscheck (→ M-2)**
+
+```text
+Wenn die Aufgabe Laufzeitbezug hat (HTTP-Adapter, DB, externe API):
+  Sind Test- und Runtime-Abhängigkeiten installiert?
+    Ja  → normal fortfahren
+    Nein → jetzt dokumentieren, nicht erst am Ende scheitern.
+           SA4-Bedingung als bekannte Einschränkung notieren.
+           Menschenentscheidung abwarten, bevor Testvalidierung beansprucht wird.
 ```
 
 Wenn Testpflicht nicht ableitbar: HARD-Abbruch H6.
