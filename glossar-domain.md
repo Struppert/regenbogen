@@ -97,10 +97,46 @@ Mehrere Phaenomene koennen gleichzeitig auftreten.
 **Invarianten:**
 - Sonnenschein und Regen zur selben Zeit ist ein gueltiger Zustand.
 - Intensitaeten liegen in [0.0, 1.0].
+- Der Sonnenscheinanteil ist keine Wahrscheinlichkeit.
 
 **Projektionen:**
 - Code: src/regenbogen/domain/wetter.py
 - Tests: tests/domain/test_regenbogen.py
+
+**Migrationsstatus:** canonical
+
+### SonnenscheinAnteil
+
+**Semantischer Raum:** domain
+
+**Bedeutung:**
+Anteil einer Bezugsstunde, in der direkte Sonneneinstrahlung beobachtet wurde.
+Der Wert wird im aktuellen Modell aus `sunshine_duration / 3600` abgeleitet.
+
+**Invarianten:**
+- Wert liegt in [0.0, 1.0].
+- 0.0 bedeutet kein beobachteter Sonnenschein in der Bezugsstunde.
+- 1.0 bedeutet durchgehender beobachteter Sonnenschein in der Bezugsstunde.
+- Der Wert ist keine Wahrscheinlichkeit.
+
+**Erlaubt:**
+- Verwendung als Faktor fuer Wetterzustand und Regenbogenwahrscheinlichkeit.
+- Anzeige als Prozentanteil der Bezugsstunde.
+
+**Verboten:**
+- Interpretation als Vorhersagewahrscheinlichkeit.
+- Interpretation als Sonnenstand oder Direktstrahlung.
+
+**Projektionen:**
+- Code: src/regenbogen/system/core/wahrscheinlichkeit_use_case.py
+- Anzeige: src/regenbogen/cli/gui_format.py
+- Tests: tests/cli/test_gui_format.py
+- Modell: MODELL-README.md
+
+**Abgrenzung:**
+`SonnenscheinAnteil` beschreibt beobachtete Sonnenscheindauer innerhalb einer
+Bezugsstunde. `Direktlicht` beschreibt die aus direkter Strahlung abgeleitete
+optische Eignung. `Sonnenstand` beschreibt die geometrische Position der Sonne.
 
 **Migrationsstatus:** canonical
 

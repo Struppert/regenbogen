@@ -6,7 +6,8 @@ def formatiere_wetter(ergebnis: WetterErgebnis) -> str:
     teile = []
     if ergebnis.zustand.sonnenschein:
         teile.append(
-            f"Sonnenschein ({round(ergebnis.zustand.sonnenschein_intensitaet * 100)} %)"
+            "Sonnenscheinanteil "
+            f"({round(ergebnis.zustand.sonnenschein_intensitaet * 100)} % der Stunde)"
         )
     if ergebnis.zustand.regen:
         teile.append(f"Regen ({round(ergebnis.zustand.regen_intensitaet * 100)} %)")

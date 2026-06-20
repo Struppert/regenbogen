@@ -25,7 +25,8 @@ Die Wahrscheinlichkeitslogik folgt dem einfachen fachlichen Kern:
 
 - ohne Sonnenschein: `0`
 - ohne Regen: `0`
-- mit Sonnenschein und Regen: grobe Wahrscheinlichkeit aus Intensitaeten
+- mit Sonnenschein und Regen: grobe Wahrscheinlichkeit aus
+  Sonnenscheinanteil und Regenintensitaet
 - zusaetzlich beeinflusst der Sonnenstand das Ergebnis
 
 Der Sichtbarkeits-Score bewertet nicht nur, ob ein Regenbogen moeglich ist,
@@ -55,7 +56,7 @@ Wichtig:
 
 - Sonnenschein und Regen koennen gleichzeitig auftreten
 - Intensitaeten liegen jeweils in `[0.0, 1.0]`
-- `sonnenschein=True` erfordert eine positive Sonnenintensitaet
+- `sonnenschein=True` erfordert einen positiven Sonnenscheinanteil
 - `regen=True` erfordert eine positive Regenintensitaet
 
 ### Regenbogen-Wahrscheinlichkeit
@@ -65,6 +66,7 @@ Die `RegenbogenWahrscheinlichkeit` ist ein Prozentwert in `[0, 100]`.
 Das Programm kombiniert:
 
 - Sonnenintensitaet
+- Sonnenscheinanteil
 - Regenintensitaet
 - geometrischen Sonnenstands-Faktor
 
@@ -119,6 +121,11 @@ Die Wetterabfrage verwendet insbesondere:
 
 Diese Werte werden nicht unveraendert an den Benutzer durchgereicht, sondern in
 fachliche Begriffe und heuristische Faktoren uebersetzt.
+
+`sunshine_duration` wird dabei als Sonnenscheinanteil einer Bezugsstunde
+interpretiert. Ein Wert von `25 %` bedeutet also nicht
+Sonnenscheinwahrscheinlichkeit, sondern ungefaehr ein Viertel der Stunde mit
+beobachtetem Sonnenschein.
 
 ## Orte und Grenzen der Standortauflosung
 

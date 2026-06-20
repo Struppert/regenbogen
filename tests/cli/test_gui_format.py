@@ -27,7 +27,7 @@ def test_formatiert_beide_faktoren():
             50,
         )
     )
-    assert "Sonnenschein" in ausgabe
+    assert "Sonnenscheinanteil (50 % der Stunde)" in ausgabe
     assert "Regen" in ausgabe
     assert "50 %" in ausgabe
 
@@ -43,7 +43,7 @@ def test_formatiert_kein_regen():
             0,
         )
     )
-    assert "Sonnenschein" in ausgabe
+    assert "Sonnenscheinanteil (80 % der Stunde)" in ausgabe
     assert "0 %" in ausgabe
 
 

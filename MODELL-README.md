@@ -109,6 +109,7 @@ Berechnung.
 Das Modell arbeitet fachlich mit:
 
 - `Wetterzustand`
+- `SonnenscheinAnteil`
 - `Sonnenstand`
 - `SonnenstandsFaktor`
 - `RegenbogenWahrscheinlichkeit`
@@ -125,7 +126,7 @@ Ort zu einem Zeitpunkt.
 
 Aus den Wetterdaten werden zwei Intensitäten normiert:
 
-- Sonnenintensität aus `sunshine_duration`
+- `SonnenscheinAnteil` aus `sunshine_duration`
 - Regenintensität aus `precipitation`
 
 Die Normierung im aktuellen Modell ist heuristisch:
@@ -133,9 +134,12 @@ Die Normierung im aktuellen Modell ist heuristisch:
 - `sunshine_duration / 3600.0`, gedeckelt auf `1.0`
 - `precipitation / 10.0`, gedeckelt auf `1.0`
 
+`SonnenscheinAnteil` bedeutet dabei: Anteil einer Bezugsstunde, in der direkte
+Sonneneinstrahlung beobachtet wurde. Der Wert ist keine Wahrscheinlichkeit.
+
 Aus diesen Intensitäten wird entschieden:
 
-- `sonnenschein=True`, wenn die normierte Sonnenintensität größer als `0.0` ist
+- `sonnenschein=True`, wenn der `SonnenscheinAnteil` größer als `0.0` ist
 - `regen=True`, wenn die normierte Regenintensität größer als `0.0` ist
 
 ## Modellteil B: Sonnenstand
@@ -174,12 +178,12 @@ Sie folgt diesen Kernregeln:
 
 - ohne Sonnenschein -> `0`
 - ohne Regen -> `0`
-- sonst Kombination aus Sonnen- und Regenintensität
+- sonst Kombination aus Sonnenscheinanteil und Regenintensität
 - optional multipliziert mit dem `SonnenstandsFaktor`
 
 Im aktuellen Modell gewichtet die Basis:
 
-- Sonnenintensität mit `0.6`
+- Sonnenscheinanteil mit `0.6`
 - Regenintensität mit `0.4`
 
 Dann wird auf einen Prozentwert in `[0, 100]` gerundet.
