@@ -149,10 +149,16 @@ zum Handbuch wird.
 glossar-domain.md    Fachbegriffe
 glossar-system.md    System- und Metasystem-Begriffe
 glossar-README.md    Ladeprotokoll
+MODELL-README.md     zusammenhängende Beschreibung des aktuell implementierten Modells
 ```
 
 Preflight lädt nur aktiv benötigte Begriffe. Fehlt ein aktiv benötigter Begriff,
 gilt Task-Schnitt T1; bleibt der Begriff nötig, gilt Sprechakt SP7.
+
+`MODELL-README.md` ist kein Glossarersatz und keine neue semantische
+Autorität neben Glossar und Code. Es ist die verpflichtende
+Zusammenhangsbeschreibung des aktuell implementierten Modells und muss bei
+Modelländerungen geprüft und bei Bedarf aktualisiert werden.
 
 ---
 
@@ -593,11 +599,12 @@ Vor jeder nichttrivialen Änderung:
 2. AGENTS.md lesen
 3. package-schema.md gezielt prüfen
 4. relevante Glossareinträge gezielt laden
-5. Import-/Layer-Checker ausführen
-6. Testpflicht ableiten
-7. Schreibrechte prüfen
-8. Task-Schnitt prüfen, wenn T1–T5 eintreten
-9. Plan unter docs/plans/ anlegen, wenn Änderung nicht trivial ist
+5. Bei Modellarbeit MODELL-README.md lesen und Updatepflicht prüfen
+6. Import-/Layer-Checker ausführen
+7. Testpflicht ableiten
+8. Schreibrechte prüfen
+9. Task-Schnitt prüfen, wenn T1–T5 eintreten
+10. Plan unter docs/plans/ anlegen, wenn Änderung nicht trivial ist
 ```
 
 Vollständige Schrittfolge: `preflight-checkliste.md`
@@ -657,6 +664,8 @@ Mindestregeln:
 - Neuer Domain-Begriff braucht Domain-Test oder Glossarentscheidung.
 - Importregeländerung braucht Import-Checker-Lauf.
 - Öffentliche API-Änderung braucht Doku-/Example-/Compatibility-Prüfung.
+- Modelländerung braucht Prüfung von MODELL-README.md; bei geänderten
+  Modellannahmen oder Faktoren muss das Dokument nachgezogen werden.
 ```
 
 Testpflicht ableiten:

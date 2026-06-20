@@ -47,11 +47,12 @@ P2   AGENTS.md lesen
 P3   package-schema.md gezielt prüfen
 P4   betroffene semantische Räume bestimmen
 P5   relevante Glossareinträge gezielt laden
-P6   Import-/Layer-Checker ausführen
-P7   Testpflicht ableiten
-P8   Schreibrechte prüfen
-P9   Task-Schnitt prüfen (wenn T1–T5 eintreten)
-P10  Plan anlegen, wenn Änderung nicht trivial ist
+P6   bei Modellarbeit MODELL-README.md prüfen
+P7   Import-/Layer-Checker ausführen
+P8   Testpflicht ableiten
+P9   Schreibrechte prüfen
+P10  Task-Schnitt prüfen (wenn T1–T5 eintreten)
+P11  Plan anlegen, wenn Änderung nicht trivial ist
 ```
 
 Jedes Nein oder Unklar ist entweder Sprechakt, Task-Schnitt, SOFT- oder HARD-Abbruch.
@@ -181,6 +182,37 @@ Nicht laden:
 
 ## 8. P6 — Import-/Layer-Checker ausführen
 
+## 8. P6 — MODELL-README bei Modellarbeit prüfen
+
+Wenn die Aufgabe das implementierte Modell berührt, zusätzlich prüfen:
+
+```text
+Ist MODELL-README.md vorhanden?
+Beschreibt es den aktuell implementierten Modellstand?
+Würde die geplante Änderung Modellannahmen, Faktoren, Zielgrößen oder die
+Übersetzung technischer Eingangsdaten in fachliche Begriffe ändern?
+```
+
+Wenn ja:
+
+```text
+MODELL-README.md ist Pflichtprojektion und muss im selben Schnitt geprüft und
+bei Bedarf aktualisiert werden.
+```
+
+`MODELL-README.md` ersetzt weder Glossar noch Code.
+Neue fachliche Modellbegriffe dürfen dort nicht still entstehen.
+
+Wenn für die Modellbeschreibung ein fehlender oder unvollständiger Begriff
+aktiv nötig wird:
+
+```text
+Task-Schnitt T1 prüfen.
+Wenn der Begriff aktiv nötig bleibt: Sprechakt SP7.
+```
+
+## 9. P7 — Import-/Layer-Checker ausführen
+
 ```bash
 python tools/check_import_layers.py --preflight src tests tools
 ```
@@ -206,7 +238,7 @@ Der Checker ist Alarm, nicht Architekturautorität.
 
 ---
 
-## 9. P7 — Testpflicht ableiten
+## 10. P8 — Testpflicht ableiten
 
 ```bash
 tools/resolve_test_obligations.py --changed-file <path>
@@ -229,7 +261,7 @@ Wenn keine Tests nötig: Begründung als Evidence notieren (Testfreiheitsformat:
 
 ---
 
-## 10. P8 — Schreibrechte prüfen
+## 11. P9 — Schreibrechte prüfen
 
 Kanonische Quelle: `AGENTS.md` Abschnitt 9.
 
@@ -246,7 +278,7 @@ Wenn geschützte Datei ohne Freigabe geändert werden müsste: HARD-Abbruch H1.
 
 ---
 
-## 11. P9 — Task-Schnitt prüfen
+## 12. P10 — Task-Schnitt prüfen
 
 Task-Schnitt bei:
 
@@ -272,7 +304,7 @@ Vollständiges Protokoll: `task-schnitt.md`
 
 ---
 
-## 12. P10 — Plan anlegen
+## 13. P11 — Plan anlegen
 
 Nichttriviale Änderungen brauchen Plan:
 
@@ -290,7 +322,7 @@ Kein Plan außerhalb von `docs/plans/`.
 
 ---
 
-## 13. Preflight-Evidence
+## 14. Preflight-Evidence
 
 Für nichttriviale Änderungen:
 
@@ -300,6 +332,7 @@ Preflight:
   Schema geprüft:    ja
   Räume:
   Glossar:
+  MODELL-README:
   Import-Checker:
   Testpflicht:
   Schreibrechte:
@@ -310,7 +343,7 @@ Preflight:
 
 ---
 
-## 14. Schlussregel
+## 15. Schlussregel
 
 Preflight endet nur mit einem dieser Zustände:
 

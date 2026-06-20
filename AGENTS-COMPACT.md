@@ -56,10 +56,14 @@ shared/          Nur semantisch neutrale Hilfstypen. Darf keine Projekträume im
 glossar-domain.md    → Fachbegriffe. Domänenexperte urteilt.
 glossar-system.md    → Betriebsbegriffe. Systemarchitekt urteilt.
 glossar-README.md    → Ladeprotokoll: welches Glossar wann laden.
+MODELL-README.md     → zusammenhängende Beschreibung des aktuell implementierten Modells
 ```
 
 Laderegel: nur aktiv gebrauchte Begriffe laden. Nie das gesamte Glossar.
 Fehlender Begriff → Task-Schnitt T1. Danach noch nötig → Sprechakt SP7.
+
+`MODELL-README.md` ist kein Glossarersatz. Bei Modelländerungen muss es
+geprüft und bei Bedarf aktualisiert werden.
 
 **Autonomieregel:** Ein Raum ist gültig wenn ein einzelner Experte ihn vollständig
 beurteilen kann ohne andere Räume zu kennen. Verletzung → H10.
@@ -229,11 +233,12 @@ Abbruch-Artefakt: `tmp/erfahrungsberichte/YYYY-MM-DD-ABBRUCH-kurzbeschreibung.md
 2. AGENTS.md lesen
 3. package-schema.md gezielt prüfen
 4. relevante Glossareinträge laden
-5. Import-Checker ausführen
-6. Testpflicht ableiten
-7. Schreibrechte prüfen
-8. Task-Schnitt prüfen (wenn T1–T5)
-9. Plan anlegen wenn nicht trivial
+5. bei Modellarbeit MODELL-README.md prüfen
+6. Import-Checker ausführen
+7. Testpflicht ableiten
+8. Schreibrechte prüfen
+9. Task-Schnitt prüfen (wenn T1–T5)
+10. Plan anlegen wenn nicht trivial
 ```
 
 ```bash
