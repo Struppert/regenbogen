@@ -183,7 +183,7 @@ CLI / GUI
 ## Modellbeschreibung
 
 Die zusammenhängende Beschreibung des aktuell implementierten Modells steht in
-[MODELL-README.md](air-file://gvmdc6n3maq77b7l3om5/home/dieter/repos/regenbogen/MODELL-README.md?type=file&root=%252F).
+[MODELL-README.md](MODELL-README.md).
 
 Dieses Dokument erklärt:
 
@@ -195,7 +195,7 @@ Dieses Dokument erklärt:
 
 ## Installation
 
-Die Installationshinweise stehen in [INSTALLATION.md](air-file://gvmdc6n3maq77b7l3om5/home/dieter/repos/regenbogen/INSTALLATION.md?type=file&root=%252F).
+Die Installationshinweise stehen in [INSTALLATION.md](INSTALLATION.md).
 
 Kurz:
 
