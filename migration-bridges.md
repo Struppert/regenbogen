@@ -75,10 +75,13 @@ do-not-touch-mechanically
 
 ## 4. Bridge-Registry
 
-> **ACHTUNG FÜR AGENTEN:** Einträge in dieser Registry sind KEINE Arbeitsgrundlage.
+> **ACHTUNG FÜR AGENTEN:** Einträge hier sind KEINE Arbeitsgrundlage.
 > Sie beschreiben semantische Altlasten oder laufende Migrationen.
-> Ein Bridge-Symbol in neuem Code ist standardmäßig HARD-Abbruch H2,
-> sofern die Änderungsregel des Eintrags nicht explizit etwas anderes erlaubt.
+> Ein Bridge-Symbol ist kein Kandidat für neuen Code — auch wenn es
+> technisch vorhanden und dokumentiert ist.
+> Jede aktive Nutzung eines Bridge-Symbols in neuem Code ist
+> standardmäßig ein HARD-Abbruch H3, außer die `Änderungsregel`
+> des Eintrags erlaubt sie explizit.
 > Dokumentiert = bekannt, nicht = erlaubt.
 
 Bekannte Bridge-Begriffe dieses Projekts eintragen.
@@ -112,15 +115,22 @@ Vor jeder Änderung, die einen Begriff aus der Bridge-Registry berührt:
 4. Bei do-not-touch-mechanically: STOPP.
    Änderung nur mit explizitem Auftrag und Sprechakt SP6.
 5. Bei allow-read-only: lesen erlaubt, nicht neu einführen.
-6. Bei do-not-introduce oder allow-read-only: aktiv prüfen:
-   a. Erscheint dieses Symbol als neues Vorkommen im geplanten Diff?
-   b. Erweitere ich seinen Geltungsbereich (neue Funktion, neuer Modulpfad,
-      neues Argument, neuer Rückgabetyp)?
-   c. Mache ich aus passiver Kompatibilität wieder aktive Semantik?
-   Wenn ja zu einer dieser Fragen: HARD-Abbruch H2.
-7. Ein Bridge-Symbol ist keine Lösung für einen fehlenden kanonischen Begriff.
+6. Bei do-not-introduce: aktiv prüfen —
+   a) Erscheint dieses Symbol im geplanten Diff als neu eingeführtes Vorkommen?
+   b) Erweitere ich seinen Geltungsbereich (neue Funktion, neuer Modulpfad,
+      neues Argument, neuer Rückgabetyp, neue Klasse)?
+   c) Mache ich aus passiver Kompatibilität wieder aktive Semantik?
+   Wenn ja zu einer dieser Fragen: HARD-Abbruch H3.
+7. Bei allow-read-only oder do-not-introduce:
+   Ein Bridge-Begriff ist keine Lösung für einen fehlenden kanonischen Begriff.
    Wenn kein kanonischer Begriff verfügbar ist: Task-Schnitt T1, dann SP7.
 ```
+
+**Warum dieser Diff-Check nötig ist:**
+Ein Bridge-Eintrag ist explizit vorhanden, dokumentiert und liegt oft genau
+dort, wo neue Arbeit stattfindet. Das macht ihn für ein Modell attraktiv als
+scheinbar akzeptierte Lösung. Ohne aktive Prüfung ("führe ich es gerade ein?")
+ist die Textwarnung allein nicht ausreichend.
 
 ---
 
@@ -128,7 +138,7 @@ Vor jeder Änderung, die einen Begriff aus der Bridge-Registry berührt:
 
 ```text
 AGENTS.md Abschnitt 9     → schützt Dateien
-migration-bridges.md       → schützt Bedeutungen / Symbole
+migration-bridges.md       → schützt Bedeutungen / Symbole aus domain, system und meta
 package-schema.md          → klassifiziert Modulräume
 sprechakt-protokoll.md SP6  → regelt Umklassifizierungen von Known Breaches
 
@@ -152,7 +162,8 @@ Bei Widerspruch:
 
 ## 8. Schlussregel
 
-Ein Symbol das im Glossar oder im Code als Bridge-Begriff bekannt ist,
+Ein Symbol das in `glossar-domain.md`, `glossar-system.md`, `glossar-meta.md`
+oder im Code als Bridge-Begriff bekannt ist,
 aber nicht in dieser Registry steht, ist ein Drift-Signal.
 
 Wenn ein Agent unsicher ist, ob ein Symbol eine Bridge-Funktion trägt:

@@ -43,6 +43,9 @@ regenbogen  = Python-Importname, z. B. regenbogen
 Nach `.agent-box/instantiation.md` ist erneute Instanziierung verboten.
 `tools/instantiate/*` ist kein normales Agentenwerkzeug.
 
+Brownfield: nicht erneut instanziieren. `BROWNFIELD-MIGRATION.md` verwenden.
+Bestand ist zuerst Befund, nicht automatisch Freigabe.
+
 ---
 
 ## 1. Semantische Räume
@@ -67,6 +70,7 @@ shared/          Nur semantisch neutrale Hilfstypen. Darf keine Projekträume im
 ```text
 glossar-domain.md    → Fachbegriffe. Domänenexperte urteilt.
 glossar-system.md    → Betriebsbegriffe. Systemarchitekt urteilt.
+glossar-meta.md      → Agenten-, Regel-, Evidence- und Prozessbegriffe.
 glossar-README.md    → Ladeprotokoll: welches Glossar wann laden.
 MODELL-README.md     → zusammenhängende Beschreibung des aktuell implementierten Modells
 ```
@@ -194,13 +198,18 @@ Vollständiges Protokoll: `task-schnitt.md`
 Erlaubt:        src/, tests/, docs/plans/, tmp/, CHANGELOG.md
 Append-only:    docs/sprechakte/, tmp/erfahrungsberichte/
 Geschützt:      AGENTS.md, AGENTS-COMPACT.md, package-schema.md,
+                AGENT-SETUP.md, BROWNFIELD-MIGRATION.md,
                 preflight-checkliste.md, task-schnitt.md, sprechakt-protokoll.md,
                 regelmatrix.md, test-obligations.md,
                 migration-bridges.md, erfahrungsbericht-protokoll.md, learning-matrix.md,
+                glossar-domain.md, glossar-system.md, glossar-meta.md, glossar-README.md,
                 tools/check_import_layers.py,
                 tools/resolve_test_obligations.py,
                 tools/check_agent_docs_consistency.py,
                 tools/instantiate/instantiate_project_box.py,
+                .agent-box-template.md, .agent-box/instantiation.md,
+                .agent-box/adoption.md,
+                .agent-box/migrations/,
                 pyproject.toml, requirements*.txt, poetry.lock, uv.lock,
                 Pipfile, setup.cfg, setup.py, .github/workflows/
 ```
@@ -234,6 +243,9 @@ SA4 Build-/Installationsfehler
 SA5 unvollständige Migration entdeckt
 SA6 lokale Inkonsistenz ohne semantischen Widerspruch
 ```
+
+BF1-BF12 sind Brownfield-spezifische HARD-Abbrueche.
+Protokoll und Evidence-Pfad: `BROWNFIELD-MIGRATION.md`.
 
 Abbruch-Artefakt: `tmp/erfahrungsberichte/YYYY-MM-DD-ABBRUCH-kurzbeschreibung.md`
 

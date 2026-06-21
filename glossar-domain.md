@@ -152,18 +152,42 @@ optische Eignung. `Sonnenstand` beschreibt die geometrische Position der Sonne.
 ### RegenbogenWahrscheinlichkeit
 
 **Semantischer Raum:** domain
-**Eintragstiefe:** minimal
+**Eintragstiefe:** vollständig
 
 **Bedeutung:**
-Prozentwert in [0, 100] fuer die Wahrscheinlichkeit eines Regenbogens.
+Prozentwert in [0, 100] für die domänenlogische Einschätzung,
+ob die Grundbedingungen für einen sichtbaren Regenbogen erfüllt sind.
+Berücksichtigt Sonnenschein-Intensität (Gewicht 0,6) und
+Regen-Intensität (Gewicht 0,4) sowie optional den geometrischen
+Sonnenstands-Faktor.
 
 **Invarianten:**
 - Ohne Sonnenschein: 0.
 - Ohne Regen: 0.
+- Wert liegt in [0, 100].
+- Der Sonnenstand ist optional; fehlt er, entfällt der geometrische Faktor.
+
+**Erlaubt:**
+- Alle Kombinationen aus positivem Sonnenschein und positivem Regen.
+- `sonnenstand=None` (kein Geometrie-Einfluss).
+
+**Verboten:**
+- Werte außerhalb [0, 100].
+- Interpretation als Sichtbarkeits-Score (das ist RegenbogenSichtbarkeit).
+- Gleichsetzung mit der physikalischen Auftrittswahrscheinlichkeit
+  eines Meteorologieereignisses.
 
 **Projektionen:**
 - Code: src/regenbogen/domain/regenbogen.py
 - Tests: tests/domain/test_regenbogen.py
+
+**Abgrenzung:**
+- `RegenbogenSichtbarkeit`: bewertet die *optische Qualität* eines Bogens
+  über 7 multiplikativ verknüpfte Faktoren (Sonnenstands-, Direktlicht-,
+  Regen-, Tropfenqualitäts-, Sicht-, Hintergrundkontrast-, Phasenfaktor).
+  Beide Scores liegen in [0, 100]; Wahrscheinlichkeit fragt „Grundbedingung
+  erfüllt?", Sichtbarkeit fragt „Wie gut sieht man ihn?".
+- `SonnenscheinAnteil`, `RegenIntensitaet`: Eingaben, keine aggregierten Scores.
 
 **Migrationsstatus:** canonical
 

@@ -34,7 +34,7 @@ Bei Widerspruch zwischen Dokumenten gilt diese Reihenfolge:
 2. package-schema.md
    Semantische Paket-/Modulräume, Importregeln, Known Breaches.
 
-3. glossar-domain.md / glossar-system.md
+3. glossar-domain.md / glossar-system.md / glossar-meta.md
    Begriffe und ihre Bedingungsräume. Autoritativ für Bedeutung.
    Ladeprotokoll: glossar-README.md.
 
@@ -62,7 +62,11 @@ Bei Widerspruch zwischen Dokumenten gilt diese Reihenfolge:
     Kein Agent muss grundsatz.md für jeden Preflight lesen.
     Jeder Agent sollte es einmal gelesen haben.
 
-11. AGENT-SETUP.md / README.md / sonstige Projektdokumentation
+11. BROWNFIELD-MIGRATION.md
+    Operative Autorität für Brownfield-Aufnahme, Box-Versionsmigration und
+    Reparatur abgebrochener Erstinstanziierung.
+
+12. AGENT-SETUP.md / README.md / sonstige Projektdokumentation
     AGENT-SETUP.md: Instanziierungsanleitung der Box, informativ.
     README.md (im Zielprojekt): Projektzweck, keine Agentenautorität.
     Orientierung — keine operative Agentenautorität.
@@ -84,8 +88,9 @@ nicht lokal reparieren. Drift melden. Je nach Relevanz: HARD-Abbruch.
 | Welche Invarianten gelten?             | `AGENTS.md`                             | Invariante prüfen            |
 | Was bedeutet dieser Begriff fachlich?  | `glossar-domain.md`                     | Ladeprotokoll folgen         |
 | Was bedeutet dieser Betriebsbegriff?   | `glossar-system.md`                     | Ladeprotokoll folgen         |
+| Was bedeutet dieser Meta-Begriff?      | `glossar-meta.md`                       | Ladeprotokoll folgen         |
 | Welches Glossar wann laden?            | `glossar-README.md`                     | Ladeprotokoll ausführen      |
-| Ist die Autonomieregel erfüllt?        | `glossar-domain.md` / `glossar-system.md` | H10 wenn verletzt          |
+| Ist die Autonomieregel erfüllt?        | passendes Glossar                       | H10 wenn verletzt            |
 | Welchem Raum gehört ein Modul an?      | `package-schema.md`                     | Raum klassifizieren          |
 | Welche Imports sind erlaubt?           | `package-schema.md`                     | Import-Checker ausführen     |
 | Welche Known Breaches existieren?      | `package-schema.md` + Checker           | Aktiv/passiv prüfen          |
@@ -95,6 +100,8 @@ nicht lokal reparieren. Drift melden. Je nach Relevanz: HARD-Abbruch.
 | Wann wird Task-Schnitt geprüft?        | `task-schnitt.md`                       | SWS schneiden                |
 | Wann ist ein Sprechakt nötig?          | `AGENTS.md` + `sprechakt-protokoll.md`  | Sprechakt-Artefakt erzeugen  |
 | Wie sieht ein Sprechakt-Artefakt aus?  | `sprechakt-protokoll.md`                | Vorlage verwenden            |
+| Wie wird Brownfield migriert?          | `BROWNFIELD-MIGRATION.md`               | Brownfield-Verfahren ausführen |
+| Welche BF-Abbrüche gelten?             | `BROWNFIELD-MIGRATION.md`               | Brownfield-Evidence schreiben |
 | Was liest der Agent zuerst?            | `AGENTS-COMPACT.md`                     | Startkontext laden           |
 | Wie wird Dokumentdrift bewertet?       | `regelmatrix.md`                        | Kopplung prüfen              |
 | Warum ist dieses System so gebaut?     | `grundsatz.md`                          | Einmal lesen, verstehen      |
@@ -116,7 +123,7 @@ COMPACT driftet — HARD-Abbruch H3.
 
 ## 5. Drift-Regeln
 
-### Änderung an `glossar-domain.md` oder `glossar-system.md`
+### Änderung an `glossar-domain.md`, `glossar-system.md` oder `glossar-meta.md`
 
 Zwingend prüfen:
 

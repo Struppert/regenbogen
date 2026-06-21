@@ -72,6 +72,11 @@ Nach der Instanziierung sind Änderungen an Projektname, Root-Verzeichnissen,
 Layer-Struktur oder öffentlicher API keine Re-Instanziierung. Sie sind neue
 Sprechakte über `sprechakt-protokoll.md`.
 
+Brownfield-Arbeit ist keine Re-Instanziierung. Bestehende Projekte werden nach
+`BROWNFIELD-MIGRATION.md` migriert oder aufgenommen.
+Vorhandener Code ist dabei zuerst Befund, nicht automatisch lokale operative
+Wahrheit.
+
 ---
 
 ## 2. Grundmodell: Semantische Räume
@@ -141,13 +146,13 @@ Das ist der Grund warum Preflight, Sprechakt und Abbruch nötig sind.
 
 ## 3. Glossar und Metasystem
 
-Das Glossar ist operative Infrastruktur. Es enthält Projektbegriffe und
-Metasystem-Begriffe, die ein Agent kennen muss, ohne dass `AGENTS.md` dadurch
-zum Handbuch wird.
+Das Glossar ist operative Infrastruktur. Es trennt Fachbegriffe,
+Betriebsbegriffe und Meta-Begriffe der Agentensteuerung.
 
 ```text
 glossar-domain.md    Fachbegriffe
-glossar-system.md    System- und Metasystem-Begriffe
+glossar-system.md    System- und Betriebsbegriffe des Zielprojekts
+glossar-meta.md      Agenten-, Regel-, Evidence- und Prozessbegriffe
 glossar-README.md    Ladeprotokoll
 MODELL-README.md     zusammenhängende Beschreibung des aktuell implementierten Modells
 ```
@@ -369,7 +374,6 @@ SICHER:
   - Lint-/Format-Verstöße beheben
   - klar lokale Refactorings ohne neue Begriffe
   - tote Imports entfernen
-  - Importverletzung reparieren, wenn Zielraum eindeutig ist
 
 MITTEL:
   - bestehenden Typ verschieben
@@ -378,6 +382,7 @@ MITTEL:
   - technische Fehlerbehandlung verbessern
   - neue Tests für Randfälle
   - bestehende Policy klarer ausdrücken
+  - Importverletzung reparieren (Zielraum prüfen; kann Typ, Binding oder API betreffen)
 
 SPRECHAKT / FREIGABE NÖTIG:
   - neuer Fachbegriff (SP1)
@@ -413,7 +418,8 @@ SP4  Neue Runtime-Dependency würde eingeführt
 SP5  Binding-Code würde einen neuen Begriff einführen
 SP6  Bekannter Bruch würde umklassifiziert oder verschoben
 SP7  Semantic Working Set enthält einen aktiv benötigten Begriff,
-    dessen Glossareintrag fehlt oder unvollständig ist
+    für den kein hinsichtlich der geplanten Nutzung ausreichender
+    Glossareintrag vorliegt
 ```
 
 Bei SP7 gilt zuerst Task-Schnitt:
@@ -440,7 +446,7 @@ Die Details stehen in `sprechakt-protokoll.md`.
 Task-Schnitt wird geprüft, wenn:
 
 ```text
-T1  SWS enthält fehlenden oder unvollständigen Begriff
+T1  SWS enthält Begriff ohne für die geplante Nutzung ausreichenden Glossareintrag
 T2  Aufgabe berührt mehrere semantische Räume
 T3  Aufgabe berührt Binding-Grenze
 T4  Preflight zeigt bekannte Brüche
@@ -487,6 +493,7 @@ tmp/erfahrungsberichte/
 AGENTS.md
 AGENTS-COMPACT.md
 AGENT-SETUP.md
+BROWNFIELD-MIGRATION.md
 package-schema.md
 preflight-checkliste.md
 task-schnitt.md
@@ -499,6 +506,7 @@ learning-matrix.md
 grundsatz.md
 glossar-domain.md
 glossar-system.md
+glossar-meta.md
 glossar-README.md
 tools/check_import_layers.py
 tools/resolve_test_obligations.py
@@ -508,6 +516,8 @@ tools/instantiate/README.md
 docs/plans/template.md
 .agent-box-template.md
 .agent-box/instantiation.md
+.agent-box/adoption.md
+.agent-box/migrations/
 pyproject.toml
 requirements*.txt
 poetry.lock
@@ -531,7 +541,8 @@ Der Agent stoppt. Fortsetzung nur nach expliziter Freigabe.
 ```text
 H1  Geschützte Datei müsste ohne Freigabe geändert werden
 H2  Import-/Layer-Verletzung ohne klassifizierten bekannten Bruch
-H3  Widerspruch zwischen AGENTS.md, package-schema.md, Glossar und Code
+H3  Widerspruch zwischen autoritativem Projektartefakt und geplanter Änderung
+    (AGENTS.md, package-schema.md, Glossar, migration-bridges.md)
 H4  Neuer Begriff ohne Sprechakt
 H5  Tool müsste verändert werden, um Fehler zu unterdrücken
 H6  Testpflicht ist unklar
@@ -581,7 +592,11 @@ SA6  lokale Inkonsistenz ohne semantischen Widerspruch
 ```
 
 Code-Familien sind disjunkt:
-H1–H10 = HARD-Abbruch · SA1–SA6 = SOFT-Abbruch · SP1–SP7 = Sprechakt.
+H1–H10 = HARD-Abbruch · SA1–SA6 = SOFT-Abbruch · SP1–SP7 = Sprechakt ·
+BF1–BF12 = Brownfield-spezifischer HARD-Abbruch.
+
+BF-Codes gelten nur in Brownfield-Arbeit und werden nach
+`BROWNFIELD-MIGRATION.md` belegt.
 
 Die Abbruchklasse richtet sich nach der verletzten Regel, nicht nach dem Werkzeug.
 

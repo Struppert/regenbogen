@@ -41,26 +41,46 @@ Nicht ersetzter Platzhalter in aktiver Regel → Abbruch H7.
 
 ## 2. Risikoklassen-Weiche
 
-Vor dem Preflight bestimmen: welche Risikoklasse hat diese Aufgabe?
+Vor dem vollständigen Preflight: welche Risikoklasse hat diese Aufgabe?
 
-**SICHER** (Definition: `AGENTS.md` Abschnitt 6):
+Kanonische SICHER-Definition: `AGENTS.md` Abschnitt 6.
+
+**SICHER** (kein neuer Begriff, keine neue Importkante, kein neuer Raum):
 
 ```text
-Dokumentation, Kommentare, Lint, tote Imports entfernen,
-bestehende Tests für bestehendes Verhalten ergänzen,
-lokale Refactorings ohne neue Begriffe, Tippfehler beheben.
+Dokumentation, Kommentare, Typo-Korrekturen
+Lint-Korrekturen ohne Logikänderung
+Tote Imports entfernen
+Bestehende Tests ergänzen (keine neue Semantik)
+Lokale Refactorings ohne neue öffentliche Symbole
 ```
 
-→ Fast-Path: nur **P1** (AGENTS-COMPACT lesen), **P7** (Checker), **P8** (Testpflicht).
-P2–P6, P9–P11 entfallen.
+**Fast-Path** gilt nur wenn **alle** Bedingungen erfüllt sind:
+
+```text
+- keine geschützte Datei betroffen
+- kein Glossar-Begriff aktiv gebraucht oder verändert
+- keine Regeldatei berührt (AGENTS.md, package-schema.md, regelmatrix.md …)
+- keine Bridge- oder Known-Breach-Zone im Scope berührt
+- keine öffentliche API berührt
+- keine neue oder veränderte Semantik
+- keine neue Importkante
+- keine Änderung an Tests, die Verhalten definieren
+```
+
+→ **Fast-Path:** P1 + P4 + P7 + P8 + P9.
+P2–P3, P5, P6, P10–P11 entfallen.
+
+P9 (Schreibrechte) entfällt nie. Safe Task ist Risikoklasse, nicht Schreibrecht.
 
 **MITTEL oder höher** (Definition: `AGENTS.md` Abschnitt 6):
 
 → Vollständiger Preflight P1–P11.
 
-**Zweifel über Risikoklasse:**
+**Wenn Zweifel über die Risikoklasse:** vollständiger Preflight P1–P11.
 
-→ Vollständiger Preflight.
+Brownfield-Arbeit ist nie SICHER. Jede Änderung die einen bekannten Bruch
+im Scope berührt, erhöht die Klasse automatisch auf MITTEL.
 
 ---
 
@@ -173,7 +193,8 @@ Welche Begriffe werden in dieser Iteration aktiv gebraucht?
 ```text
 domain/   → glossar-domain.md
 system/   → glossar-system.md
-Beide     → beide laden (Signal für Task-Schnitt T5)
+meta      → glossar-meta.md
+Mehrere   → alle betroffenen Glossare laden (Signal für Task-Schnitt T5)
 Unbekannt → Sprechakt SP7 oder Task-Schnitt T1
 ```
 
@@ -186,11 +207,19 @@ Begriff in migration-bridges.md?
   → canonical: normal fortfahren
 ```
 
-**Schritt 4: Vollständigkeit und Autonomieregel**
+**Schritt 4: Eintragstiefe und Autonomieregel**
 
 ```text
-Hat jeder aktiv gebrauchte Begriff einen vollständigen Eintrag?
-  Nein → Task-Schnitt T1. Danach noch nötig → Sprechakt SP7.
+Eintragstiefe des Glossareintrags prüfen:
+
+  Für Referenz, Suche, bestehende Projektion lesen,
+  semantikneutrale oder mechanische Änderung:
+    minimaler Eintrag genügt
+
+  Für neue Implementierung, neue Invariante, neue Zustände, neue API
+  oder fachliche/systemische Entscheidung:
+    vollständiger Eintrag nötig
+    Nein → Task-Schnitt T1. Danach noch nötig → Sprechakt SP7.
 
 Autonomieregel prüfen:
   Kann der zuständige Experte diesen Begriff vollständig beurteilen

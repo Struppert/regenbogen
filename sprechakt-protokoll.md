@@ -33,7 +33,9 @@ Geltung der lokalen Agentenregeln
 Er wird toolgestützt durch `tools/instantiate/instantiate_project_box.py` vollzogen
 und durch `.agent-box/instantiation.md` belegt. Er wird nicht als normales
 Sprechakt-Artefakt unter `docs/sprechakte/` nachgeführt. Eine Wiederholung ist
-verboten, außer ein Mensch gibt `--force` ausdrücklich frei.
+verboten. `--force` ist kein Brownfield-Upgrade-Mechanismus, sondern nur
+Reparatur einer fehlgeschlagenen, noch nicht produktiv weiterbearbeiteten
+Erstinstanziierung.
 
 
 Kanonische Quelle für SP0: `AGENTS.md` Abschnitt 7.
@@ -53,7 +55,8 @@ SP4  Neue Runtime-Dependency würde eingeführt
 SP5  Binding-Code würde einen neuen Begriff einführen
 SP6  Bekannter Bruch würde verschoben oder umklassifiziert
 SP7  Semantic Working Set enthält einen aktiv benötigten Begriff,
-    dessen Glossareintrag fehlt oder unvollständig ist
+    für den kein hinsichtlich der geplanten Nutzung ausreichender
+    Glossareintrag vorliegt
 ```
 
 ---
@@ -80,7 +83,8 @@ superseded   Entscheidung wurde ersetzt und muss auf den Nachfolger verweisen.
 
 Ein festgelegter Sprechakt muss mindestens eine Folgeprojektion nennen, z. B.
 `AGENTS.md`, `package-schema.md`, `test-obligations.md`, `glossar-domain.md`,
-`glossar-system.md`, `migration-bridges.md` oder `learning-matrix.md`.
+`glossar-system.md`, `glossar-meta.md`, `migration-bridges.md` oder
+`learning-matrix.md`.
 
 ## 4. SP7: Erst Task-Schnitt
 

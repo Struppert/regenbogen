@@ -23,6 +23,7 @@ Laden bei:
   - Instanziierung oder Re-Instanziierung
   - Sprechakt-Protokoll-Änderungen
   - Dokumentdrift-Prüfung im Metasystem
+  - Brownfield-Aufnahme oder Box-Versionsmigration
 
 Nicht laden bei:
   - Domain-Facharbeit (glossar-domain.md reicht)
@@ -30,9 +31,55 @@ Nicht laden bei:
   - normalen Produktionscode-Änderungen
 ```
 
+Fehlt für die geplante Nutzung ein ausreichend tiefer Metabegriff:
+zuerst Task-Schnitt T1, danach — wenn der Begriff aktiv nötig bleibt — Sprechakt SP7.
+
 ---
 
-## 2. Begriffe
+## 2. Eintrag-Format
+
+```markdown
+### <Begriff>
+
+**Semantischer Raum:** meta
+
+**Kompetenzfrage:**
+Beschreibt dieser Begriff das Agenten-Betriebssystem oder die lokale
+Projektsteuerung, ohne Fachdomäne oder konkrete technische Laufzeit
+vorauszusetzen?
+→ Wenn nein: gehört nicht nach meta.
+
+**Bedeutung:**
+<Was ist dieser Begriff im Agenten-Metasystem?>
+
+**Invarianten:**
+<Was gilt für alle Verwendungen dieses Begriffs?>
+
+**Erlaubt:**
+<Welche Operationen oder Zustände sind erlaubt?>
+
+**Verboten:**
+<Welche Umdeutung würde das Agentensystem verletzen?>
+
+**Projektionen:**
+- Regeln: <Regeldokument>
+- Tools: <Checker oder Werkzeug>
+- Evidence: <Artefaktraum>
+
+**Abgrenzung:**
+<Von welchen Domain- oder Systembegriffen muss dieser Begriff getrennt bleiben?>
+
+**Migrationsstatus:** canonical | legacy-bridge | deprecated
+```
+
+Die Einträge unten sind bewusst knapp gehalten (Bedeutung + Invariante).
+Ein Meta-Begriff beschreibt Agentenarbeit, Regelautorität, Evidence, Abbruch
+oder Brownfield-Steuerung — nicht die Fachdomäne oder die Systemsemantik des
+Produkts.
+
+---
+
+## 3. Begriffe
 
 ### Agenten-Box
 
@@ -133,9 +180,124 @@ für eine Aufgabe gleichzeitig korrekt halten muss.
 Invariante: Wenn das Semantic Working Set zu groß oder unscharf wird, muss die
 Aufgabe geschnitten werden.
 
+### Brownfield-Aufnahme
+
+Bedeutung: Ein bestehendes Projekt ohne bisherige Agenten-Box wird in die
+Regelwelt aufgenommen, ohne den Bestand zu überschreiben oder automatisch zu
+bestätigen.
+
+Invariante: Brownfield-Aufnahme trennt Discover, Describe, Classify, Decide,
+Project, Migrate und Verify.
+
+### Observed State
+
+Bedeutung: Tatsächlich vorgefundener Zustand im Bestand, z. B. Datei,
+Importkante, Test, Build-Konfiguration, Workaround oder API-Fläche.
+
+Invariante: Observed State ist Befund, nicht Freigabe.
+
+### Unknown / Unclassified
+
+Bedeutung: Brownfield-Befund, der noch nicht ausreichend verstanden ist.
+
+Invariante: Ein unklassifizierter Befund darf nicht normativ projiziert werden.
+
+### Accepted Local Truth
+
+Bedeutung: Explizit bestätigte lokale operative Wahrheit eines Zielprojekts.
+
+Invariante: Accepted Local Truth entsteht durch zuständige Projektartefakte
+oder menschliche Entscheidung, nicht durch bloße Existenz von Code.
+
+### Accepted Alternative
+
+Bedeutung: Abweichung vom Template-Zielmodell, die lokal konsistent und
+ausdrücklich akzeptiert ist.
+
+Invariante: Eine Accepted Alternative ist keine Altlast und kein Known Breach.
+
+### Migration Candidate
+
+Bedeutung: Befund, der an ein Zielmodell angenähert oder umgebaut werden soll,
+ohne bereits als akuter Defekt klassifiziert zu sein.
+
+Invariante: Ein Migration Candidate braucht Zielrichtung und Plan, aber nicht
+automatisch einen Known Breach.
+
+### Legacy Defect
+
+Bedeutung: Vorhandener Zustand, der einer gültigen lokalen Invariante oder dem
+entschiedenen Zielmodell widerspricht und nicht akzeptiert ist.
+
+Invariante: Legacy Defect ist nicht automatisch Known Breach.
+
+### Baseline
+
+Bedeutung: Deskriptiver Nachweis des aktuellen Zustands vor einer Änderung
+oder Migration, inklusive bereits roter Checks.
+
+Invariante: Baseline beschreibt, was ist; sie entscheidet nicht, was gelten soll.
+
+### Zielmodell
+
+Bedeutung: Normativer Zielzustand, der durch Projektartefakte, Sprechakte oder
+menschliche Entscheidung festgelegt ist.
+
+Invariante: Zielmodell und Baseline dürfen nicht vermischt werden.
+
+### Migrationsevidence
+
+Bedeutung: Markdown-Nachweis, was bei einer Brownfield-Migration tatsächlich
+geprüft, entschieden, geändert, verworfen oder offengelassen wurde.
+
+Invariante: Migrationsevidence ersetzt keine Sprechakte für neue Bedeutung.
+
+### Datei-Aktionsklasse
+
+Bedeutung: Brownfield-Klassifikation einer Datei als add, preserve, merge,
+replace, inspect oder forbidden.
+
+Invariante: Die Aktionsklasse bestimmt den Umgang mit der Datei, nicht ihre
+semantische Gültigkeit.
+
+### BF-Code
+
+Bedeutung: Kennung eines Brownfield-spezifischen HARD-Abbruchs.
+
+Invariante: BF-Codes stoppen Brownfield-Arbeit, wenn Bestand, Zielmodell,
+Freigabe oder Evidence nicht tragfähig getrennt sind.
+
 ---
 
-## 3. Schutz
+## 4. Abgrenzung zu anderen Glossaren
+
+```text
+glossar-domain.md:
+  Fachbegriffe. Domänenexperte urteilt ohne Systemlaufzeit.
+
+glossar-system.md:
+  Betriebsbegriffe des Zielprojekts. Systemarchitekt urteilt ohne konkrete Plattform.
+
+Dieses Glossar (glossar-meta.md):
+  Agenten-, Regel-, Evidence- und Prozessbegriffe der lokalen Projektsteuerung.
+```
+
+Bei Zweifel:
+
+```text
+Beschreibt der Begriff Agentenarbeit, Regelautorität, Evidence oder Abbruch?
+  → Ja: meta
+
+Beschreibt der Begriff fachliche Bedeutung des Produkts?
+  → domain
+
+Beschreibt der Begriff Betriebsverhalten des Produkts?
+  → system
+```
+
+---
+
+## 5. Schutz
 
 Dieses Dokument ist geschützt (AGENTS.md Abschnitt 9).
 Neue Metabegriffe entstehen durch Sprechakt SP2.

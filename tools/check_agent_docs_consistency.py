@@ -31,6 +31,7 @@ from pathlib import Path
 REQUIRED_FILES_CORE = [
     Path("AGENTS.md"),
     Path("AGENTS-COMPACT.md"),
+    Path("BROWNFIELD-MIGRATION.md"),
     Path("package-schema.md"),
     Path("preflight-checkliste.md"),
     Path("task-schnitt.md"),
@@ -42,6 +43,7 @@ REQUIRED_FILES_CORE = [
     Path("grundsatz.md"),
     Path("glossar-domain.md"),
     Path("glossar-system.md"),
+    Path("glossar-meta.md"),
     Path("glossar-README.md"),
     Path("docs/plans/template.md"),
 ]
@@ -92,8 +94,11 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "erfahrungsbericht-protokoll.md",
         "grundsatz.md",
         "glossar-domain.md",
+        "glossar-meta.md",
         "Autonomieregel",
         "H10",
+        "BF1",
+        ".agent-box/adoption.md",
     ],
     Path("AGENTS-COMPACT.md"): [
         "Semantische Räume",
@@ -103,9 +108,12 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Preflight",
         "AGENTS.md",
         "glossar-domain.md",
+        "glossar-meta.md",
         "Autonomieregel",
         "H10",
         "decision",
+        "BF1",
+        ".agent-box/adoption.md",
     ],
     Path("AGENT-SETUP.md"): [
         "Template-Zustand",
@@ -113,6 +121,29 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Instanziierung",
         "Platzhalter",
         "AGENTS.md",
+    ],
+    Path("BROWNFIELD-MIGRATION.md"): [
+        "Brownfield",
+        "Datei-Aktionsmatrix",
+        "Migrationsevidence",
+        ".agent-box/migrations",
+        "Baseline",
+        "--force",
+        "Bestehendes Python-Projekt",
+        "Bestehendes Box-Projekt",
+        "Observed State",
+        "Accepted Local Truth",
+        "Legacy Defect",
+        "Known Breach",
+        "Discover",
+        "Describe",
+        "Decide",
+        ".agent-box/adoption.md",
+        "unboxed-to",
+        "BF-Abbruch",
+        "Accepted-Alternative-Kandidat",
+        "Herkunftsmarker",
+        "Aktuelle Box-Version",
     ],
     Path("package-schema.md"): [
         "domain",
@@ -158,6 +189,7 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "package-schema.md",
         "Widerspruch",
         "grundsatz.md",
+        "BF",
     ],
     Path("test-obligations.md"): [
         "Testpflicht",
@@ -181,6 +213,7 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "E5",
         "tmp/erfahrungsberichte",
         "learning-matrix",
+        "Vorgeschlagene Musterkennung",
     ],
     Path("grundsatz.md"): [
         "Reifizierung",
@@ -207,10 +240,27 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "system",
         "SP7",
     ],
+    Path("glossar-meta.md"): [
+        "Kompetenzfrage",
+        "Invarianten",
+        "Projektionen",
+        "Migrationsstatus",
+        "meta",
+        "SP7",
+        "Agenten-Box",
+        "Instanziierungs-Sprechakt",
+        "Semantic Working Set",
+        "Observed State",
+        "Accepted Local Truth",
+        "Legacy Defect",
+        "Migrationsevidence",
+        "BF-Code",
+    ],
     Path("glossar-README.md"): [
         "Ladeprotokoll",
         "glossar-domain.md",
         "glossar-system.md",
+        "glossar-meta.md",
         "migration-bridges.md",
         "SP7",
         "T1",
@@ -222,6 +272,8 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Template-Dateien",
         "Instanziierungsnachweis",
         ".agent-box/instantiation.md",
+        ".agent-box/adoption.md",
+        "tools/check_agent_docs_consistency.py",
     ],
     Path("docs/plans/template.md"): [
         "Status:",
@@ -247,6 +299,7 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "preflight-checkliste.md",
         "sprechakt-protokoll.md",
         "test-obligations.md",
+        "erfahrungsbericht-protokoll.md",
     ],
     "AGENTS.md": [
         "AGENTS-COMPACT.md",
@@ -258,6 +311,7 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "erfahrungsbericht-protokoll.md",
         "grundsatz.md",
         "glossar-README.md",
+        "BROWNFIELD-MIGRATION.md",
     ],
     "AGENTS-COMPACT.md": ["AGENTS.md"],
     "package-schema.md": [
@@ -267,6 +321,7 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "tools/check_import_layers.py",
         "glossar-domain.md",
         "glossar-system.md",
+        "glossar-meta.md",
     ],
     "grundsatz.md": ["AGENTS.md", "glossar-README.md", "regelmatrix.md"],
     "glossar-domain.md": [
@@ -281,10 +336,17 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "package-schema.md",
         "migration-bridges.md",
     ],
+    "glossar-meta.md": [
+        "AGENTS.md",
+        "AGENTS-COMPACT.md",
+        "glossar-README.md",
+        "migration-bridges.md",
+    ],
     "glossar-README.md": [
         "AGENTS.md",
         "glossar-domain.md",
         "glossar-system.md",
+        "glossar-meta.md",
         "preflight-checkliste.md",
     ],
     "migration-bridges.md": [
@@ -293,6 +355,7 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "package-schema.md",
         "glossar-domain.md",
         "glossar-system.md",
+        "glossar-meta.md",
     ],
     "erfahrungsbericht-protokoll.md": ["AGENTS.md", "learning-matrix.md"],
     "learning-matrix.md": ["erfahrungsbericht-protokoll.md", "AGENTS.md"],
@@ -319,6 +382,13 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "tools/resolve_test_obligations.py",
     ],
     "regelmatrix.md": ["AGENTS.md", "AGENTS-COMPACT.md", "grundsatz.md"],
+    "BROWNFIELD-MIGRATION.md": [
+        "AGENTS.md",
+        "AGENTS-COMPACT.md",
+        "AGENT-SETUP.md",
+        "regelmatrix.md",
+        "tools/instantiate/instantiate_project_box.py",
+    ],
     "tools/check_import_layers.py": [
         "package-schema.md",
         "AGENTS.md",
@@ -440,6 +510,67 @@ def check_required_terms() -> list[Finding]:
     return findings
 
 
+def check_project_state_marker(mode: str) -> list[Finding]:
+    """Im Projektmodus muss genau ein Herkunftsmarker existieren.
+
+    Greenfield-Projekte besitzen .agent-box/instantiation.md.
+    Brownfield-adoptierte Projekte besitzen .agent-box/adoption.md.
+    Beide zugleich oder keiner von beiden sind ein Zustandsfehler.
+    """
+    findings: list[Finding] = []
+    if mode != "instantiated":
+        return findings
+
+    instantiation = Path(".agent-box/instantiation.md")
+    adoption = Path(".agent-box/adoption.md")
+    has_instantiation = instantiation.exists()
+    has_adoption = adoption.exists()
+
+    if has_instantiation == has_adoption:
+        if has_instantiation:
+            findings.append(
+                Finding(
+                    "ERROR",
+                    Path(".agent-box"),
+                    "Projektzustand unklar: .agent-box/instantiation.md und "
+                    ".agent-box/adoption.md existieren beide. Genau ein Marker ist erlaubt.",
+                )
+            )
+        else:
+            findings.append(
+                Finding(
+                    "ERROR",
+                    Path(".agent-box"),
+                    "Projektzustandsmarker fehlt: erwartet genau eine Datei aus "
+                    ".agent-box/instantiation.md oder .agent-box/adoption.md.",
+                )
+            )
+        return findings
+
+    if has_instantiation:
+        text = read_text(instantiation)
+        for term in ["Box-Name:", "Box-Version:"]:
+            if term not in text:
+                findings.append(
+                    Finding("ERROR", instantiation, f"Pflichtfeld fehlt: {term}")
+                )
+
+    if has_adoption:
+        text = read_text(adoption)
+        for term in [
+            "Status: active",
+            "Aufnahmetyp: brownfield",
+            "Box-Name:",
+            "Box-Version:",
+        ]:
+            if term not in text:
+                findings.append(
+                    Finding("ERROR", adoption, f"Pflichtfeld fehlt: {term}")
+                )
+
+    return findings
+
+
 def check_placeholders(mode: str) -> list[Finding]:
     """
     mode='template'     → Platzhalter erwartet, WARN nur wenn KEINE Platzhalter
@@ -447,6 +578,7 @@ def check_placeholders(mode: str) -> list[Finding]:
     mode='instantiated' → Platzhalter sind immer ERROR
     """
     findings: list[Finding] = []
+
     if mode == "instantiated":
         # AGENT-SETUP.md ist Template-Artefakt — im instanziierten Projekt
         # nicht mehr Pflicht und nicht auf Platzhalter zu prüfen.
@@ -572,7 +704,11 @@ def check_glossar_consistency(mode: str) -> list[Finding]:
     Instantiated: leere Glossare → WARN (Projektstart ok, nach erstem Sprechakt nicht).
     """
     findings: list[Finding] = []
-    for glossar in [Path("glossar-domain.md"), Path("glossar-system.md")]:
+    for glossar in [
+        Path("glossar-domain.md"),
+        Path("glossar-system.md"),
+        Path("glossar-meta.md"),
+    ]:
         if not glossar.exists():
             continue
         lines = read_text(glossar).splitlines()
@@ -588,15 +724,25 @@ def check_glossar_consistency(mode: str) -> list[Finding]:
 
         if not real_entries:
             severity = "INFO" if mode == "template" else "WARN"
-            findings.append(
-                Finding(
-                    severity,
-                    glossar,
-                    "Keine Glossar-Einträge im Abschnitt '## 3. Begriffe' gefunden. "
-                    "Erster projektspezifischer Eintrag entsteht durch Sprechakt SP1 (Domain) "
-                    "oder SP2 (System). Eintragsformat: '### <Begriffsname>'.",
+            if glossar.name == "glossar-meta.md":
+                findings.append(
+                    Finding(
+                        severity,
+                        glossar,
+                        "Keine Meta-Glossar-Einträge im Abschnitt '## 3. Begriffe' gefunden. "
+                        "glossar-meta.md muss die Agenten-Metabegriffe enthalten.",
+                    )
                 )
-            )
+            else:
+                findings.append(
+                    Finding(
+                        severity,
+                        glossar,
+                        "Keine Glossar-Einträge im Abschnitt '## 3. Begriffe' gefunden. "
+                        "Erster projektspezifischer Eintrag entsteht durch Sprechakt SP1 (Domain) "
+                        "oder SP2 (System). Eintragsformat: '### <Begriffsname>'.",
+                    )
+                )
     return findings
 
 
@@ -862,11 +1008,14 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     # Modus bestimmen
+    # Projektlokale Anpassung: Default ist instantiated, da dies ein
+    # instanziiertes Projekt ist (nicht das Template-Repository).
     mode = args.mode or "instantiated"
 
     findings: list[Finding] = []
     findings.extend(check_required_files(mode))
     findings.extend(check_required_terms())
+    findings.extend(check_project_state_marker(mode))
     findings.extend(check_placeholders(mode))
     findings.extend(check_strandjunction_residues(mode))
     findings.extend(check_layer_config_sync())

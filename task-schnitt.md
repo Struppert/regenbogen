@@ -28,7 +28,8 @@ Task-Schnitt wird nicht präventiv als Pflicht-Preflight ausgeführt.
 Er wird bewertet wenn eine der folgenden Bedingungen eintritt:
 
 ```text
-T1  SWS enthält einen Begriff dessen Glossareintrag fehlt oder unvollständig ist
+T1  SWS enthält einen Begriff, dessen Glossareintrag fehlt oder für die
+    geplante Nutzung nicht ausreichend tief ist
     → zuerst prüfen: ist der Begriff durch zu breiten Schnitt im SWS?
     → wenn ja: Aufgabe enger schneiden — kein Sprechakt nötig
     → wenn Begriff für Teilaufgabe aktiv nötig bleibt: Sprechakt SP7 auslösen
@@ -66,7 +67,7 @@ Schritt 2: Kann die Aufgabe auf einen Raum eingeschränkt werden?
   Nein → beide Räume sind strukturell nötig; beide Glossar-Dateien laden
 
 Schritt 3: Gibt es nach möglicher Schnitt-Verengung noch einen aktiv benötigten
-           Begriff, dessen Glossareintrag fehlt oder unvollständig ist?
+           Begriff, dessen Glossareintrag fehlt oder für die geplante Nutzung nicht ausreichend tief ist?
   Ja  → Sprechakt SP7 vor Fortsetzung
   Nein → fortfahren
 

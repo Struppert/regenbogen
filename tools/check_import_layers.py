@@ -89,16 +89,17 @@ LAYER_BY_PACKAGE_PART: dict[str, str] = {
 # Diese Tabelle ist die maschinenlesbare Spiegelung von package-schema.md
 # Abschnitt 5 "Capability-Matrix (Importmatrix)". Wichtig: Der Checker darf
 # nicht schwächer sein als die Matrix. Deshalb werden alle Matrixwerte außer
-# "yes" als verboten behandelt und müssen bei Bedarf kantenbezogen über
-# KNOWN_BREACHES klassifiziert werden.
+# "yes" als verboten behandelt. Ausnahmen brauchen eine dokumentierte
+# Projektentscheidung und werden erst danach kantenbezogen über KNOWN_BREACHES
+# klassifiziert.
 #
 # Matrix-Codes in package-schema.md:
 #   yes     → erlaubt
 #   no      → verboten
-#   decision → nur mit Sprechakt / Known Breach / expliziter Ausnahme
+#   decision → nur mit Sprechakt / expliziter Entscheidung / Known Breach
 #   ports   → erlaubt nur für system.ports; maschinell geprüft
 #   init    → nur Initialisierung beim Prozessstart; statisch nicht sicher
-#             erkennbar, deshalb Known Breach / Ausnahme nötig
+#             erkennbar, deshalb Entscheidung / Ausnahme nötig
 FORBIDDEN_IMPORTS: dict[str, set[str]] = {
     # domain: yes -> domain; decision -> shared; alles andere no
     "domain": {"system", "infrastructure", "adapters", "cli", "shared", "tools"},
@@ -679,7 +680,9 @@ def print_preflight(findings: list[Finding], files_checked: int) -> None:
             print(f"  Target-Layer: `{f.target_layer}`")
             print(f"  Import: `{f.imported_module}`")
             print(f"  Befund: {f.message}")
-            print("  Aktion: Import entfernen oder Known Breach klassifizieren.")
+            print(
+                "  Aktion: Import entfernen oder Entscheidung für Ausnahme/Known Breach einholen."
+            )
         elif isinstance(f, PublicApiFinding):
             print(f"- Datei: `{f.file}:{f.line}`")
             print(f"  Modul: `{f.module}`")

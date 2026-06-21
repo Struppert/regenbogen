@@ -487,6 +487,8 @@ nachziehen. Sonst läuft der Checker mit veralteter Konfiguration.
 ## 6. Bekannte Brüche (Known Breaches)
 
 Bekannte Brüche sind klassifizierte Ausnahmen — keine neue Regel, keine freie Fläche.
+Ein vorhandener Bruch wird nicht dadurch zum Known Breach, dass er im Bestand
+bereits existiert.
 
 Format:
 
@@ -494,13 +496,21 @@ Format:
 KB-<NR>:
   Datei:              <Pfad>
   Regelverletzung:    <welche Invariante / Importregel>
+  Scope:              <konkrete Kante / Symbolmenge>
   Warum vorläufig:    <Begründung>
   Folgeplan:          <docs/plans/YYYY-MM-DD-...md>
+  No-growth:          <wie Wachstum verhindert wird>
+  Review/Ablauf:      <Datum oder Ereignis>
+  Freigabe:           <Sprechakt / menschliche Entscheidung>
   Checker-Eintrag:    KNOWN_BREACHES in check_import_layers.py
 ```
 
 Ein Agent darf bekannte Brüche nicht verschieben, erweitern oder umdeuten.
 Umklassifizierung ist Sprechakt SP6 / Freigabe.
+
+Brownfield-Inventur erzeugt keine Known Breaches. Sie erzeugt Befunde,
+vorläufige Klassifikationen und Entscheidungsvorlagen. Erst eine explizite
+menschliche Entscheidung darf daraus einen Known Breach machen.
 
 ---
 

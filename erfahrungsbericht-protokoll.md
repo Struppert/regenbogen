@@ -60,8 +60,7 @@ E5  Nach unerwarteter Interaktion zwischen Regeln.
 
 Datum:
 Learning-Matrix-Kandidat: ja/nein
-Muster-ID:
-Übernommen in Learning-Matrix: ja/nein        YYYY-MM-DD
+Vorgeschlagene Musterkennung:
 Session-Typ:  abgeschlossen | HARD-Abbruch | SOFT-Abbruch | gemischt
 Aufgabe:      <was war der Auftrag>
 Ergebnis:     <was wurde tatsächlich erreicht>
@@ -138,6 +137,10 @@ Erfahrungsbericht
 
 Ein Erfahrungsbericht der direkt AGENTS.md ändert, ist ein Regelverstoß.
 Erfahrungsberichte sind Eingabe für menschliche Entscheidungen, nicht Autorisierung.
+
+Die tatsächliche Übernahme in die Learning-Matrix wird ausschließlich in
+`learning-matrix.md` dokumentiert. Bestehende Erfahrungsberichte werden dafür
+nicht nachträglich geändert.
 
 ---
 
