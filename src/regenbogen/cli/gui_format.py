@@ -44,4 +44,14 @@ def formatiere_tagesprognose(prognose: TagesPrognose) -> str:
         zeilen.append(
             f"Beste Chance: {spitze.stunde:02d}:00 — schau nach {prognose.blickrichtung}"
         )
+    if prognose.hat_sekundaerbogen_chance:
+        s_stunden = [s for s in prognose.stunden if s.sekundaerbogen_wahrscheinlichkeit > 0]
+        fruehste = min(s_stunden, key=lambda s: s.stunde)
+        spaetste = max(s_stunden, key=lambda s: s.stunde)
+        if fruehste.stunde == spaetste.stunde:
+            zeilen.append(f"Sekundaerbogen moeglich: {fruehste.stunde:02d}:00")
+        else:
+            zeilen.append(
+                f"Sekundaerbogen moeglich: {fruehste.stunde:02d}:00–{spaetste.stunde:02d}:00"
+            )
     return kopf + "\n" + "\n".join(zeilen)

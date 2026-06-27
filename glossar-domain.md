@@ -280,13 +280,16 @@ des aktuellen Kalendertags an einem Beobachtungsort.
 
 **Bedeutung:**
 Bewertung eines einzelnen Zeitslots (eine Tagstunde) am Beobachtungsort mit
-Regenbogen-Wahrscheinlichkeit und Sichtbarkeit.
+Regenbogen-Wahrscheinlichkeit, Sichtbarkeit und SekundaerbogenWahrscheinlichkeit.
 
 **Invarianten:**
 - stunde liegt in [0, 23] (lokale Stunde des Beobachtungsorts).
 - wahrscheinlichkeit liegt in [0, 100].
 - sichtbarkeit liegt in [0, 100].
+- sekundaerbogen_wahrscheinlichkeit liegt in [0, 100]. Default: 0.
 - Eine PrognoseStunde mit wahrscheinlichkeit = 0 ist ein gueltiges Ergebnis.
+- sekundaerbogen_wahrscheinlichkeit > 0 ist nur moeglich wenn Sonnenschein und Regen
+  vorliegen und SonnenstandsFaktorSekundaerbogen > 0.
 
 **Abgrenzung:**
 PrognoseStunde ist keine Prognoseunsicherheit und kein Konfidenzintervall.
@@ -295,6 +298,111 @@ Sie ist eine Punktbewertung nach dem Regenbogen-Modell fuer diesen Zeitslot.
 **Projektionen:**
 - Code: src/regenbogen/domain/tagesprognose.py
 - Tests: tests/domain/test_tagesprognose.py
+
+**Migrationsstatus:** canonical
+
+### Sekundaerbogen
+
+**Semantischer Raum:** domain
+**Eintragstiefe:** vollständig
+
+**Bedeutung:**
+Der äußere zweite Regenbogen, der durch doppelte innere Reflexion in Regentropfen
+entsteht. Erscheint konzentrisch außerhalb des primären Bogens in einem Winkel von
+ca. 51° vom antissolaren Punkt.
+
+**Physikalische Eigenschaften:**
+- Öffnungswinkel: ca. 51° (Primärbogen: 42°).
+- Farbfolge invertiert: Rot innen, Violett außen (Primärbogen: Rot außen, Violett innen).
+- Helligkeit: ca. 43 % des Primärbogens (SekundaerbogenDaempfung = 0.57).
+- Zwischen Primär- und Sekundärbogen liegt das Alexandersche Dunkelband
+  (kein eigener Projektionsbegriff in diesem Modell).
+
+**Invarianten:**
+- Nur sichtbar wenn Sonnenstand unter 51°.
+- Bei Sonnenstand zwischen 42° und 51°: nur Sekundaerbogen geometrisch möglich,
+  kein Primärbogen.
+- Bei Sonnenstand unter 42°: Primär- und Sekundaerbogen gleichzeitig möglich.
+- Mondbögen-Sekundärbogen: explizit ausgeschlossen (kein Mondlicht-Modell).
+
+**Verboten:**
+- Gleichsetzung mit dem Primärbogen (andere Geometrie, andere Farbreihenfolge).
+- Berechnung ohne SekundaerbogenDaempfung auf die Wahrscheinlichkeit.
+
+**Projektionen:**
+- Code: src/regenbogen/domain/regenbogen_geometrie.py (berechne_sonnenstands_faktor_sekundaerbogen)
+- Code: src/regenbogen/domain/tagesprognose.py (PrognoseStunde.sekundaerbogen_wahrscheinlichkeit)
+- Tests: tests/domain/test_regenbogen_geometrie.py
+
+**Migrationsstatus:** canonical
+
+### SonnenstandsFaktorSekundaerbogen
+
+**Semantischer Raum:** domain
+**Eintragstiefe:** minimal
+
+**Bedeutung:**
+Faktor in [0, 1], der ausdrückt ob der Sonnenstand für einen sichtbaren
+Sekundaerbogen günstig ist. Analogon zu SonnenstandsFaktor, aber mit Cutoff 51°.
+
+**Invarianten:**
+- Sonnenhoehe <= 0 Grad: 0.
+- Sonnenhoehe >= 51 Grad: 0.
+- 0 Grad < Sonnenhoehe <= 25 Grad: 1.
+- 25 Grad < Sonnenhoehe < 51 Grad: linear fallend von 1 auf 0.
+
+**Abgrenzung:**
+- SonnenstandsFaktor: Primärbogen, Cutoff 42°.
+- SonnenstandsFaktorSekundaerbogen: Sekundaerbogen, Cutoff 51°.
+
+**Projektionen:**
+- Code: src/regenbogen/domain/regenbogen_geometrie.py
+- Tests: tests/domain/test_regenbogen_geometrie.py
+
+**Migrationsstatus:** canonical
+
+### SekundaerbogenDaempfung
+
+**Semantischer Raum:** domain
+**Eintragstiefe:** minimal
+
+**Bedeutung:**
+Physikalischer Abschwächungsfaktor für die Helligkeit des Sekundaerbogens
+relativ zum Primärbogen. Konstante: 0.57 (der Sekundaerbogen ist ca. 43 % schwächer).
+
+**Invarianten:**
+- Konstanter Wert: 0.57.
+- Wird als Multiplikator auf die Basiswahrscheinlichkeit angewendet,
+  nach Anwendung von SonnenstandsFaktorSekundaerbogen.
+
+**Projektionen:**
+- Code: src/regenbogen/domain/regenbogen_geometrie.py (SEKUNDAERBOGEN_DAEMPFUNG)
+
+**Migrationsstatus:** canonical
+
+### SekundaerbogenWahrscheinlichkeit
+
+**Semantischer Raum:** domain
+**Eintragstiefe:** minimal
+
+**Bedeutung:**
+Prozentwert in [0, 100] für die domänenlogische Einschätzung ob die Bedingungen
+für einen sichtbaren Sekundaerbogen erfüllt sind.
+
+Berechnung: basis * SonnenstandsFaktorSekundaerbogen * SekundaerbogenDaempfung,
+wobei basis identisch zur RegenbogenWahrscheinlichkeit-Formel ist.
+
+**Invarianten:**
+- 0 wenn kein Sonnenschein oder kein Regen.
+- 0 wenn SonnenstandsFaktorSekundaerbogen = 0 (Sonne >= 51°).
+- Wert liegt in [0, 100].
+- Immer <= RegenbogenWahrscheinlichkeit der gleichen Stunde (wegen Dämpfung und
+  schmalerer geometrischer Bedingung), ausser wenn Sonne zwischen 42° und 51°:
+  dann kann SekundaerbogenWahrscheinlichkeit > 0 und RegenbogenWahrscheinlichkeit = 0.
+
+**Projektionen:**
+- Code: src/regenbogen/domain/tagesprognose.py (PrognoseStunde.sekundaerbogen_wahrscheinlichkeit)
+- Code: src/regenbogen/system/core/tagesprognose_use_case.py
 
 **Migrationsstatus:** canonical
 

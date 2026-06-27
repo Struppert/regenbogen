@@ -38,8 +38,11 @@ def azimut_zu_himmelsrichtung(azimut_grad: float) -> str:
     return _HIMMELSRICHTUNGEN_16[index]
 
 
+SEKUNDAERBOGEN_DAEMPFUNG: float = 0.57
+
+
 def berechne_sonnenstands_faktor(sonnenstand: Sonnenstand) -> float:
-    """Geometrischer Faktor fuer den primaeren Regenbogen."""
+    """Geometrischer Faktor fuer den primaeren Regenbogen (Cutoff 42 Grad)."""
     hoehe = sonnenstand.sonnenhoehe_grad
 
     if hoehe <= 0.0:
@@ -50,3 +53,17 @@ def berechne_sonnenstands_faktor(sonnenstand: Sonnenstand) -> float:
         return 1.0
 
     return max(0.0, (42.0 - hoehe) / (42.0 - 25.0))
+
+
+def berechne_sonnenstands_faktor_sekundaerbogen(sonnenstand: Sonnenstand) -> float:
+    """Geometrischer Faktor fuer den Sekundaerbogen (Cutoff 51 Grad)."""
+    hoehe = sonnenstand.sonnenhoehe_grad
+
+    if hoehe <= 0.0:
+        return 0.0
+    if hoehe >= 51.0:
+        return 0.0
+    if hoehe <= 25.0:
+        return 1.0
+
+    return max(0.0, (51.0 - hoehe) / (51.0 - 25.0))

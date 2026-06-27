@@ -4,9 +4,11 @@ from zoneinfo import ZoneInfo
 
 from regenbogen.domain.regenbogen import berechne_regenbogen_wahrscheinlichkeit
 from regenbogen.domain.regenbogen_geometrie import (
+    SEKUNDAERBOGEN_DAEMPFUNG,
     azimut_zu_himmelsrichtung,
     berechne_regenbogen_azimut,
     berechne_sonnenstands_faktor,
+    berechne_sonnenstands_faktor_sekundaerbogen,
 )
 from regenbogen.domain.regenbogen_optik import (
     RegenbogenOptikFaktoren,
@@ -57,12 +59,16 @@ class TagesPrognoseUseCase:
             zustand = self._messung_zu_wetterzustand(sm.messung)
             w = berechne_regenbogen_wahrscheinlichkeit(zustand, sonnenstand)
             s = self._berechne_sichtbarkeit(sm.messung, sonnenstand)
+            w_s = self._berechne_sekundaerbogen_wahrscheinlichkeit(zustand, sonnenstand)
             lokale_stunde = sm.zeitpunkt_utc.astimezone(
                 ZoneInfo(koordinaten.zeitzone)
             ).hour
             stunden.append(
                 PrognoseStunde(
-                    stunde=lokale_stunde, wahrscheinlichkeit=w, sichtbarkeit=s
+                    stunde=lokale_stunde,
+                    wahrscheinlichkeit=w,
+                    sichtbarkeit=s,
+                    sekundaerbogen_wahrscheinlichkeit=w_s,
                 )
             )
             if w > beste_wahrscheinlichkeit:
@@ -106,6 +112,19 @@ class TagesPrognoseUseCase:
             sonnenschein_intensitaet=sonnenschein_intensitaet,
             regen_intensitaet=regen_intensitaet,
         )
+
+    def _berechne_sekundaerbogen_wahrscheinlichkeit(
+        self,
+        zustand: Wetterzustand,
+        sonnenstand,
+    ) -> int:
+        if not zustand.sonnenschein or not zustand.regen:
+            return 0
+        faktor_s = berechne_sonnenstands_faktor_sekundaerbogen(sonnenstand)
+        if faktor_s <= 0.0:
+            return 0
+        basis = zustand.sonnenschein_intensitaet * 0.6 + zustand.regen_intensitaet * 0.4
+        return max(0, min(100, round(basis * faktor_s * SEKUNDAERBOGEN_DAEMPFUNG * 100)))
 
     def _berechne_sichtbarkeit(
         self,

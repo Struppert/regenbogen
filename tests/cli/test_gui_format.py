@@ -146,3 +146,41 @@ def test_tagesprognose_zeigt_blickrichtung_footer():
     ausgabe = formatiere_tagesprognose(prognose)
     assert "schau nach Südost" in ausgabe
     assert "15:00" in ausgabe
+
+
+def test_tagesprognose_sekundaerbogen_zeigt_zeitfenster():
+    prognose = TagesPrognose(
+        ort="Berlin",
+        stunden=(
+            PrognoseStunde(stunde=8, wahrscheinlichkeit=40, sichtbarkeit=30, sekundaerbogen_wahrscheinlichkeit=12),
+            PrognoseStunde(stunde=9, wahrscheinlichkeit=55, sichtbarkeit=45, sekundaerbogen_wahrscheinlichkeit=18),
+            PrognoseStunde(stunde=10, wahrscheinlichkeit=30, sichtbarkeit=20, sekundaerbogen_wahrscheinlichkeit=0),
+        ),
+    )
+    ausgabe = formatiere_tagesprognose(prognose)
+    assert "Sekundaerbogen moeglich: 08:00–09:00" in ausgabe
+
+
+def test_tagesprognose_sekundaerbogen_einzelstunde():
+    prognose = TagesPrognose(
+        ort="Berlin",
+        stunden=(
+            PrognoseStunde(stunde=8, wahrscheinlichkeit=40, sichtbarkeit=30, sekundaerbogen_wahrscheinlichkeit=15),
+            PrognoseStunde(stunde=9, wahrscheinlichkeit=55, sichtbarkeit=45, sekundaerbogen_wahrscheinlichkeit=0),
+        ),
+    )
+    ausgabe = formatiere_tagesprognose(prognose)
+    assert "Sekundaerbogen moeglich: 08:00" in ausgabe
+    sekundaerbogen_zeile = [z for z in ausgabe.splitlines() if "Sekundaerbogen" in z][0]
+    assert "–" not in sekundaerbogen_zeile
+
+
+def test_tagesprognose_kein_sekundaerbogen_kein_hinweis():
+    prognose = TagesPrognose(
+        ort="Berlin",
+        stunden=(
+            PrognoseStunde(stunde=14, wahrscheinlichkeit=60, sichtbarkeit=50, sekundaerbogen_wahrscheinlichkeit=0),
+        ),
+    )
+    ausgabe = formatiere_tagesprognose(prognose)
+    assert "Sekundaerbogen" not in ausgabe

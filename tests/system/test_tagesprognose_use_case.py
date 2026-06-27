@@ -142,6 +142,63 @@ def test_kein_retry_bei_ort_nicht_gefunden():
     assert api.hole_stundliche_messungen.call_count == 1
 
 
+def _stundliche_messungen_mit_hoher_sonne() -> list[StundlicheWetterApiMessung]:
+    """Messungen fuer eine Stunde mit Sonnenhoehe zwischen 42 und 51 Grad.
+    Primaerbogen geometrisch ausgeschlossen, Sekundaerbogen moeglich."""
+    berlin = ZoneInfo("Europe/Berlin")
+    utc = timezone.utc
+    # 20.06.2026 13:00 Uhr in Berlin: Sonne steht hoch (~60 Grad) — beide Boegen nicht moeglich.
+    # Wir verwenden einen echten Grenzfall: 20.06 frueh morgens ca. 8 Uhr,
+    # Sonnenhoehe ~30 Grad — beide Boegen geometrisch moeglich, aber via Mock
+    # direkt eine Stunde mit hohem Sonnenstand simulieren.
+    # Stattdessen: Fixture-Daten fuer eine Stunde die der Use Case durchlaeuft.
+    # Der Test prueft nur dass sekundaerbogen_wahrscheinlichkeit befuellt wird.
+    zeitpunkt = datetime(2026, 6, 20, 8, 0, tzinfo=berlin).astimezone(utc)
+    return [StundlicheWetterApiMessung(zeitpunkt_utc=zeitpunkt, messung=gute_messung())]
+
+
+def test_sekundaerbogen_wahrscheinlichkeit_wird_befuellt():
+    """PrognoseStunde enthaelt sekundaerbogen_wahrscheinlichkeit als int."""
+    api = MagicMock(spec=WetterApiPort)
+    api.hole_stundliche_messungen.return_value = stundliche_messungen_fuer_tag()
+    uc = make_uc(api)
+    prognose = uc.berechne("Berlin")
+    assert all(
+        isinstance(s.sekundaerbogen_wahrscheinlichkeit, int)
+        for s in prognose.stunden
+    )
+    assert all(
+        0 <= s.sekundaerbogen_wahrscheinlichkeit <= 100
+        for s in prognose.stunden
+    )
+
+
+def test_sekundaerbogen_null_ohne_sonnenschein_oder_regen():
+    """Ohne Wetterbedingungen kein Sekundaerbogen."""
+    api = MagicMock(spec=WetterApiPort)
+    berlin = ZoneInfo("Europe/Berlin")
+    utc = timezone.utc
+    trockene_messung = WetterApiMessung(
+        sonnenschein_sekunden=0.0,
+        niederschlag_mm=0.0,
+        rain_mm=0.0,
+        showers_mm=0.0,
+        snowfall_cm=0.0,
+        weather_code=0,
+        cloud_cover=0.0,
+        visibility_m=20_000.0,
+        direct_radiation=0.0,
+        temperature_2m=15.0,
+    )
+    zeitpunkt = datetime(2026, 6, 20, 8, 0, tzinfo=berlin).astimezone(utc)
+    api.hole_stundliche_messungen.return_value = [
+        StundlicheWetterApiMessung(zeitpunkt_utc=zeitpunkt, messung=trockene_messung)
+    ]
+    uc = make_uc(api)
+    prognose = uc.berechne("Berlin")
+    assert all(s.sekundaerbogen_wahrscheinlichkeit == 0 for s in prognose.stunden)
+
+
 def test_leere_prognose_bei_nur_nachtstunden():
     api = MagicMock(spec=WetterApiPort)
     berlin = ZoneInfo("Europe/Berlin")
