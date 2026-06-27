@@ -21,24 +21,42 @@ Ausfuehrungsmandat.
 
 ---
 
-## 2. Arbeitsmodi
+## 2. Arbeitsmodi und Wirkungsklassen
+
+Repository-Mutationen werden nach ihrer normativen Wirkung unterschieden:
+
+```text
+DIAGNOSTISCHE WIRKUNG
+  Plan anlegen oder aendern, Entscheidungsfragen formulieren,
+  offene Sprechakte oder Diagnose-Evidence anlegen,
+  Abbruch-Evidence anlegen, Baseline oder Observed-State dokumentieren.
+  Erlaubt in: PLAN oder AUSFUEHRUNG.
+  Mandat: nicht erforderlich.
+
+TRANSFORMATIVE WIRKUNG
+  Produktcode, Tests, Konfiguration, Dependencies,
+  normative Projektartefakte (AGENTS.md, Protokolle, Glossare, Checker),
+  Migrationen ausfuehren.
+  Erlaubt in: AUSFUEHRUNG.
+  Mandat: aktives, scope-gueltiges Ausfuehrungsmandat erforderlich.
+```
+
+Arbeitsmodi:
 
 ```text
 ANALYSE
   Erlaubt: lesen, untersuchen, Befunde benennen, Vorschlaege im Chat machen.
-  Verboten: Repository-Mutation, Plan-Datei, Evidence-Datei, Codeaenderung.
+  Verboten: jede Repository-Mutation (diagnostisch wie transformativ).
 
 PLAN
-  Erlaubt: ANALYSE, Plan anlegen/aendern, Entscheidungsfragen formulieren,
-           offene Sprechakte oder Diagnose-Evidence anlegen.
-  Verboten: Produktcode, Tests, Konfiguration, Dependencies, Governance,
-            Migrationen ausfuehren.
+  Erlaubt: ANALYSE, diagnostische Wirkung.
+  Verboten: transformative Wirkung.
 
 AUSFUEHRUNG
-  Erlaubt: freigegebenen Plan im Mandatsscope umsetzen, interne Phasen
-           durchlaufen, Tests/Checks ausfuehren, Planfortschritt an
-           Phasengrenzen aktualisieren.
-  Voraussetzung: aktives, scope-gueltiges Ausfuehrungsmandat.
+  Erlaubt: diagnostische Wirkung, transformative Wirkung im Mandatsscope,
+           interne Phasen durchlaufen, Tests/Checks ausfuehren,
+           Planfortschritt aktualisieren.
+  Voraussetzung fuer transformative Wirkung: aktives Ausfuehrungsmandat.
 ```
 
 Wenn der Arbeitsmodus unklar ist: ANALYSE.
@@ -111,23 +129,25 @@ mit Plan-ID, Plan-Version und Scope antworten.
 
 ---
 
-## 5. Wirkungsgate W0
+## 5. Wirkungsgate WG-AUSFUEHRUNG
 
-W0 wird unmittelbar vor der ersten Repository-Mutation geprueft.
+WG-AUSFUEHRUNG wird unmittelbar vor jeder Repository-Mutation geprueft.
 
 ```text
 1. Welcher Arbeitsmodus gilt?
-2. Existiert ein aktives Ausfuehrungsmandat?
-3. Passt die freigegebene Plan-Version?
-4. Liegt die geplante Mutation im Scope?
+2. Welche Wirkungsklasse hat die geplante Mutation?
+   Bei diagnostischer Wirkung: Ist PLAN- oder AUSFUEHRUNGS-Modus aktiv?
+   Bei transformativer Wirkung: Existiert ein aktives Ausfuehrungsmandat?
+3. Bei transformativer Wirkung: Passt die freigegebene Plan-Version?
+4. Bei transformativer Wirkung: Liegt die Mutation im Scope?
 5. Ist die Dateiklasse beschreibbar oder geschuetzt?
 6. Ist eine geschuetzte Datei ausdruecklich vom Mandat gedeckt?
 ```
 
-Wenn W0 nicht gruen ist: keine Mutation. In ANALYSE zurueckfallen oder
-Mandat/Delta-Freigabe anfordern.
+Wenn WG-AUSFUEHRUNG nicht gruen ist: keine Mutation. In ANALYSE zurueckfallen
+oder Mandat/Delta-Freigabe anfordern.
 
-W0 ist kein Preflight-Schritt P0. Die Preflight-Nummern P1-P9 bleiben stabil.
+WG-AUSFUEHRUNG ist kein Preflight-Schritt.
 
 ---
 
@@ -221,8 +241,9 @@ Der Agent darf sein Mandat nicht selbst aktivieren.
 
 ## 10. Schlussregel
 
-Analyse ist erlaubt. Planung ist nur im PLAN- oder AUSFUEHRUNGS-Scope erlaubt.
-Wirkung ist nur mit aktivem Ausfuehrungsmandat erlaubt.
+Analyse ist erlaubt. Diagnostische Wirkung ist nur im PLAN- oder
+AUSFUEHRUNGS-Modus erlaubt. Transformative Wirkung ist nur mit aktivem
+Ausfuehrungsmandat erlaubt.
 
 Innerhalb eines gueltigen Mandats arbeitet der Agent autonom bis zum
 vollstaendigen, validierten Arbeitsschnitt.

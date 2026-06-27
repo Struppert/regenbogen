@@ -116,7 +116,7 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
     ],
     Path("ausfuehrungsmandat-protokoll.md"): [
         "ANALYSE", "PLAN", "AUSFUEHRUNG", "Ausfuehrungsmandat",
-        "W0", "Mandatstatus", "Plan-Version", "Delta-Freigabe",
+        "WG-AUSFUEHRUNG", "Mandatstatus", "Plan-Version", "Delta-Freigabe",
         "Wirkungsgate",
     ],
     Path("package-schema.md"): [
@@ -124,7 +124,7 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Capability", "Known Breaches", "LAYER_BY_PACKAGE_PART", "decision",
     ],
     Path("preflight-checkliste.md"): [
-        "AGENTS.md", "package-schema.md",
+        "PF-ROUTER", "AGENTS.md", "package-schema.md",
         "Import", "Testpflicht", "Schreibrechte",
         "glossar-README.md", "Autonomieregel",
     ],
@@ -677,11 +677,6 @@ def check_reference_integrity() -> list[Finding]:
             findings.append(Finding("ERROR", path,
                 "Instabile numerische Referenz auf AGENTS.md gefunden. "
                 "Stattdessen zuständiges Dokument oder Abschnittstitel nennen."))
-
-        p10_pattern = r"\bP" + "10" + r"\b|P1[–-]P" + "10"
-        if re.search(p10_pattern, text):
-            findings.append(Finding("ERROR", path,
-                "Veraltete Preflight-Referenz gefunden. Kanonisch ist P1-P9."))
 
     return findings
 

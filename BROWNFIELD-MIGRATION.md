@@ -69,7 +69,7 @@ Migrationsmandat:
 ```
 
 Die Annahme einer Template-Regel startet keine Migration.
-Vor jeder transformativen Brownfield-Wirkung muss W0 aus
+Vor jeder transformativen Brownfield-Wirkung muss WG-AUSFUEHRUNG aus
 `ausfuehrungsmandat-protokoll.md` gruen sein.
 
 ---
@@ -478,12 +478,13 @@ Vorgehen:
 7. Observed State und Baseline der betroffenen Artefakte erfassen.
 8. Lokale Divergenz gegen Baseline-Anker inventarisieren.
 9. Datei-Aktionsmatrix mit Merge-Richtung erstellen.
-10. Neue Artefakte mit Aktion add uebernehmen.
-11. Geschuetzte Regeldateien semantisch mergen.
-12. Tools mit lokaler Divergenz per Drei-Wege-Merge behandeln.
-13. Menschliche Entscheidungen fuer Zielmodell-Abweichungen einholen.
-14. Migrationsevidence schreiben.
-15. Abschlusschecks ausfuehren.
+10. Zielmodell-Abweichungen und Datei-Aktionen vorlegen.
+11. Menschliche Zielmodell-Entscheidungen einholen.
+12. Migrationsplan finalisieren (Plan-Version festlegen).
+13. Migrationsmandat fuer diese Plan-Version einholen (WG-AUSFUEHRUNG pruefen).
+14. add / merge / replace ausfuehren (Drei-Wege-Merge bei Tools mit lokaler Divergenz).
+15. Migrationsevidence schreiben.
+16. Abschlusschecks ausfuehren.
 ```
 
 Aktuelle Box-Version:
@@ -588,7 +589,18 @@ Brownfield-Fall: A | B | C
 Ausgangsversion:
 Zielversion:
 Datum:
-Freigabe:
+
+## Zielmodell-Entscheidungen
+
+Entscheidungsreferenzen: (Sprechakte, Plan-IDs)
+
+## Migrationsmandat
+
+Mandat-ID:
+Freigegebene Plan-ID:
+Freigegebene Plan-Version:
+Freigegebener Scope:
+Mandatsquelle:
 
 ## Baseline
 

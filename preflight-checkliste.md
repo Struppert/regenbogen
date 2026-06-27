@@ -28,20 +28,24 @@ Preflight ersetzt kein Ausfuehrungsmandat.
 
 ---
 
-## 0a. W0 — Wirkungsgate
+## 0a. WG-AUSFUEHRUNG — Wirkungsgate
 
-W0 wird unmittelbar vor der ersten Repository-Mutation geprüft.
+WG-AUSFUEHRUNG wird unmittelbar vor jeder Repository-Mutation geprüft.
 
 ```text
 Welcher Arbeitsmodus gilt?
-Existiert ein aktives Ausfuehrungsmandat?
-Passt die freigegebene Plan-Version?
-Liegt die geplante Mutation im Scope?
+Welche Wirkungsklasse hat die Mutation?
+  Diagnostisch (Plan, Evidence, Sprechakt):
+    Ist PLAN- oder AUSFUEHRUNGS-Modus aktiv?
+  Transformativ (Code, Checker, normative Artefakte):
+    Existiert ein aktives Ausfuehrungsmandat?
+    Passt die freigegebene Plan-Version?
+    Liegt die Mutation im Scope?
 Ist die Dateiklasse beschreibbar oder geschützt?
 Ist eine geschützte Datei ausdrücklich vom Mandat gedeckt?
 ```
 
-Wenn W0 nicht grün ist: keine Mutation.
+Wenn WG-AUSFUEHRUNG nicht grün ist: keine Mutation.
 
 Protokoll: `ausfuehrungsmandat-protokoll.md`
 
@@ -76,16 +80,16 @@ Lokale Refactorings ohne neue öffentliche Symbole
 - keine Änderung an Tests, die Verhalten definieren
 ```
 
-→ **Fast-Path:** P1 + P3 + P5 + P6 + P7.
-P2, P4, P8, P9 entfallen.
+→ **Fast-Path:** PF-ROUTER + PF-RAEUME + PF-IMPORTLAYER + PF-TESTPFLICHT + PF-SCHREIBRECHT.
+PF-SCHEMA, PF-GLOSSAR, PF-TASKSCHNITT, PF-PLAN entfallen.
 
 P7 (Schreibrechte) entfällt nie. Safe Task ist Risikoklasse, nicht Schreibrecht.
 
 **MITTEL oder höher** (Definition: `AGENTS.md` §8):
 
-→ Vollständiger Preflight P1–P9.
+→ Vollständiger Preflight PF-ROUTER–PF-PLAN.
 
-**Wenn Zweifel über die Risikoklasse:** vollständiger Preflight P1–P9.
+**Wenn Zweifel über die Risikoklasse:** vollständiger Preflight PF-ROUTER–PF-PLAN.
 
 Brownfield-Arbeit ist nie SICHER. Jede Änderung die einen bekannten Bruch
 im Scope berührt, erhöht die Klasse automatisch auf MITTEL.
@@ -108,16 +112,19 @@ Nicht ersetzter Platzhalter in aktiver Regel → Abbruch H7.
 ## 2. Kurzform (vollständiger Preflight)
 
 ```text
-P1   AGENTS.md lesen
-P2   package-schema.md gezielt prüfen
-P3   betroffene semantische Räume bestimmen
-P4   relevante Glossareinträge gezielt laden; bei Modellarbeit MODELL-README.md prüfen
-P5   Import-/Layer-Checker ausführen
-P6   Testpflicht ableiten
-P7   Schreibrechte prüfen
-P8   Task-Schnitt prüfen (wenn T1–T5 eintreten)
-P9   Plan anlegen, wenn Änderung nicht trivial ist
+PF-ROUTER       AGENTS.md lesen
+PF-SCHEMA       package-schema.md gezielt prüfen
+PF-RAEUME       betroffene semantische Räume bestimmen
+PF-GLOSSAR      relevante Glossareinträge gezielt laden; bei Modellarbeit MODELL-README.md prüfen
+PF-IMPORTLAYER  Import-/Layer-Checker ausführen
+PF-TESTPFLICHT  Testpflicht ableiten
+PF-SCHREIBRECHT Schreibrechte prüfen
+PF-TASKSCHNITT  Task-Schnitt prüfen (wenn T1–T5 eintreten)
+PF-PLAN         Plan anlegen, wenn Änderung nicht trivial ist
 ```
+
+PF-IDs sind stabile semantische Identitäten. Reihenfolge und Gruppierung
+können sich ändern; IDs werden niemals umbenannt oder wiederverwendet.
 
 Jedes Nein oder Unklar ist entweder Sprechakt, Task-Schnitt, SOFT- oder HARD-Abbruch.
 Abbruchklassen: `blocker-und-abbruch-protokoll.md`, `BROWNFIELD-MIGRATION.md`.
@@ -126,7 +133,7 @@ Nicht raten.
 
 ---
 
-## 3. P1 — AGENTS.md lesen
+## 3. PF-ROUTER — AGENTS.md lesen
 
 ```text
 Welche Safe-Task-Klasse hat die Aufgabe?
@@ -142,7 +149,7 @@ Wenn relevante Platzhalter nicht ersetzt: HARD-Abbruch H7.
 
 ---
 
-## 4. P2 — package-schema.md gezielt prüfen
+## 4. PF-SCHEMA — package-schema.md gezielt prüfen
 
 Nicht das ganze Projekt laden. Nur die betroffenen Raumregeln.
 
@@ -162,7 +169,7 @@ Wenn `package-schema.md` fehlt: HARD-Abbruch.
 
 ---
 
-## 5. P3 — Semantische Räume bestimmen
+## 5. PF-RAEUME — Semantische Räume bestimmen
 
 Für jede betroffene Datei:
 
@@ -181,7 +188,7 @@ Task-Schnitt oder Schemafehler.
 
 ---
 
-## 6. P4 — Glossar gezielt laden; bei Modellarbeit MODELL-README.md prüfen
+## 6. PF-GLOSSAR — Glossar gezielt laden; bei Modellarbeit MODELL-README.md prüfen
 
 Ladeprotokoll: `glossar-README.md`
 
@@ -266,7 +273,7 @@ Wenn Begriff aktiv nötig und fehlt: Task-Schnitt T1, danach Sprechakt SP7.
 
 ---
 
-## 7. P5 — Import-/Layer-Checker ausführen
+## 7. PF-IMPORTLAYER — Import-/Layer-Checker ausführen
 
 ```bash
 python tools/check_import_layers.py --preflight src tests tools
@@ -304,7 +311,7 @@ SA2 gilt nur wenn geänderter Code (src/, tests/) den Format-Check nicht besteht
 
 ---
 
-## 8. P6 — Testpflicht ableiten
+## 8. PF-TESTPFLICHT — Testpflicht ableiten
 
 ```bash
 tools/resolve_test_obligations.py --changed-file <path>
@@ -338,7 +345,7 @@ Wenn keine Tests nötig: Begründung als Evidence notieren (Testfreiheitsformat:
 
 ---
 
-## 9. P7 — Schreibrechte prüfen
+## 9. PF-SCHREIBRECHT — Schreibrechte prüfen
 
 Kanonische Quelle: `regelmatrix.md`; `AGENTS.md` §11 enthält die Kategorien.
 
@@ -355,7 +362,7 @@ Wenn geschützte Datei ohne Mandatsdeckung geändert werden müsste: HARD-Abbruc
 
 ---
 
-## 10. P8 — Task-Schnitt prüfen
+## 10. PF-TASKSCHNITT — Task-Schnitt prüfen
 
 Task-Schnitt bei:
 
@@ -384,7 +391,7 @@ Vollständiges Protokoll: `task-schnitt.md`
 
 ---
 
-## 11. P9 — Plan anlegen
+## 11. PF-PLAN — Plan anlegen
 
 Nichttriviale Änderungen brauchen Plan:
 
@@ -408,7 +415,7 @@ Für nichttriviale Änderungen:
 
 ```text
 Preflight:
-  W0 grün:           ja
+  WG-AUSFUEHRUNG grün: ja
   AGENTS gelesen:    ja
   Schema geprüft:    ja
   Räume:

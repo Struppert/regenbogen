@@ -191,7 +191,7 @@ Task-Schnitt vs. Sprechakt SP7:
   der den fehlenden Begriff aktiv braucht.
 
 Task-Schnitt vs. Preflight:
-  Preflight ist eine Voraussetzungsprüfung — läuft immer (P1–P9).
+  Preflight ist eine Voraussetzungsprüfung — läuft immer (PF-ROUTER–PF-PLAN).
   Task-Schnitt ist eine Strukturentscheidung — läuft wenn T1–T5 eintreten.
   Preflight kann Task-Schnitt auslösen (wenn Brüche oder Lücken sichtbar).
 

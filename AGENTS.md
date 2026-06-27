@@ -68,7 +68,7 @@ Semantischer Task-Schnitt        -> task-schnitt.md
 Brownfield oder Altbruch         -> BROWNFIELD-MIGRATION.md
 Testpflicht                      -> test-obligations.md
 Schreibrechte, Schutz, Drift     -> regelmatrix.md
-Arbeitsmodus, Mandat, W0         -> ausfuehrungsmandat-protokoll.md
+Arbeitsmodus, Mandat, WG-AUSFUEHRUNG -> ausfuehrungsmandat-protokoll.md
 Blocker, Abbruch, Wiedereinstieg -> blocker-und-abbruch-protokoll.md
 Bridge-Symbol                    -> migration-bridges.md
 Erfahrungsbericht-Ausloeser      -> erfahrungsbericht-protokoll.md
@@ -88,12 +88,15 @@ Ohne nachweisbares Ausfuehrungsmandat gilt `ANALYSE`.
 
 ```text
 ANALYSE      lesen, untersuchen, im Chat berichten
-PLAN         Plan-, Entscheidungs- und Diagnoseartefakte erstellen
+PLAN         diagnostische Wirkung: Plan, Evidence, Sprechakt anlegen
 AUSFUEHRUNG  freigegebenen Plan im Mandatsscope umsetzen
 ```
 
-Vor der ersten Repository-Mutation muss W0 aus
-`ausfuehrungsmandat-protokoll.md` grün sein.
+Vor jeder Repository-Mutation WG-AUSFUEHRUNG aus
+`ausfuehrungsmandat-protokoll.md` pruefen. Diagnostische Wirkung (Plan,
+Evidence, Sprechakt) erfordert PLAN- oder AUSFUEHRUNGS-Modus. Transformative
+Wirkung (Code, Checker, normative Artefakte) erfordert zusaetzlich ein
+aktives Ausfuehrungsmandat.
 
 Schreibrecht, Planexistenz, Fast-Path, festgelegter Sprechakt und fehlender
 Blocker ersetzen kein Ausfuehrungsmandat.
@@ -411,7 +414,7 @@ Verboten:
 ### I11. Keine Repository-Mutation ohne aktives Ausfuehrungsmandat
 
 Beschreibbarkeit einer Datei ist kein Ausfuehrungsmandat.
-Vor der ersten Mutation W0 aus `ausfuehrungsmandat-protokoll.md` prüfen.
+Vor der ersten Mutation WG-AUSFUEHRUNG aus `ausfuehrungsmandat-protokoll.md` prüfen.
 
 ---
 
@@ -696,19 +699,19 @@ Bei BF-Abbruch gilt zusätzlich `BROWNFIELD-MIGRATION.md`.
 
 ## 14. Preflight
 
-Vor jeder nichttrivialen Änderung zuerst W0 prüfen (→ `ausfuehrungsmandat-protokoll.md`),
+Vor jeder nichttrivialen Änderung zuerst WG-AUSFUEHRUNG prüfen (→ `ausfuehrungsmandat-protokoll.md`),
 dann Preflight:
 
 ```text
-P1   AGENTS.md lesen
-P2   package-schema.md gezielt prüfen
-P3   betroffene semantische Räume bestimmen
-P4   relevante Glossareinträge gezielt laden; bei Modellarbeit MODELL-README.md prüfen
-P5   Import-/Layer-Checker ausführen
-P6   Testpflicht ableiten
-P7   Schreibrechte prüfen
-P8   Task-Schnitt prüfen, wenn T1–T5 eintreten
-P9   Plan unter docs/plans/ anlegen, wenn Änderung nicht trivial ist
+PF-ROUTER       AGENTS.md lesen
+PF-SCHEMA       package-schema.md gezielt prüfen
+PF-RAEUME       betroffene semantische Räume bestimmen
+PF-GLOSSAR      relevante Glossareinträge gezielt laden; bei Modellarbeit MODELL-README.md prüfen
+PF-IMPORTLAYER  Import-/Layer-Checker ausführen
+PF-TESTPFLICHT  Testpflicht ableiten
+PF-SCHREIBRECHT Schreibrechte prüfen
+PF-TASKSCHNITT  Task-Schnitt prüfen, wenn T1–T5 eintreten
+PF-PLAN         Plan unter docs/plans/ anlegen, wenn Änderung nicht trivial ist
 ```
 
 Fast-Path, Governance-Ausloeser und Ausfuehrungsbreite: kanonische Definitionen `preflight-checkliste.md` §0b.
@@ -831,7 +834,7 @@ Nach Sprechakt:
 1. Sprechakt-Artefakt lesen
 2. menschliche Festlegung lesen
 3. Glossar-/Schema-Nachzug prüfen
-4. W0 und Ausfuehrungsmandat prüfen
+4. WG-AUSFUEHRUNG und Ausfuehrungsmandat prüfen
 5. Preflight ausführen
 6. ab definiertem Wiedereintrittspunkt fortsetzen
 ```
