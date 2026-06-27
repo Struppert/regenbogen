@@ -42,7 +42,6 @@ PYTHON_TEST = "python -m pytest"
 
 AGENT_DOCS = {
     "AGENTS.md",
-    "AGENTS-COMPACT.md",
     "package-schema.md",
     "preflight-checkliste.md",
     "task-schnitt.md",
@@ -183,8 +182,7 @@ def classify_path(path: Path) -> FileObligations:
                 checks={"agent-docs-consistency"},
                 notes=[
                     "Nach regelmatrix.md gekoppelte Dokumente prüfen (Inhalt, nicht nur Präsenz).",
-                    "AGENTS-COMPACT.md darf AGENTS.md inhaltlich nicht widersprechen.",
-                    "Wenn Abbruchregeln oder Schreibrechte geändert: AGENTS-COMPACT.md zwingend anpassen.",
+                    "Nach regelmatrix.md Drift-Regeln: Kopplungspflichten aktiv prüfen.",
                     "ERFAHRUNGSBERICHT (E1): Agentendokument-Änderung ist nichttrivial — Erfahrungsbericht nach Session schreiben.",
                 ],
                 requires_human=True,

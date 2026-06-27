@@ -667,11 +667,11 @@ def print_preflight(findings: list[Finding], files_checked: int) -> None:
     if has_import_error or has_unknown_error:
         print("ABBRUCH: Semantische Layer-Verletzungen gefunden.")
         print(
-            "Gemäß AGENTS.md §10 HARD-Abbruch H2: Import-/Layer-Verletzung ohne klassifizierten Bruch.\n"
+            "HARD-Abbruch H2: Import-/Layer-Verletzung ohne klassifizierten Bruch (blocker-und-abbruch-protokoll.md).\n"
         )
     elif has_public_api:
         print("ABBRUCH: Öffentliche API-Fläche berührt.")
-        print("Gemäß AGENTS.md §10 H9: Public-API-Änderung braucht Freigabe.\n")
+        print("H9: Public-API-Änderung braucht Freigabe (blocker-und-abbruch-protokoll.md).\n")
     print("Evidence (Markdown):")
     for f in findings:
         if isinstance(f, ImportFinding):
@@ -696,7 +696,7 @@ def print_preflight(findings: list[Finding], files_checked: int) -> None:
             print(f"  Modul: `{f.module}`")
             print(f"  Befund: {f.message}")
             print("  Aktion: Modul klassifizieren oder package-schema.md ergänzen.")
-    print("\nReferenz: AGENTS.md §4, package-schema.md")
+    print("\nReferenz: AGENTS.md (Semantische Räume), package-schema.md")
 
 
 # ---------------------------------------------------------------------------

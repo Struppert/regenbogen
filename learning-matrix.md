@@ -184,22 +184,21 @@ Status:        als Verbesserung vorgeschlagen
 
 ### Beobachtung
 
-SP2 für MODELL-README-Pflicht berührte sofort AGENTS.md, AGENTS-COMPACT.md
-und preflight-checkliste.md, inkl. Abschnittsnummerierungen. Die Kaskade war
-nicht im Voraus vollständig sichtbar. Ähnliches gilt für jeden SP2-Sprechakt
-der operative Regeln einführt.
+SP2 für MODELL-README-Pflicht berührte sofort AGENTS.md und preflight-checkliste.md,
+inkl. Abschnittsnummerierungen. Die Kaskade war nicht im Voraus vollständig
+sichtbar. Ähnliches gilt für jeden SP2-Sprechakt der operative Regeln einführt.
 
 ### Wirkung
 
 Höherer Änderungsaufwand als bei einfachen Code-Schnitten. Fehlerrisiko bei
 unvollständiger Kaskadierung. Erhöhte Gefahr von Dokumentdrift zwischen
-AGENTS.md, AGENTS-COMPACT.md und preflight-checkliste.md.
+AGENTS.md und preflight-checkliste.md.
 
 ### Mögliche Maßnahme
 
-Im Preflight bei Änderungen an Framing-Dokumenten (AGENTS.md, AGENTS-COMPACT.md,
-preflight-checkliste.md): Dokumentdrift-Prüfung nach AGENTS.md §17 als
-obligatorischen Schritt explizit benennen — nicht nur als Schlussregel, sondern
+Im Preflight bei Änderungen an Framing-Dokumenten (AGENTS.md,
+preflight-checkliste.md): Dokumentdrift-Prüfung nach AGENTS.md, Dokumentdrift-Regeln
+als obligatorischen Schritt explizit benennen — nicht nur als Schlussregel, sondern
 als eigener Preflight-Check vor dem Schreiben.
 
 ### Entscheidung
@@ -306,7 +305,7 @@ Klasse E: Prozesslücke
 ## 5. Schutz und Pflege
 
 ```text
-- Dieses Dokument ist geschützt (AGENTS.md Abschnitt 9).
+- Dieses Dokument ist geschützt (regelmatrix.md §7 Schreibstatus).
 - Neue Einträge nur nach Erfahrungsbericht-Session, nicht ad hoc.
 - Status-Änderung auf "umgesetzt" erfordert Freigabe.
 - Abgeschlossene Muster werden nicht gelöscht — auf "umgesetzt" gesetzt.

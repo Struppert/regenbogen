@@ -22,160 +22,131 @@ Welche Änderungen erzeugen Kopplungspflichten?
 
 ---
 
-## 2. Autoritätsreihenfolge
+## 2. Autoritaetsmodell
 
-Bei Widerspruch zwischen Dokumenten gilt diese Reihenfolge:
+Autorität folgt der Zuständigkeit, nicht einer pauschalen Totalordnung.
 
 ```text
-1. AGENTS.md
-   Operative Regeln, Schreibrechte, Abbruchbedingungen, Safe Tasks.
-   Kanonische Quelle für alle Listen (Invarianten, H-Codes, S-Codes, Schreibrechte).
+AGENTS.md
+   Bindender Einstieg, Kerninvarianten, Ladeprotokoll, Code-Familien.
+   AGENTS.md wiederholt Detailregeln nicht vollständig.
 
-2. package-schema.md
+package-schema.md
    Semantische Paket-/Modulräume, Importregeln, Known Breaches.
 
-3. glossar-domain.md / glossar-system.md / glossar-meta.md
+glossar-domain.md / glossar-system.md / glossar-meta.md
    Begriffe und ihre Bedingungsräume. Autoritativ für Bedeutung.
    Ladeprotokoll: glossar-README.md.
 
-4. preflight-checkliste.md
+regelmatrix.md
+   Schreibrechte, Schutzlisten, Autoritätsordnung und Drift-Regeln.
+
+preflight-checkliste.md
    Durchführung vor Änderungen.
 
-5. test-obligations.md
+test-obligations.md
    Ableitung der Test- und Checkpflichten.
 
-6. sprechakt-protokoll.md
+sprechakt-protokoll.md
    Ablauf menschlicher Festlegungen.
 
-7. task-schnitt.md
+task-schnitt.md
    Schnitt von Aufgaben und Semantic Working Set.
 
-8. migration-bridges.md
+ausfuehrungsmandat-protokoll.md
+   Arbeitsmodus, Ausfuehrungsmandat und Wirkungsgate W0.
+
+blocker-und-abbruch-protokoll.md
+   H-/SA-Abbrüche, Blocker, Abbruch-Evidence, Wiedereinstieg.
+
+migration-bridges.md
    Symbolsperren und Bridge-Begriffe.
 
-9. AGENTS-COMPACT.md
-   Schnelleinstieg. Destillat aus AGENTS.md. Darf AGENTS.md nicht widersprechen.
+BROWNFIELD-MIGRATION.md
+   Operative Autorität für Brownfield-Aufnahme, Box-Versionsmigration und
+   Reparatur abgebrochener Erstinstanziierung.
 
-10. grundsatz.md
-    Warum dieses System so gebaut ist. Theorie / Hintergrund.
-    Keine operativen Regeln — aber Begründung für alle operativen Regeln.
-    Kein Agent muss grundsatz.md für jeden Preflight lesen.
-    Jeder Agent sollte es einmal gelesen haben.
+erfahrungsbericht-protokoll.md / learning-matrix.md
+   Lernprotokoll und aggregierter Rückfluss. Keine direkte Regelautorität.
 
-11. BROWNFIELD-MIGRATION.md
-    Operative Autorität für Brownfield-Aufnahme, Box-Versionsmigration und
-    Reparatur abgebrochener Erstinstanziierung.
+grundsatz.md
+   Theorie / Hintergrund. Keine operative Regelquelle.
 
-12. AGENT-SETUP.md / README.md / sonstige Projektdokumentation
-    AGENT-SETUP.md: Instanziierungsanleitung der Box, informativ.
-    README.md (im Zielprojekt): Projektzweck, keine Agentenautorität.
-    Orientierung — keine operative Agentenautorität.
+AGENT-SETUP.md / README.md / sonstige Projektdokumentation
+   Orientierung und Instanziierungsanleitung. Keine operative Agentenautorität.
 ```
 
-Wenn ein niedrigeres Dokument einem höheren widerspricht:
-nicht lokal reparieren. Drift melden. Je nach Relevanz: HARD-Abbruch.
+Wenn zwei Dokumente dieselbe Detailfrage unterschiedlich beantworten:
+Drift melden. Keine Quelle still bevorzugen.
 
 ---
 
 ## 3. Regelmatrix: Welche Datei beantwortet was?
 
-| Frage                                  | Autoritative Quelle                     | Agent tut                    |
-| -------------------------------------- | --------------------------------------- | ---------------------------- |
-| Was darf der Agent ändern?             | `AGENTS.md`                             | Schreibrechte prüfen         |
-| Welche Dateien sind geschützt?         | `AGENTS.md`                             | Bei Bedarf HARD-Abbruch      |
-| Wann muss der Agent abbrechen?         | `AGENTS.md`                             | Abbruch-Evidence erzeugen    |
-| Was ist ein Safe Task?                 | `AGENTS.md`                             | Risikoklasse bestimmen       |
-| Welche Invarianten gelten?             | `AGENTS.md`                             | Invariante prüfen            |
-| Was bedeutet dieser Begriff fachlich?  | `glossar-domain.md`                     | Ladeprotokoll folgen         |
-| Was bedeutet dieser Betriebsbegriff?   | `glossar-system.md`                     | Ladeprotokoll folgen         |
-| Was bedeutet dieser Meta-Begriff?      | `glossar-meta.md`                       | Ladeprotokoll folgen         |
-| Welches Glossar wann laden?            | `glossar-README.md`                     | Ladeprotokoll ausführen      |
-| Ist die Autonomieregel erfüllt?        | passendes Glossar                       | H10 wenn verletzt            |
-| Welchem Raum gehört ein Modul an?      | `package-schema.md`                     | Raum klassifizieren          |
-| Welche Imports sind erlaubt?           | `package-schema.md`                     | Import-Checker ausführen     |
-| Welche Known Breaches existieren?      | `package-schema.md` + Checker           | Aktiv/passiv prüfen          |
-| Darf dieses Symbol angefasst werden?   | `migration-bridges.md`                  | Migrationsstatus prüfen      |
-| Welche Checks sind Pflicht?            | `test-obligations.md`                   | Testpflicht ableiten         |
-| Wie wird Preflight ausgeführt?         | `preflight-checkliste.md`               | Schrittfolge ausführen       |
-| Wann wird Task-Schnitt geprüft?        | `task-schnitt.md`                       | SWS schneiden                |
-| Wann ist ein Sprechakt nötig?          | `AGENTS.md` + `sprechakt-protokoll.md`  | Sprechakt-Artefakt erzeugen  |
-| Wie sieht ein Sprechakt-Artefakt aus?  | `sprechakt-protokoll.md`                | Vorlage verwenden            |
-| Wie wird Brownfield migriert?          | `BROWNFIELD-MIGRATION.md`               | Brownfield-Verfahren ausführen |
-| Welche BF-Abbrüche gelten?             | `BROWNFIELD-MIGRATION.md`               | Brownfield-Evidence schreiben |
-| Was liest der Agent zuerst?            | `AGENTS-COMPACT.md`                     | Startkontext laden           |
-| Wie wird Dokumentdrift bewertet?       | `regelmatrix.md`                        | Kopplung prüfen              |
-| Warum ist dieses System so gebaut?     | `grundsatz.md`                          | Einmal lesen, verstehen      |
+| Frage | Autoritative Quelle | Agent tut |
+| --- | --- | --- |
+| Was liest der Agent zuerst? | `AGENTS.md` | Router und Kernregeln laden |
+| Welche Detaildokumente werden geladen? | `AGENTS.md` | Aktivierung nach Task-Auslöser |
+| Was darf der Agent ändern? | `regelmatrix.md` | Schreibrechte prüfen |
+| Welche Dateien sind geschützt? | `regelmatrix.md` | Bei Bedarf H1 |
+| Darf der Agent jetzt Wirkung erzeugen? | `ausfuehrungsmandat-protokoll.md` | W0 prüfen |
+| Wann muss der Agent allgemein abbrechen? | `blocker-und-abbruch-protokoll.md` | Abbruch-Evidence erzeugen |
+| Was ist Fast-Path? | `AGENTS.md` | Risikoklasse bestimmen |
+| Welche Invarianten gelten immer? | `AGENTS.md` | Invariante prüfen |
+| Was bedeutet dieser Begriff fachlich? | `glossar-domain.md` | Ladeprotokoll folgen |
+| Was bedeutet dieser Betriebsbegriff? | `glossar-system.md` | Ladeprotokoll folgen |
+| Was bedeutet dieser Meta-Begriff? | `glossar-meta.md` | Ladeprotokoll folgen |
+| Welches Glossar wann laden? | `glossar-README.md` | Ladeprotokoll ausführen |
+| Ist die Autonomieregel erfüllt? | passendes Glossar | H10 wenn verletzt |
+| Welchem Raum gehört ein Modul an? | `package-schema.md` | Raum klassifizieren |
+| Welche Imports sind erlaubt? | `package-schema.md` | Import-Checker ausführen |
+| Welche Known Breaches existieren? | `package-schema.md` + Checker | Aktiv/passiv prüfen |
+| Darf dieses Symbol angefasst werden? | `migration-bridges.md` | Migrationsstatus prüfen |
+| Welche Checks sind Pflicht? | `test-obligations.md` | Testpflicht ableiten |
+| Wie wird Preflight ausgeführt? | `preflight-checkliste.md` | Schrittfolge ausführen |
+| Wann wird Task-Schnitt geprüft? | `task-schnitt.md` | Semantischen Schnitt bewerten |
+| Wann ist ein Sprechakt nötig? | `AGENTS.md` + `sprechakt-protokoll.md` | Sprechakt-Artefakt erzeugen |
+| Wie sieht ein Sprechakt-Artefakt aus? | `sprechakt-protokoll.md` | Vorlage verwenden |
+| Wie wird Brownfield migriert? | `BROWNFIELD-MIGRATION.md` | Brownfield-Verfahren ausführen |
+| Welche BF-Abbrüche gelten? | `BROWNFIELD-MIGRATION.md` | Brownfield-Evidence schreiben |
+| Wie wird Dokumentdrift bewertet? | `regelmatrix.md` | Kopplung prüfen |
+| Warum ist dieses System so gebaut? | `grundsatz.md` | Einmal lesen, verstehen |
 
 ---
 
 ## 4. Redundanzregel
 
-Listen, die an mehreren Stellen stehen könnten (Schreibrechte, Abbruchbedingungen,
-Invarianten, Sprechakt-Klassen), haben genau eine kanonische Quelle: `AGENTS.md`.
+Jede Regel hat genau eine autoritative Quelle.
 
-Alle anderen Dokumente dürfen diese Listen in Kurzform wiederholen oder darauf verweisen.
-Sie dürfen sie nicht eigenständig erweitern.
+`AGENTS.md` aktiviert Detailregeln, wiederholt sie aber nicht vollständig.
+Spezialdokumente dürfen die Kernregeln referenzieren, aber keine eigene
+konkurrierende Autorität erfinden.
 
-Wenn AGENTS-COMPACT.md eine Abbruchregel enthält, die in AGENTS.md fehlt:
-COMPACT driftet — HARD-Abbruch H3.
+Wenn zwei Dokumente dieselbe Detailfrage unterschiedlich beantworten:
+Drift melden. Keine Quelle still bevorzugen.
 
 ---
 
 ## 5. Drift-Regeln
-
-### Änderung an `glossar-domain.md`, `glossar-system.md` oder `glossar-meta.md`
-
-Zwingend prüfen:
-
-```text
-glossar-README.md  — Ladeprotokoll noch korrekt?
-package-schema.md  — neue Raumzuordnung nötig?
-migration-bridges.md — neuer Begriff mit Bridge-Status?
-AGENTS.md          — neue Invariante aus dem Begriff ableitbar?
-```
-
-Wenn ein neuer Begriff eingetragen wird: package-schema.md auf Raumkorrespondenz prüfen.
-Wenn ein Begriff geändert wird: migration-bridges.md auf Migrationsstatus prüfen.
-
----
-
-### Änderung an `grundsatz.md`
-
-Zwingend prüfen:
-
-```text
-AGENTS.md          — folgt eine operative Konsequenz?
-regelmatrix.md     — ändert sich die Hierarchie?
-```
-
-grundsatz.md ist Theorie — operative Änderungen gehören nach AGENTS.md, nicht hierher.
-
----
 
 ### Änderung an `AGENTS.md`
 
 Zwingend prüfen:
 
 ```text
-AGENTS-COMPACT.md  — Kurzform abgleichen (Invarianten, Abbrüche, Schreibrechte)
 preflight-checkliste.md
-package-schema.md
+task-schnitt.md
 regelmatrix.md
+test-obligations.md
+erfahrungsbericht-protokoll.md
+blocker-und-abbruch-protokoll.md
+ausfuehrungsmandat-protokoll.md
+tools/check_agent_docs_consistency.py
 ```
 
-Hinweis: `check_agent_docs_consistency.py --changed-file AGENTS.md` gibt Kopplungshinweise.
-Das Tool prüft Dateipräsenz und Stichwort-Vorkommen — keinen Inhaltsabgleich.
-Inhaltsabgleich ist manueller Review.
-
----
-
-### Änderung an `AGENTS-COMPACT.md`
-
-Zwingend prüfen:
-
-```text
-AGENTS.md  — COMPACT darf keine neue Regel enthalten, die nicht in AGENTS.md steht.
-```
+Hinweis: `check_agent_docs_consistency.py --changed-file AGENTS.md` gibt
+Kopplungshinweise. Das Tool prüft Dateipräsenz und Stichwort-Vorkommen,
+keinen Inhaltsabgleich. Inhaltsabgleich ist manueller Review.
 
 ---
 
@@ -185,7 +156,6 @@ Zwingend prüfen:
 
 ```text
 AGENTS.md
-AGENTS-COMPACT.md
 test-obligations.md
 tools/check_import_layers.py  → LAYER_BY_PACKAGE_PART und FORBIDDEN_IMPORTS nachziehen
 ```
@@ -195,18 +165,35 @@ Checker muss nachgezogen werden — sonst läuft er mit veralteter Konfiguration
 
 ---
 
+### Änderung an `glossar-domain.md`, `glossar-system.md` oder `glossar-meta.md`
+
+Zwingend prüfen:
+
+```text
+glossar-README.md
+package-schema.md
+migration-bridges.md
+AGENTS.md
+```
+
+Wenn ein neuer Begriff eingetragen wird: package-schema.md auf Raumkorrespondenz
+prüfen. Wenn ein Begriff geändert wird: migration-bridges.md auf
+Migrationsstatus prüfen.
+
+---
+
 ### Änderung an `preflight-checkliste.md`
 
 Zwingend prüfen:
 
 ```text
 AGENTS.md
-AGENTS-COMPACT.md
+task-schnitt.md
 regelmatrix.md
+ausfuehrungsmandat-protokoll.md
 ```
 
 Preflight darf keine neuen Abbruchregeln erfinden.
-Neue Abbruchregel gehört zuerst nach `AGENTS.md`.
 
 ---
 
@@ -218,6 +205,8 @@ Zwingend prüfen:
 AGENTS.md
 preflight-checkliste.md
 sprechakt-protokoll.md
+blocker-und-abbruch-protokoll.md
+ausfuehrungsmandat-protokoll.md
 ```
 
 ---
@@ -236,6 +225,24 @@ Neue Sprechaktklasse gehört zuerst oder gleichzeitig nach `AGENTS.md`.
 
 ---
 
+### Änderung an `ausfuehrungsmandat-protokoll.md`
+
+Zwingend prüfen:
+
+```text
+AGENTS.md
+preflight-checkliste.md
+docs/plans/template.md
+regelmatrix.md
+sprechakt-protokoll.md
+BROWNFIELD-MIGRATION.md
+tools/check_agent_docs_consistency.py
+```
+
+Mandatsregeln dürfen keine Semantikentscheidung ersetzen.
+
+---
+
 ### Änderung an `test-obligations.md`
 
 Zwingend prüfen:
@@ -248,9 +255,37 @@ tools/resolve_test_obligations.py
 
 ---
 
+### Änderung an `erfahrungsbericht-protokoll.md`
+
+Zwingend prüfen:
+
+```text
+AGENTS.md
+learning-matrix.md
+tools/resolve_test_obligations.py
+tools/check_agent_docs_consistency.py
+```
+
+---
+
+### Änderung an `grundsatz.md`
+
+Zwingend prüfen:
+
+```text
+AGENTS.md
+regelmatrix.md
+```
+
+`grundsatz.md` ist Theorie. Operative Änderungen gehören in das passende
+operative Dokument.
+
+---
+
 ### Änderung an Checker-Tools
 
-Betroffen: `check_import_layers.py`, `resolve_test_obligations.py`, `check_agent_docs_consistency.py`
+Betroffen: `check_import_layers.py`, `resolve_test_obligations.py`,
+`check_agent_docs_consistency.py`
 
 Zwingend prüfen:
 
@@ -273,9 +308,6 @@ Keine Änderung zur Fehlerunterdrückung.
 AGENTS.md vs. package-schema.md
   → HARD-Abbruch H3. Keine Quelle still bevorzugen.
 
-AGENTS.md vs. AGENTS-COMPACT.md
-  → AGENTS.md gilt. COMPACT driftet. Melden.
-
 package-schema.md vs. Import-Checker
   → HARD-Abbruch H2 oder Known-Breach-Prüfung.
   → Checker ist Alarm, nicht Architekturautorität.
@@ -284,12 +316,71 @@ test-obligations.md vs. resolve_test_obligations.py
   → Testpflicht unklar → HARD-Abbruch H6.
 
 sprechakt-protokoll.md vs. AGENTS.md
-  → AGENTS.md gilt. Sprechakt-Dokument driftet.
+  → AGENTS.md gilt für Kernregeln. Sprechakt-Dokument driftet.
+
+regelmatrix.md vs. AGENTS.md
+  → Schutz- oder Autoritätsdrift. HARD-Abbruch H3.
 ```
 
 ---
 
-## 7. Known-Breach-Regel
+## 7. Schreibstatus
+
+```text
+beschreibbar
+  Die Dateiklasse kann grundsätzlich durch Agenten verändert werden.
+
+geschützt
+  Die Dateiklasse braucht zusätzliche explizite Berechtigung.
+
+freigegeben
+  Die konkrete Änderung ist durch ein aktives, scope-gültiges
+  Ausfuehrungsmandat gedeckt.
+```
+
+Beschreibbarkeit ist eine Policy-Eigenschaft. Sie ist kein Ausfuehrungsmandat.
+
+Eine geschützte Datei ist nur freigegeben, wenn das Mandat sie ausdrücklich nennt.
+
+Geschützt sind:
+
+```text
+AGENTS.md
+AGENT-SETUP.md
+BROWNFIELD-MIGRATION.md
+ausfuehrungsmandat-protokoll.md
+blocker-und-abbruch-protokoll.md
+package-schema.md
+preflight-checkliste.md
+task-schnitt.md
+sprechakt-protokoll.md
+regelmatrix.md
+test-obligations.md
+migration-bridges.md
+erfahrungsbericht-protokoll.md
+learning-matrix.md
+glossar-README.md
+glossar-domain.md
+glossar-system.md
+glossar-meta.md
+grundsatz.md
+docs/plans/template.md
+tools/check_agent_docs_consistency.py
+tools/check_import_layers.py
+tools/resolve_test_obligations.py
+tools/instantiate/instantiate_project_box.py
+tools/instantiate/README.md
+.agent-box-template.md
+.agent-box/instantiation.md
+.agent-box/adoption.md
+pyproject.toml
+Lockfiles
+.github/workflows/
+```
+
+---
+
+## 8. Known-Breach-Regel
 
 Known Breaches dürfen nicht erweitert, verschoben, umbenannt,
 still repariert oder als Präzedenzfall verwendet werden.
@@ -305,19 +396,6 @@ Wenn eine Aufgabe einen Known Breach berührt:
 ```
 
 Wenn aktiv und nicht geplant: Task-Schnitt oder HARD-Abbruch H2.
-
----
-
-## 8. Agenten-Dokumente sind operative Regeln
-
-```text
-AGENTS.md, AGENTS-COMPACT.md, package-schema.md,
-preflight-checkliste.md, task-schnitt.md, sprechakt-protokoll.md,
-regelmatrix.md, test-obligations.md
-```
-
-Diese Dateien sind nicht „nur Doku".
-Änderung nur mit expliziter Freigabe (→ H1).
 
 ---
 

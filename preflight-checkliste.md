@@ -4,7 +4,8 @@
 >
 > Sie operationalisiert `AGENTS.md`. Sie ersetzt es nicht.
 >
-> Neue Abbruchregeln gehören nach `AGENTS.md`, nicht hierher.
+> Neue allgemeine Abbruchregeln gehören nach
+> `blocker-und-abbruch-protokoll.md`, nicht hierher.
 
 ---
 
@@ -13,7 +14,7 @@
 Preflight beantwortet vor einer Änderung:
 
 ```text
-Darf der Agent diese Änderung ausführen?
+Ist die Aufgabe fachlich, strukturell und testseitig ausführbar?
 Ist der semantische Raum bekannt?
 Ist die Reichweite bestimmbar?
 Sind Schreibrechte erlaubt?
@@ -23,27 +24,34 @@ Gibt es einen Abbruch- oder Sprechaktgrund?
 
 Preflight ist kein Ritual.
 Preflight ist der Schutz gegen Bedeutungsrekonstruktion aus Vermutung.
+Preflight ersetzt kein Ausfuehrungsmandat.
 
 ---
 
-## 1. Platzhalter
+## 0a. W0 — Wirkungsgate
+
+W0 wird unmittelbar vor der ersten Repository-Mutation geprüft.
 
 ```text
-Regenbogen  regenbogen  src  tests
-docs             tools            python tools/check_import_layers.py --preflight src tests tools
-python -m ruff check .       python -m ruff format --check .
-python -m mypy src  python -m pytest       python tools/check_agent_docs_consistency.py --instantiated && python tools/check_import_layers.py --preflight src tests tools && python tools/resolve_test_obligations.py --selfcheck --instantiated && python -m pytest
+Welcher Arbeitsmodus gilt?
+Existiert ein aktives Ausfuehrungsmandat?
+Passt die freigegebene Plan-Version?
+Liegt die geplante Mutation im Scope?
+Ist die Dateiklasse beschreibbar oder geschützt?
+Ist eine geschützte Datei ausdrücklich vom Mandat gedeckt?
 ```
 
-Nicht ersetzter Platzhalter in aktiver Regel → Abbruch H7.
+Wenn W0 nicht grün ist: keine Mutation.
+
+Protokoll: `ausfuehrungsmandat-protokoll.md`
 
 ---
 
-## 2. Risikoklassen-Weiche
+## 0b. Risikoklassen-Weiche
 
 Vor dem vollständigen Preflight: welche Risikoklasse hat diese Aufgabe?
 
-Kanonische SICHER-Definition: `AGENTS.md` Abschnitt 6.
+Kanonische SICHER-Definition: `AGENTS.md` §8.
 
 **SICHER** (kein neuer Begriff, keine neue Importkante, kein neuer Raum):
 
@@ -68,60 +76,57 @@ Lokale Refactorings ohne neue öffentliche Symbole
 - keine Änderung an Tests, die Verhalten definieren
 ```
 
-→ **Fast-Path:** P1 + P4 + P7 + P8 + P9.
-P2–P3, P5, P6, P10–P11 entfallen.
+→ **Fast-Path:** P1 + P3 + P5 + P6 + P7.
+P2, P4, P8, P9 entfallen.
 
-P9 (Schreibrechte) entfällt nie. Safe Task ist Risikoklasse, nicht Schreibrecht.
+P7 (Schreibrechte) entfällt nie. Safe Task ist Risikoklasse, nicht Schreibrecht.
 
-**MITTEL oder höher** (Definition: `AGENTS.md` Abschnitt 6):
+**MITTEL oder höher** (Definition: `AGENTS.md` §8):
 
-→ Vollständiger Preflight P1–P11.
+→ Vollständiger Preflight P1–P9.
 
-**Wenn Zweifel über die Risikoklasse:** vollständiger Preflight P1–P11.
+**Wenn Zweifel über die Risikoklasse:** vollständiger Preflight P1–P9.
 
 Brownfield-Arbeit ist nie SICHER. Jede Änderung die einen bekannten Bruch
 im Scope berührt, erhöht die Klasse automatisch auf MITTEL.
 
 ---
 
-## 3. Kurzform (vollständiger Preflight)
+## 1. Platzhalter
 
 ```text
-P1   AGENTS-COMPACT.md lesen
-P2   AGENTS.md lesen
-P3   package-schema.md gezielt prüfen
-P4   betroffene semantische Räume bestimmen
-P5   relevante Glossareinträge gezielt laden
-P6   bei Modellarbeit MODELL-README.md prüfen
-P7   Import-/Layer-Checker ausführen
-P8   Testpflicht ableiten
-P9   Schreibrechte prüfen
-P10  Task-Schnitt prüfen (wenn T1–T5 eintreten)
-P11  Plan anlegen, wenn Änderung nicht trivial ist
+Regenbogen  regenbogen  src  tests
+docs             tools            python tools/check_import_layers.py --preflight src tests tools
+python -m ruff check .       python -m ruff format --check .
+python -m mypy src  python -m pytest       python tools/check_agent_docs_consistency.py --instantiated && python tools/check_import_layers.py --preflight src tests tools && python tools/resolve_test_obligations.py --selfcheck --instantiated && python -m pytest
+```
+
+Nicht ersetzter Platzhalter in aktiver Regel → Abbruch H7.
+
+---
+
+## 2. Kurzform (vollständiger Preflight)
+
+```text
+P1   AGENTS.md lesen
+P2   package-schema.md gezielt prüfen
+P3   betroffene semantische Räume bestimmen
+P4   relevante Glossareinträge gezielt laden; bei Modellarbeit MODELL-README.md prüfen
+P5   Import-/Layer-Checker ausführen
+P6   Testpflicht ableiten
+P7   Schreibrechte prüfen
+P8   Task-Schnitt prüfen (wenn T1–T5 eintreten)
+P9   Plan anlegen, wenn Änderung nicht trivial ist
 ```
 
 Jedes Nein oder Unklar ist entweder Sprechakt, Task-Schnitt, SOFT- oder HARD-Abbruch.
-Abbruchklassen: `AGENTS.md` Abschnitt 10.
+Abbruchklassen: `blocker-und-abbruch-protokoll.md`, `BROWNFIELD-MIGRATION.md`.
 
 Nicht raten.
 
 ---
 
-## 4. P1 — AGENTS-COMPACT.md lesen
-
-```text
-Ist AGENTS-COMPACT.md vorhanden?
-Sind die Platzhalter ersetzt?
-Passt der Schnelleinstieg zur Aufgabe?
-Gibt es dort eine unmittelbare Sperre?
-```
-
-Wenn `AGENTS-COMPACT.md` fehlt: HARD-Abbruch H7.
-Wenn relevante Platzhalter nicht ersetzt: HARD-Abbruch H7.
-
----
-
-## 5. P2 — AGENTS.md lesen
+## 3. P1 — AGENTS.md lesen
 
 ```text
 Welche Safe-Task-Klasse hat die Aufgabe?
@@ -129,14 +134,15 @@ Welche Invarianten sind betroffen?
 Welche Abbruchregeln können greifen?
 Welche Schreibrechte gelten?
 Welche Sprechaktklassen können ausgelöst werden?
+Gibt es eine unmittelbare Sperre?
 ```
 
-Wenn die Aufgabe in `AGENTS.md` nicht klassifizierbar ist:
-Task-Schnitt prüfen. Danach noch unklar: Sprechakt oder HARD-Abbruch.
+Wenn `AGENTS.md` fehlt: HARD-Abbruch H7.
+Wenn relevante Platzhalter nicht ersetzt: HARD-Abbruch H7.
 
 ---
 
-## 6. P3 — package-schema.md gezielt prüfen
+## 4. P2 — package-schema.md gezielt prüfen
 
 Nicht das ganze Projekt laden. Nur die betroffenen Raumregeln.
 
@@ -156,7 +162,7 @@ Wenn `package-schema.md` fehlt: HARD-Abbruch.
 
 ---
 
-## 7. P4 — Semantische Räume bestimmen
+## 5. P3 — Semantische Räume bestimmen
 
 Für jede betroffene Datei:
 
@@ -175,14 +181,14 @@ Task-Schnitt oder Schemafehler.
 
 ---
 
-## 8. P5 — Glossar gezielt laden
+## 6. P4 — Glossar gezielt laden; bei Modellarbeit MODELL-README.md prüfen
 
 Ladeprotokoll: `glossar-README.md`
 
 **Schritt 1: Aktive Begriffe bestimmen**
 
 ```text
-Welche Begriffe werden in dieser Iteration aktiv gebraucht?
+Welche Begriffe werden in diesem Arbeitspaket aktiv gebraucht?
   - geändert, umbenannt oder verschoben
   - als Entscheidungsgrundlage gebraucht
   - in neuen Namen, Typen, Fehlern, Statuswerten oder Tests
@@ -240,11 +246,9 @@ Wenn die Aufgabe cli/ berührt und Werte angezeigt werden:
 Nicht laden:
 - ganzes Glossar reflexhaft
 - historisch relevante Begriffe die jetzt nicht aktiv gebraucht werden
-- Begriffe aus Räumen die diese Iteration nicht berührt
+- Begriffe aus Räumen die dieses Arbeitspaket nicht berührt
 
----
-
-## 9. P6 — MODELL-README bei Modellarbeit prüfen
+**Bei Modellarbeit: MODELL-README.md prüfen**
 
 Wenn die Aufgabe das implementierte Modell berührt, zusätzlich prüfen:
 
@@ -255,25 +259,14 @@ Würde die geplante Änderung Modellannahmen, Faktoren, Zielgrößen oder die
 Übersetzung technischer Eingangsdaten in fachliche Begriffe ändern?
 ```
 
-Wenn ja:
-
-```text
-MODELL-README.md ist Pflichtprojektion und muss im selben Schnitt geprüft und
-bei Bedarf aktualisiert werden.
-```
-
-`MODELL-README.md` ersetzt weder Glossar noch Code.
+Wenn ja: MODELL-README.md ist Pflichtprojektion und muss im selben Schnitt geprüft
+und bei Bedarf aktualisiert werden.
 Neue fachliche Modellbegriffe dürfen dort nicht still entstehen.
+Wenn Begriff aktiv nötig und fehlt: Task-Schnitt T1, danach Sprechakt SP7.
 
-Wenn für die Modellbeschreibung ein fehlender oder unvollständiger Begriff
-aktiv nötig wird:
+---
 
-```text
-Task-Schnitt T1 prüfen.
-Wenn der Begriff aktiv nötig bleibt: Sprechakt SP7.
-```
-
-## 10. P7 — Import-/Layer-Checker ausführen
+## 7. P5 — Import-/Layer-Checker ausführen
 
 ```bash
 python tools/check_import_layers.py --preflight src tests tools
@@ -311,7 +304,7 @@ SA2 gilt nur wenn geänderter Code (src/, tests/) den Format-Check nicht besteht
 
 ---
 
-## 11. P8 — Testpflicht ableiten
+## 8. P6 — Testpflicht ableiten
 
 ```bash
 tools/resolve_test_obligations.py --changed-file <path>
@@ -345,9 +338,9 @@ Wenn keine Tests nötig: Begründung als Evidence notieren (Testfreiheitsformat:
 
 ---
 
-## 12. P9 — Schreibrechte prüfen
+## 9. P7 — Schreibrechte prüfen
 
-Kanonische Quelle: `AGENTS.md` Abschnitt 9.
+Kanonische Quelle: `regelmatrix.md`; `AGENTS.md` §11 enthält die Kategorien.
 
 Kurzform:
 
@@ -358,11 +351,11 @@ Geschützt:      alle Agentendokumente, Checker-Tools, docs/plans/template.md,
                 pyproject.toml, Lockfiles, .github/workflows/
 ```
 
-Wenn geschützte Datei ohne Freigabe geändert werden müsste: HARD-Abbruch H1.
+Wenn geschützte Datei ohne Mandatsdeckung geändert werden müsste: HARD-Abbruch H1.
 
 ---
 
-## 13. P10 — Task-Schnitt prüfen
+## 10. P8 — Task-Schnitt prüfen
 
 Task-Schnitt bei:
 
@@ -378,17 +371,20 @@ T5  mehrere Glossarbereiche nötig
 Kann die Aufgabe auf einen Raum eingeschränkt werden?
 Kann eine Seite der Binding-Grenze zuerst bearbeitet werden?
 Kann der fehlende Begriff aus dem aktiven SWS entfernt werden?
-Kann die Aufgabe in Iteration A/B geteilt werden?
+Unterscheiden sich menschliche Festlegung, Urteilskompetenz,
+Schreibrecht, Validierung oder Rollback-Grenze?
 ```
 
-Wenn Teilung möglich: teilen.
+Blosse Teilbarkeit ist kein Schnittgrund.
+Wenn nur gleichartige Arbeit in einem semantischen Schnitt vorliegt: bündeln.
+Wenn echte semantische Grenze vorliegt: schneiden.
 Wenn nicht möglich und Begriff fehlt: Sprechakt SP7.
 
 Vollständiges Protokoll: `task-schnitt.md`
 
 ---
 
-## 14. P11 — Plan anlegen
+## 11. P9 — Plan anlegen
 
 Nichttriviale Änderungen brauchen Plan:
 
@@ -406,12 +402,13 @@ Kein Plan außerhalb von `docs/plans/`.
 
 ---
 
-## 15. Preflight-Evidence
+## 13. Preflight-Evidence
 
 Für nichttriviale Änderungen:
 
 ```text
 Preflight:
+  W0 grün:           ja
   AGENTS gelesen:    ja
   Schema geprüft:    ja
   Räume:
@@ -427,7 +424,7 @@ Preflight:
 
 ---
 
-## 16. Schlussregel
+## 14. Schlussregel
 
 Preflight endet nur mit einem dieser Zustände:
 

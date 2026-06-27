@@ -3,7 +3,7 @@
 > Dieses Dokument klassifiziert Symbole und Begriffe, die nicht mechanisch angefasst
 > werden dürfen — auch wenn sie in keiner geschützten Datei stehen.
 >
-> Geschützte Dateien: `AGENTS.md` Abschnitt 9.
+> Geschützte Dateien: `regelmatrix.md` §7 Schreibstatus.
 > Symbolsperren: dieses Dokument.
 
 ---
@@ -137,7 +137,7 @@ ist die Textwarnung allein nicht ausreichend.
 ## 6. Verhältnis zu anderen Dokumenten
 
 ```text
-AGENTS.md Abschnitt 9     → schützt Dateien
+regelmatrix.md §7 Schreibstatus → schützt Dateien
 migration-bridges.md       → schützt Bedeutungen / Symbole aus domain, system und meta
 package-schema.md          → klassifiziert Modulräume
 sprechakt-protokoll.md SP6  → regelt Umklassifizierungen von Known Breaches
@@ -155,7 +155,7 @@ Bei Widerspruch:
 - Neue Bridge-Begriffe werden hier eingetragen, bevor Code geändert wird.
 - Abgeschlossene Migrationen werden als "canonical" markiert — nicht gelöscht.
 - Migrationsstatus-Änderung ist Sprechakt SP6.
-- Dieses Dokument ist geschützt (AGENTS.md Abschnitt 9).
+- Dieses Dokument ist geschützt (regelmatrix.md §7 Schreibstatus).
 ```
 
 ---

@@ -55,6 +55,23 @@ Brownfield schuetzt Bestand vor Ueberschreibung, aber nicht vor Bewertung.
 Reparatur einer fehlgeschlagenen, noch nicht produktiv weiterbearbeiteten
 Erstinstanziierung zulaessig.
 
+Template-Neuerungen sind kein automatischer lokaler Sollzustand. Eine neue
+Box-Version ist ein Angebot neuer Regeln, Werkzeuge und Verfahren.
+
+Brownfield trennt immer:
+
+```text
+Zielmodell-Entscheidung:
+  Welche Template-Neuerungen werden lokale operative Wahrheit?
+
+Migrationsmandat:
+  Darf die festgelegte Migration jetzt auf das Repository wirken?
+```
+
+Die Annahme einer Template-Regel startet keine Migration.
+Vor jeder transformativen Brownfield-Wirkung muss W0 aus
+`ausfuehrungsmandat-protokoll.md` gruen sein.
+
 ---
 
 ## 1a. Altlast-Modus: Hochrisikozone bekannter Brüche
@@ -229,7 +246,7 @@ Standardklassifikation:
 | --- | --- |
 | `README.md` | `preserve` |
 | `AGENTS.md` | `merge` |
-| `AGENTS-COMPACT.md` | `merge` |
+| frueheres `AGENTS-COMPACT.md` | `inspect` oder entfernen, wenn AGENTS.md als Router migriert ist |
 | `AGENT-SETUP.md` | `inspect` oder nach `docs/agent-box-instantiation.md` archivieren |
 | `package-schema.md` | `merge` |
 | `preflight-checkliste.md` | `merge` |
@@ -364,7 +381,29 @@ Keine Migration starten, deren Ausgangszustand nicht beschrieben ist.
 
 ---
 
-## 7. Verfahren A: Bestehendes Python-Projekt ohne Box aufnehmen
+## 7. Historischer Baseline-Anker und Ausfuehrungsbaseline
+
+```text
+Historischer Baseline-Anker:
+  Herkunftspunkt, gegen den lokale Divergenz bestimmt wird.
+  Fall B: bevorzugt Instanziierungs-Commit, sonst letzter eindeutig belegter
+  Box-Migrationsstand.
+  Fall A: vor Beginn der Aufnahme Anker-Commit oder Tag festhalten.
+  Fall C: Zustand unmittelbar vor der fehlgeschlagenen Instanziierung oder
+  letzter sicherer Zustand.
+
+Aktuelle Ausfuehrungsbaseline:
+  Checks, Tests, Lint, Typecheck und bekannte rote Befunde unmittelbar vor
+  der Migration.
+```
+
+Der historische Baseline-Anker beschreibt, woraus lokale Divergenz entstanden
+ist. Die aktuelle Ausfuehrungsbaseline beschreibt, welche Checks und Befunde
+unmittelbar vor dem Lauf gelten. Beide duerfen nicht vermischt werden.
+
+---
+
+## 8. Verfahren A: Bestehendes Python-Projekt ohne Box aufnehmen
 
 Ziel: Lokale Agentenregeln einfuehren, ohne bestehende Projektstruktur zu
 ueberschreiben oder automatisch zu bestaetigen.
@@ -421,10 +460,10 @@ Re-Instanziierung ist durch .agent-box/adoption.md blockiert.
 
 ---
 
-## 8. Verfahren B: Bestehendes Box-Projekt migrieren
+## 9. Verfahren B: Bestehendes Box-Projekt migrieren
 
-Ziel: Eine bereits instanziierte Box-Projektwahrheit auf eine neuere
-Box-Version nachziehen.
+Ziel: Eine bereits instanziierte oder brownfield-adoptierte
+Box-Projektwahrheit auf eine neuere Box-Version nachziehen.
 
 Vorgehen:
 
@@ -433,15 +472,18 @@ Vorgehen:
    genau eine Datei aus .agent-box/instantiation.md oder .agent-box/adoption.md.
 2. Ausgangsversion aus dem Herkunftsmarker und bisherigen Migrationen lesen.
 3. Zielversion der Box bestimmen.
-4. Changelog und versionsspezifische Migrationshinweise der Box lesen.
-5. Observed State und Baseline der betroffenen Artefakte erfassen.
-6. Datei-Aktionsmatrix erstellen.
-7. Neue Artefakte mit Aktion add uebernehmen.
-8. Geschuetzte Regeldateien semantisch mergen.
-9. Tools nur ersetzen, wenn lokale Anpassungen ausgeschlossen sind.
-10. Menschliche Entscheidungen fuer Zielmodell-Abweichungen einholen.
-11. Migrationsevidence schreiben.
-12. Abschlusschecks ausfuehren.
+4. Historischen Baseline-Anker bestimmen.
+5. Aktuelle Ausfuehrungsbaseline erfassen.
+6. Changelog und versionsspezifische Migrationshinweise der Box lesen.
+7. Observed State und Baseline der betroffenen Artefakte erfassen.
+8. Lokale Divergenz gegen Baseline-Anker inventarisieren.
+9. Datei-Aktionsmatrix mit Merge-Richtung erstellen.
+10. Neue Artefakte mit Aktion add uebernehmen.
+11. Geschuetzte Regeldateien semantisch mergen.
+12. Tools mit lokaler Divergenz per Drei-Wege-Merge behandeln.
+13. Menschliche Entscheidungen fuer Zielmodell-Abweichungen einholen.
+14. Migrationsevidence schreiben.
+15. Abschlusschecks ausfuehren.
 ```
 
 Aktuelle Box-Version:
@@ -454,12 +496,46 @@ sonst Box-Version des Herkunftsmarkers.
 Abgebrochene Migrationen aktualisieren die aktuelle Box-Version nicht. Sie
 bleiben Evidence fuer Recovery und Wiedereinstieg.
 
+Lokale Divergenz gegen Baseline-Anker wird in der Migrationsevidence getrennt
+erfasst:
+
+```text
+## Lokale Divergenz gegen Baseline-Anker
+
+### Konfiguration
+### Logik
+### Semantik/Inhalt
+### Formatierung
+### Nur lokal vorhandene Artefakte
+```
+
+Fuer jede Datei mit Aktion `merge` wird zusaetzlich dokumentiert:
+
+```text
+Merge-Richtung: lokal als Basis | Template als Basis
+Begruendung:
+Erhaltungsnachweis:
+```
+
+Bei Tools mit lokaler Divergenz gilt:
+
+```text
+1. neues Template gegen Baseline-Anker diffen.
+2. lokalen Stand gegen Baseline-Anker diffen.
+3. jede lokale semantische Hunk klassifizieren.
+4. Merge-Richtung dokumentieren.
+5. lokale Hunks re-applizieren.
+6. Ergebnis gegen beide Deltas pruefen.
+```
+
+Kein History-Filter ersetzt den zeilenweisen Review.
+
 Eine Template-Neuerung ist nicht automatisch lokale operative Wahrheit. Sie
 wird ueber `merge`, Entscheidung und Projektion in das Zielprojekt uebernommen.
 
 ---
 
-## 9. Verfahren C: Abgebrochene Erstinstanziierung reparieren
+## 10. Verfahren C: Abgebrochene Erstinstanziierung reparieren
 
 Ziel: Einen fehlgeschlagenen Erstlauf reparieren, bevor das Projekt produktiv
 weiterbearbeitet wurde.
@@ -488,7 +564,7 @@ Uebergehen von .agent-box/adoption.md.
 
 ---
 
-## 10. Migrationsevidence
+## 11. Migrationsevidence
 
 Jede Brownfield-Migration schreibt mindestens ein Markdown-Artefakt:
 
@@ -546,7 +622,7 @@ Projektbedeutung festlegt, ist zusaetzlich ein Sprechakt noetig.
 
 ---
 
-## 11. Known-Breach-Regel
+## 12. Known-Breach-Regel
 
 Ein Known Breach darf nie die Standardausgabe einer Brownfield-Aufnahme sein.
 
@@ -569,7 +645,7 @@ in das Zielmodell ueberfuehrt wird.
 
 ---
 
-## 12. Abschlusschecks
+## 13. Abschlusschecks
 
 Nach Brownfield-Migration mindestens:
 
@@ -587,7 +663,7 @@ das als Ausgangszustand dokumentieren.
 
 ---
 
-## 13. Abbruchbedingungen
+## 14. Abbruchbedingungen
 
 BF-Codes sind Brownfield-spezifische HARD-Abbrueche. Sie gelten nur in
 Brownfield-Arbeit und werden im Brownfield-Migrationsraum belegt.
@@ -648,7 +724,7 @@ BF-Abbruch-Evidence ersetzt kein normales Erfahrungsbericht-Artefakt, wenn nach
 
 ---
 
-## 14. Schlussregel
+## 15. Schlussregel
 
 Brownfield-Arbeit ist erfolgreich, wenn der Unterschied zwischen Bestand,
 akzeptierter Architektur, Altlast und geplanter Migration ausdruecklicher ist

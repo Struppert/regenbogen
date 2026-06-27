@@ -344,7 +344,7 @@ Tooling darf keine Produktsemantik konstituieren.
 ### Agenten-Dokumente
 
 ```text
-AGENTS.md, AGENTS-COMPACT.md, package-schema.md,
+AGENTS.md, package-schema.md,
 preflight-checkliste.md, task-schnitt.md, sprechakt-protokoll.md,
 regelmatrix.md, test-obligations.md
 ```
@@ -354,7 +354,6 @@ Pflicht:
 ```text
 check_agent_docs_consistency.py
 Manuelle Driftprüfung nach regelmatrix.md (Inhalt, nicht nur Präsenz).
-AGENTS-COMPACT gegen AGENTS.md abgleichen.
 Falls Schema betroffen: Import-Checker-Konfiguration prüfen.
 ```
 

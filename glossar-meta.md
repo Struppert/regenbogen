@@ -18,7 +18,7 @@
 
 ```text
 Laden bei:
-  - Arbeit an AGENTS.md, AGENTS-COMPACT.md, preflight-checkliste.md
+  - Arbeit an AGENTS.md, preflight-checkliste.md
   - Arbeit an Glossar-Struktur oder Ladeprotokoll
   - Instanziierung oder Re-Instanziierung
   - Sprechakt-Protokoll-Änderungen
@@ -143,7 +143,7 @@ Invariante: Evidence wird in dieser Box als Markdown geführt.
 Bedeutung: Markdown-Dokument, das eine menschliche Festlegung dokumentiert.
 
 Invariante: Jedes normale Sprechakt-Artefakt hat einen Status: offen,
-festgelegt, abgelehnt oder superseded.
+festgelegt, abgelehnt, superseded oder widerrufen.
 
 ### Known Breach
 
@@ -299,5 +299,5 @@ Beschreibt der Begriff Betriebsverhalten des Produkts?
 
 ## 5. Schutz
 
-Dieses Dokument ist geschützt (AGENTS.md Abschnitt 9).
+Dieses Dokument ist geschützt (regelmatrix.md §7 Schreibstatus).
 Neue Metabegriffe entstehen durch Sprechakt SP2.

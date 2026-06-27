@@ -64,7 +64,7 @@ Für jeden aktiven Begriff:
   Unbekannt            → Sprechakt SP7 oder Task-Schnitt T1
 
 glossar-meta.md wird NUR bei Agenten-Box-Arbeit geladen:
-  Arbeit an AGENTS.md, AGENTS-COMPACT.md, preflight-checkliste.md,
+  Arbeit an AGENTS.md, preflight-checkliste.md,
   Glossar-Struktur, Ladeprotokoll, Sprechakt-Protokoll,
   Instanziierung oder Dokumentdrift im Metasystem.
   Nicht bei normaler Fach- oder Produktsystemarbeit.

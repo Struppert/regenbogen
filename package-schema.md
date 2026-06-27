@@ -54,7 +54,7 @@ regenbogen/
 ```
 
 Wenn das Projekt andere Namen verwendet:
-Alle betroffenen Stellen nachziehen: dieses Dokument, `AGENTS.md` Abschnitt 2,
+Alle betroffenen Stellen nachziehen: dieses Dokument, `AGENTS.md` (Semantische Räume),
 `LAYER_BY_PACKAGE_PART` sowie `SOURCE_ROOTS` / `TEST_ROOTS` / `TOOLS_ROOTS`
 in `tools/check_import_layers.py`.
 
@@ -310,7 +310,7 @@ Verboten:
 **Invariants**
 
 ```text
-cli enthält keine Domänenlogik (→ AGENTS.md Abschnitt 2).
+cli enthält keine Domänenlogik (→ AGENTS.md, Semantische Räume).
 Neue CLI-Option mit semantischer Bedeutung ist freigabepflichtig.
 ```
 

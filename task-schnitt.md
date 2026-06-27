@@ -7,17 +7,20 @@
 
 ## 1. Was Task-Schnitt ist
 
-Task-Schnitt ist die Entscheidung, welche Teile einer Aufgabe
-in einer Iteration ausgeführt werden — und welche nicht.
+Task-Schnitt ist die Entscheidung, ob eine Aufgabe in mehrere eigenständige
+Arbeitspakete getrennt werden muss.
 
 Ein guter Schnitt hält den Semantic Working Set (SWS) klein und vollständig.
 Ein schlechter Schnitt erzeugt entweder einen ContextGap (SWS unvollständig)
 oder unnötig hohe Tokenkosten (SWS zu groß).
 
+Task-Schnitt ist semantisch, nicht datei-, mengen- oder zeilenbasiert.
+Blosse Teilbarkeit ist kein Schnittgrund.
+
 ```text
-SWS klein         → nur was diese Iteration wirklich braucht
+SWS klein         → nur was dieses Arbeitspaket wirklich braucht
 SWS vollständig   → kein aktiv benötigter Begriff fehlt
-SWS scharf        → keine Begriffe aus Räumen die diese Iteration nicht berührt
+SWS scharf        → keine Begriffe aus Räumen die dieses Arbeitspaket nicht berührt
 ```
 
 ---
@@ -93,23 +96,54 @@ Schritt 6: Autonomieregel prüfen
 
 ---
 
-## 4. Schnitt-Teilung
+## 4. Ausführungsbreite und Arbeitspaket/Phase
 
-Wenn T2, T3 oder T5 zutrifft und Teilung möglich ist:
+Gleichartige Änderungen innerhalb eines freigegebenen Arbeitspakets
+werden gebündelt ausgeführt.
 
 ```text
-Iteration A: eine Seite des Schnitts
+Arbeitspaket  extern zugesagter, vollständig lieferbarer Endzustand.
+Phase         interner Abschnitt desselben autonomen Laufs.
+Task-Schnitt  Grenze zwischen eigenständig lieferbaren oder unterschiedlich
+              autorisierten Arbeitspaketen.
+```
+
+Produktcode und zugehörige Tests sind normalerweise Phasen desselben Arbeitspakets.
+Eine Phasengrenze ist kein Benutzer-Checkpoint.
+
+Ein Schnitt ist nur erforderlich, wenn sich mindestens eines unterscheidet:
+
+```text
+menschliche Festlegung
+semantischer Raum oder Urteilskompetenz
+Schreibrecht oder Freigabe
+Validierungs- oder Rollback-Grenze
+unabhängig abschließbarer Lieferzustand
+```
+
+Wenn T2, T3 oder T5 zutrifft und keine solche Grenze vorliegt:
+
+```text
+Phase A: erste semantische Seite bearbeiten
+Phase B: zweite semantische Seite bearbeiten
+Phase C: Tests, Checks und Dokumentprojektionen nachziehen
+```
+
+Wenn eine echte Grenze vorliegt:
+
+```text
+Arbeitspaket A: eine Seite des Schnitts
   → SWS enthält nur Begriffe aus einem Raum
   → Glossar-Ladeprotokoll lädt nur eine Datei
   → Abschluss mit Evidence
 
-Iteration B: andere Seite des Schnitts
-  → erst nach Abschluss von Iteration A
+Arbeitspaket B: andere Seite des Schnitts
+  → erst nach Abschluss von Arbeitspaket A
   → SWS aufgebaut auf Evidence aus A
   → Binding erst wenn beide Seiten stabil sind
 ```
 
-Kein Schritt aus Iteration B in Iteration A.
+Kein Schritt aus Arbeitspaket B in Arbeitspaket A.
 Kein „kurz noch" — der Schnitt ist die Grenze.
 
 ---
@@ -157,7 +191,7 @@ Task-Schnitt vs. Sprechakt SP7:
   der den fehlenden Begriff aktiv braucht.
 
 Task-Schnitt vs. Preflight:
-  Preflight ist eine Voraussetzungsprüfung — läuft immer (P1–P10).
+  Preflight ist eine Voraussetzungsprüfung — läuft immer (P1–P9).
   Task-Schnitt ist eine Strukturentscheidung — läuft wenn T1–T5 eintreten.
   Preflight kann Task-Schnitt auslösen (wenn Brüche oder Lücken sichtbar).
 
@@ -171,14 +205,14 @@ Task-Schnitt vs. migration-bridges.md:
 
 ## 7. State bei aktivem Schnitt
 
-Wenn eine Iteration wegen Schnitt-Teilung unterbrochen wird:
+Wenn ein Arbeitspaket wegen echtem Task-Schnitt unterbrochen wird:
 
 ```markdown
-Status:               IN BEARBEITUNG — TEILSCHNITT
-Aktive Iteration:     A | B
+Status:               IN BEARBEITUNG — TASK-SCHNITT
+Aktives Arbeitspaket: A | B
 Zurückgestellt:       [Liste der zurückgestellten Schritte]
-Wiedereintrittspunkt: [erster Schritt von Iteration B]
-Voraussetzung:        [was Iteration A abschließen muss]
+Wiedereintrittspunkt: [erster Schritt des nächsten Arbeitspakets]
+Voraussetzung:        [was vorher abgeschlossen oder entschieden sein muss]
 ```
 
 ---

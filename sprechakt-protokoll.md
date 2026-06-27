@@ -14,6 +14,15 @@ Der Agent analysiert, benennt Widersprüche, macht Vorschläge — entscheidet a
 Sprechakt ≠ Abbruch: kein Regelverstoß, aber korrekte Fortsetzung braucht menschliche Festlegung.
 Vollständige Unterscheidung Sprechakt / Abbruch / Plan / Erfahrungsbericht: `regelmatrix.md`.
 
+Eine eindeutige menschliche Anweisung im aktuellen Auftrag kann bereits ein
+festgelegter Sprechakt sein, wenn Klasse, Handlung und Scope eindeutig sind.
+Der Agent materialisiert dann das Sprechakt-Artefakt mit `Status: festgelegt`
+und prüft danach das Ausfuehrungsmandat. Nur fehlende, mehrdeutige oder
+widersprüchliche Inhalte erfordern eine weitere Rückfrage.
+
+Ein festgelegter Sprechakt autorisiert nicht automatisch die Umsetzung seiner
+Folgeprojektionen. Semantische Festlegung und Ausfuehrungsmandat sind getrennt.
+
 ---
 
 ## 2. Sprechakt-Klassen
@@ -38,14 +47,14 @@ Reparatur einer fehlgeschlagenen, noch nicht produktiv weiterbearbeiteten
 Erstinstanziierung.
 
 
-Kanonische Quelle für SP0: `AGENTS.md` Abschnitt 7.
+Kanonische Quelle für SP0: dieses Dokument und das Instanziierungswerkzeug.
 
 ### SP1–SP7 — Operative Sprechaktklassen
 
 Die folgenden Klassen gelten für Sprechakte während der normalen Projektarbeit.
 Sie sind keine Unterpunkte von SP0.
 
-Kanonische Quelle für SP1–SP7: `AGENTS.md` Abschnitt 7.
+Kanonische Quelle für SP1–SP7: dieses Dokument.
 
 ```text
 SP1  Neuer Fachbegriff würde entstehen
@@ -70,6 +79,7 @@ offen
 festgelegt
 abgelehnt
 superseded
+widerrufen
 ```
 
 Bedeutung:
@@ -79,6 +89,7 @@ offen       Entscheidung fehlt; Agent darf die betroffene Bedeutung nicht erfind
 festgelegt  Entscheidung gilt und muss in operative Artefakte zurückfließen.
 abgelehnt    Vorschlag wurde verworfen und darf nicht still erneut eingeführt werden.
 superseded   Entscheidung wurde ersetzt und muss auf den Nachfolger verweisen.
+widerrufen   Entscheidung galt, wurde aber ohne direkten Nachfolger aufgehoben.
 ```
 
 Ein festgelegter Sprechakt muss mindestens eine Folgeprojektion nennen, z. B.
@@ -140,6 +151,8 @@ Status: offen
 Folgeartefakte:
 Ersetzt:
 Ersetzt durch:
+Widerruft:
+Freigabequelle:
 
 ## Was fehlt
 
@@ -222,13 +235,46 @@ Wiedereinstieg:     <konkreter Schritt>
 1. Sprechakt-Artefakt lesen
 2. Festlegung lesen
 3. Prüfen ob package-schema.md oder Glossar nachgezogen werden muss
-4. Schreibrechte prüfen
-5. Preflight erneut ausführen
-6. An Wiedereinstiegspunkt fortsetzen
+4. Planstand aktualisieren
+5. Ausfuehrungsmandat und W0 prüfen (→ ausfuehrungsmandat-protokoll.md)
+6. Schreibrechte prüfen
+7. Preflight erneut ausführen
+8. An Wiedereinstiegspunkt fortsetzen, wenn Mandat aktiv ist
 ```
 
 Wenn Festlegung neue Widersprüche erzeugt:
 nicht fortfahren. Neuer Abbruch oder neuer Sprechakt.
+
+Semantische Festlegung ohne Mandat:
+Agent weiss, was gelten soll, darf es aber noch nicht umsetzen.
+
+Mandat ohne semantische Festlegung:
+Agent darf wirken, weiss aber nicht korrekt was; daher weiter blockiert.
+
+---
+
+## 9a. Konflikt zwischen Sprechakten
+
+Widersprüchliche festgelegte Sprechakte dürfen nicht durch den Agenten
+aufgelöst werden.
+
+Konflikt-Evidence enthält:
+
+```text
+betroffener Gegenstand:
+Sprechakt A:
+Aussage A:
+Sprechakt B:
+Aussage B:
+erkannter Widerspruch:
+mögliche Auflösungen:
+  - A widerrufen
+  - B widerrufen
+  - A durch neue Entscheidung ersetzen
+  - B durch neue Entscheidung ersetzen
+  - Scope trennen
+benötigte menschliche Entscheidung:
+```
 
 ---
 

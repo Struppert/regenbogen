@@ -1,8 +1,7 @@
 # AGENTS.md — Python-Projekt: Operative Regeln für KI-Agenten
 
-> Dieses Dokument ist die vollständige operative Regelreferenz für KI-Agenten in diesem Repository.
->
-> Es gilt für autonome Agenten, Coding-Assistenten, IDE-Integrationen und jede andere Form KI-gestützter Code- oder Textänderung.
+> Immer aktive Kernregeln und Ladeprotokoll. Detailregeln nur bei konkretem
+> Task-Auslöser laden. Verlinkte Dokumente nicht pauschal laden.
 >
 > Der Modus ändert nichts an den Regeln. Eine Inline-Completion, die eine Invariante verletzt, ist genauso falsch wie ein autonomer Agent, der sie verletzt.
 
@@ -32,6 +31,8 @@ Nicht ersetzter Platzhalter in einer für die Aufgabe relevanten Regel ist Abbru
 
 Warum dieses System so aufgebaut ist: `grundsatz.md`
 
+Projektmarker: `.agent-box/instantiation.md` (Greenfield).
+
 ### 0.1 Formatregel: Markdown only
 
 Dieses Projekt verwendet Markdown als operativen Artefaktraum.
@@ -51,7 +52,55 @@ Köpfen lesen und schreiben.
 
 ---
 
-## 1. Instanziierungs-Sprechakt
+## 1. Autoritaet, Ladeprinzip und Spezialdokumente
+
+`AGENTS.md` ist bindender Router und Einstieg. Spezialdokumente sind autoritativ für
+ihre Detailfrage:
+
+```text
+Raum, Import, Architektur        -> package-schema.md
+Begriff, Status, Fehler, Policy  -> glossar-README.md,
+                                    glossar-domain.md,
+                                    glossar-system.md,
+                                    glossar-meta.md
+Menschliche Entscheidung         -> sprechakt-protokoll.md
+Semantischer Task-Schnitt        -> task-schnitt.md
+Brownfield oder Altbruch         -> BROWNFIELD-MIGRATION.md
+Testpflicht                      -> test-obligations.md
+Schreibrechte, Schutz, Drift     -> regelmatrix.md
+Arbeitsmodus, Mandat, W0         -> ausfuehrungsmandat-protokoll.md
+Blocker, Abbruch, Wiedereinstieg -> blocker-und-abbruch-protokoll.md
+Bridge-Symbol                    -> migration-bridges.md
+Erfahrungsbericht-Ausloeser      -> erfahrungsbericht-protokoll.md
+Setup oder Instanziierung        -> AGENT-SETUP.md
+```
+
+Bei Widerspruch zwischen autoritativen Artefakten nicht selbst entscheiden.
+Blocker klassifizieren und gültig stoppen.
+
+---
+
+## 2. Arbeitsmodus und Wirkungsgate
+
+Ein Auftrag erlaubt nur den eindeutig ausgesprochenen Arbeitsmodus.
+
+Ohne nachweisbares Ausfuehrungsmandat gilt `ANALYSE`.
+
+```text
+ANALYSE      lesen, untersuchen, im Chat berichten
+PLAN         Plan-, Entscheidungs- und Diagnoseartefakte erstellen
+AUSFUEHRUNG  freigegebenen Plan im Mandatsscope umsetzen
+```
+
+Vor der ersten Repository-Mutation muss W0 aus
+`ausfuehrungsmandat-protokoll.md` grün sein.
+
+Schreibrecht, Planexistenz, Fast-Path, festgelegter Sprechakt und fehlender
+Blocker ersetzen kein Ausfuehrungsmandat.
+
+---
+
+## 3. Instanziierungs-Sprechakt
 
 Die Box wird genau einmal vom Template-Zustand in den Projekt-Zustand überführt.
 Dieser Übergang ist ein Instanziierungs-Sprechakt. Er wird ausschließlich durch
@@ -75,11 +124,11 @@ Sprechakte über `sprechakt-protokoll.md`.
 Brownfield-Arbeit ist keine Re-Instanziierung. Bestehende Projekte werden nach
 `BROWNFIELD-MIGRATION.md` migriert oder aufgenommen.
 Vorhandener Code ist dabei zuerst Befund, nicht automatisch lokale operative
-Wahrheit.
+Wahrheit. Brownfield-Aufnahme ist durch `.agent-box/adoption.md` belegt.
 
 ---
 
-## 2. Grundmodell: Semantische Räume
+## 4. Grundmodell: Semantische Räume
 
 Jeder produktive Code gehört zu genau einem semantischen Raum.
 
@@ -144,7 +193,7 @@ Das ist der Grund warum Preflight, Sprechakt und Abbruch nötig sind.
 
 ---
 
-## 3. Glossar und Metasystem
+## 5. Glossar und Metasystem
 
 Das Glossar ist operative Infrastruktur. Es trennt Fachbegriffe,
 Betriebsbegriffe und Meta-Begriffe der Agentensteuerung.
@@ -167,7 +216,7 @@ Modelländerungen geprüft und bei Bedarf aktualisiert werden.
 
 ---
 
-## 4. Import- und Abhängigkeitsregeln
+## 6. Import- und Abhängigkeitsregeln
 
 Die vollständige Importmatrix steht in `package-schema.md`.
 Die Standardsperre gilt immer, sofern package-schema.md keine explizite Ausnahme definiert:
@@ -233,7 +282,7 @@ Abbruch H7.
 
 ---
 
-## 5. Kritische Invarianten
+## 7. Kritische Invarianten
 
 ### I1. Domain bleibt frei von Laufzeitmechanik
 
@@ -359,9 +408,14 @@ Verboten:
   Konfiguration so ändern, dass der Fehler verschwindet statt behoben wird
 ```
 
+### I11. Keine Repository-Mutation ohne aktives Ausfuehrungsmandat
+
+Beschreibbarkeit einer Datei ist kein Ausfuehrungsmandat.
+Vor der ersten Mutation W0 aus `ausfuehrungsmandat-protokoll.md` prüfen.
+
 ---
 
-## 6. Safe Tasks und Grenzen
+## 8. Safe Tasks und Grenzen
 
 ### Autonom erlaubt
 
@@ -390,7 +444,7 @@ SPRECHAKT / FREIGABE NÖTIG:
   - neue Fehlerklasse oder Fehlerbedeutung (SP3)
   - neue Runtime-Dependency (SP4, H8)
   - Änderung an package-schema.md
-  - Änderung an AGENTS.md / AGENTS-COMPACT.md
+  - Änderung an AGENTS.md
   - Änderung an Checker-Tools
   - Änderung an Testpflichtableitung
   - Änderung an pyproject.toml oder Lockfiles
@@ -400,13 +454,18 @@ SPRECHAKT / FREIGABE NÖTIG:
 Safe Tasks beschreiben Risikoklassen, nicht Schreibrechte.
 Geschützte Dateien bleiben geschützt, auch bei SICHER-Tasks.
 
+Fast-Path: kanonische Definition `preflight-checkliste.md` §0b.
+
 ---
 
-## 7. Sprechakte
+## 9. Sprechakte
 
 Ein Sprechakt ist eine menschliche Festlegung.
 Der Agent hält an und liefert eine Entscheidungsvorlage.
 Er entscheidet nicht selbst.
+
+Ein festgelegter Sprechakt autorisiert nicht automatisch die Umsetzung seiner
+Folgeprojektionen. Semantische Festlegung und Ausfuehrungsmandat sind getrennt.
 
 Sprechakt ist nötig bei:
 
@@ -434,14 +493,14 @@ Sprechakt-Artefakte liegen unter `docs/sprechakte/` (append-only).
 Sprechakt-Artefakte haben einen Status:
 
 ```text
-offen | festgelegt | abgelehnt | superseded
+offen | festgelegt | abgelehnt | superseded | widerrufen
 ```
 
 Die Details stehen in `sprechakt-protokoll.md`.
 
 ---
 
-## 8. Task-Schnitt
+## 10. Task-Schnitt
 
 Task-Schnitt wird geprüft, wenn:
 
@@ -461,14 +520,15 @@ SWS vollständig: kein aktiv benötigter Begriff fehlt
 SWS scharf:     keine Räume laden, die diese Iteration nicht berührt
 ```
 
-Wenn Teilung möglich ist, wird geteilt.
-Kein „kurz noch". Kein Schritt aus Iteration B in Iteration A.
+Blosse Teilbarkeit ist kein Schnittgrund. Ausfuehrungsbreite: Gleichartige
+Änderungen innerhalb eines mandatsgedeckten semantischen Schnitts werden
+gebündelt ausgeführt.
 
 Vollständiges Protokoll: `task-schnitt.md`
 
 ---
 
-## 9. Schreibrechte
+## 11. Schreibrechte
 
 ### Erlaubt ohne Sonderfreigabe
 
@@ -487,13 +547,14 @@ docs/sprechakte/
 tmp/erfahrungsberichte/
 ```
 
-### Geschützt — nur mit expliziter Freigabe der aktuellen Aufgabe
+### Geschützt — nur mit expliziter Mandatsdeckung
 
 ```text
 AGENTS.md
-AGENTS-COMPACT.md
 AGENT-SETUP.md
 BROWNFIELD-MIGRATION.md
+ausfuehrungsmandat-protokoll.md
+blocker-und-abbruch-protokoll.md
 package-schema.md
 preflight-checkliste.md
 task-schnitt.md
@@ -528,29 +589,33 @@ setup.py
 .github/workflows/
 ```
 
-Geschützte Datei ohne Freigabe ändern müssen → HARD-Abbruch H1.
+Geschützte Datei ohne Mandatsdeckung ändern müssen → HARD-Abbruch H1.
+Beschreibbarkeit ist keine Mandatserteilung.
+
+Exakte Schreibrechte-Klassifikation: `regelmatrix.md`
 
 ---
 
-## 10. Abbruchbedingungen
+## 12. Abbruchbedingungen
 
-### HARD-Abbruch
+Vollständige Abbruchdefinitionen, Evidence-Format und Wiedereinstieg:
+`blocker-und-abbruch-protokoll.md`
 
-Der Agent stoppt. Fortsetzung nur nach expliziter Freigabe.
+### HARD-Abbruch H1–H10
+
+Der Agent stoppt. Fortsetzung nur nach expliziter Freigabe oder Klärung.
 
 ```text
-H1  Geschützte Datei müsste ohne Freigabe geändert werden
-H2  Import-/Layer-Verletzung ohne klassifizierten bekannten Bruch
-H3  Widerspruch zwischen autoritativem Projektartefakt und geplanter Änderung
-    (AGENTS.md, package-schema.md, Glossar, migration-bridges.md)
-H4  Neuer Begriff ohne Sprechakt
-H5  Tool müsste verändert werden, um Fehler zu unterdrücken
-H6  Testpflicht ist unklar
-H7  Platzhalter in relevanter Regel ist nicht ersetzt
-H8  Dependency-Änderung wäre nötig
-H9  Öffentliche API-Änderung wäre nötig
-H10 Autonomieregel verletzt: Code-Typ in Raum X setzt Wissen aus Raum Y voraus,
-    aber Experte für X kann Y nicht beurteilen — ohne Sprechakt nicht lösbar
+H1   Geschützte Datei ohne Mandatsdeckung betroffen
+H2   Import-/Layer-Verletzung ohne klassifizierten bekannten Bruch
+H3   Widerspruch zwischen operativen Projektartefakten, Code oder Checker
+H4   Neuer Begriff, Status oder neue Bedeutung ohne Sprechakt/Freigabe
+H5   Tooländerung wäre nötig, um einen Fehler zu unterdrücken
+H6   Testpflicht ist nicht ableitbar
+H7   Setup-/Template-Zustand unklar, Platzhalter aktiv oder Pflichtdatei fehlt
+H8   Runtime-Dependency- oder Packaging-Änderung ohne Freigabe
+H9   Öffentliche API-Fläche ohne Freigabe betroffen
+H10  Autonomieregel eines semantischen Raums verletzt
 ```
 
 #### H10 — Erkennungsregeln
@@ -578,7 +643,7 @@ Wenn die Antwort ein Systemarchitekt statt ein Domänenexperte liefern muss
 (für domain-Begriffe) oder ein Plattformexperte statt ein Systemarchitekt
 (für system-Begriffe): H10.
 
-### SOFT-Abbruch
+### SOFT-Abbruch SA1–SA6
 
 Der Agent stoppt mit Evidence. Fortsetzung nach Preflight möglich.
 
@@ -593,21 +658,18 @@ SA6  lokale Inkonsistenz ohne semantischen Widerspruch
 
 Code-Familien sind disjunkt:
 H1–H10 = HARD-Abbruch · SA1–SA6 = SOFT-Abbruch · SP1–SP7 = Sprechakt ·
-BF1–BF12 = Brownfield-spezifischer HARD-Abbruch.
-
-BF-Codes gelten nur in Brownfield-Arbeit und werden nach
-`BROWNFIELD-MIGRATION.md` belegt.
+BF1–BF12 = Brownfield-spezifischer HARD-Abbruch (→ `BROWNFIELD-MIGRATION.md`).
 
 Die Abbruchklasse richtet sich nach der verletzten Regel, nicht nach dem Werkzeug.
 
 ---
 
-## 11. Abbruch-Artefakt
+## 13. Abbruch-Artefakt
 
 Bei jedem Abbruch:
 
 ```text
-tmp/erfahrungsberichte/YYYY-MM-DD-ABBRUCH-kurzbeschreibung.md
+tmp/erfahrungsberichte/YYYY-MM-DD-ABBRUCH-<kurzbeschreibung>.md
 ```
 
 Format:
@@ -615,37 +677,41 @@ Format:
 ```markdown
 # Abbruch: <Kurzbeschreibung>
 
+Datum:
 Aufgabe:
-Zeitpunkt:
-Abbruchklasse: SOFT | HARD
+Abbruchklasse: H<Nummer> | SA<Nummer>
 Abbruchregel:
 Betroffene Dateien:
 Letzter sicherer Zustand:
 Beobachtete Evidence:
 Keine Vermutungen:
 Empfohlene nächste Entscheidung:
+Wiedereinstiegspunkt:
 ```
 
 Wenn eine State-Datei existiert, muss sie das Abbruch-Artefakt referenzieren.
+Bei BF-Abbruch gilt zusätzlich `BROWNFIELD-MIGRATION.md`.
 
 ---
 
-## 12. Preflight
+## 14. Preflight
 
-Vor jeder nichttrivialen Änderung:
+Vor jeder nichttrivialen Änderung zuerst W0 prüfen (→ `ausfuehrungsmandat-protokoll.md`),
+dann Preflight:
 
 ```text
-1. AGENTS-COMPACT.md lesen
-2. AGENTS.md lesen
-3. package-schema.md gezielt prüfen
-4. relevante Glossareinträge gezielt laden
-5. Bei Modellarbeit MODELL-README.md lesen und Updatepflicht prüfen
-6. Import-/Layer-Checker ausführen
-7. Testpflicht ableiten
-8. Schreibrechte prüfen
-9. Task-Schnitt prüfen, wenn T1–T5 eintreten
-10. Plan unter docs/plans/ anlegen, wenn Änderung nicht trivial ist
+P1   AGENTS.md lesen
+P2   package-schema.md gezielt prüfen
+P3   betroffene semantische Räume bestimmen
+P4   relevante Glossareinträge gezielt laden; bei Modellarbeit MODELL-README.md prüfen
+P5   Import-/Layer-Checker ausführen
+P6   Testpflicht ableiten
+P7   Schreibrechte prüfen
+P8   Task-Schnitt prüfen, wenn T1–T5 eintreten
+P9   Plan unter docs/plans/ anlegen, wenn Änderung nicht trivial ist
 ```
+
+Fast-Path, Governance-Ausloeser und Ausfuehrungsbreite: kanonische Definitionen `preflight-checkliste.md` §0b.
 
 Vollständige Schrittfolge: `preflight-checkliste.md`
 
@@ -667,7 +733,7 @@ python tools/check_agent_docs_consistency.py --instantiated && python tools/chec
 
 ---
 
-## 13. Python-spezifische Coding-Sperren
+## 15. Python-spezifische Coding-Sperren
 
 ```text
 Verboten:
@@ -686,12 +752,9 @@ Verboten:
   - Tests, die nur durch Reihenfolge bestehen
 ```
 
-Alles in dieser Liste, das eine freigabepflichtige Änderung erfordern würde,
-ist über H8/H9 und die Sprechakt-Klassen SP1–SP6 abgedeckt.
-
 ---
 
-## 14. Tests und Validierung
+## 16. Tests und Validierung
 
 Tests sind Projektionen, keine Autorität.
 
@@ -720,7 +783,7 @@ Vollständige Matrix: `test-obligations.md`
 
 ---
 
-## 15. Git- und Commit-Regeln
+## 17. Git- und Commit-Regeln
 
 ```text
 Erlaubt:
@@ -742,7 +805,7 @@ Kein Merge. Kein Release.
 
 ---
 
-## 16. Wiedereinstieg
+## 18. Wiedereinstieg
 
 Nach SOFT-Abbruch:
 
@@ -768,28 +831,32 @@ Nach Sprechakt:
 1. Sprechakt-Artefakt lesen
 2. menschliche Festlegung lesen
 3. Glossar-/Schema-Nachzug prüfen
-4. Preflight ausführen
-5. ab definiertem Wiedereintrittspunkt fortsetzen
+4. W0 und Ausfuehrungsmandat prüfen
+5. Preflight ausführen
+6. ab definiertem Wiedereintrittspunkt fortsetzen
 ```
+
+Bei Kontextwechsel oder neuem Agenten:
+Mandat und Plan-Version prüfen (→ `ausfuehrungsmandat-protokoll.md` §9).
 
 ---
 
-## 17. Dokumentdrift
+## 19. Dokumentdrift
 
 Wenn `AGENTS.md` geändert wird:
 
 ```text
-AGENTS-COMPACT.md prüfen — Invarianten, Abbrüche, Schreibrechte abgleichen
 preflight-checkliste.md prüfen
 package-schema.md prüfen
 regelmatrix.md prüfen
+ausfuehrungsmandat-protokoll.md prüfen
+blocker-und-abbruch-protokoll.md prüfen
 ```
 
 Wenn `package-schema.md` geändert wird:
 
 ```text
 AGENTS.md prüfen
-AGENTS-COMPACT.md prüfen
 check_import_layers.py → LAYER_BY_PACKAGE_PART nachziehen
 test-obligations.md prüfen
 ```
@@ -804,10 +871,11 @@ CI-Konfiguration prüfen
 ```
 
 Dokumentdrift ist kein Stilproblem. Dokumentdrift ist ein Operationsfehler.
+Exakte Drift-Regeln und Kopplungshinweise: `regelmatrix.md`
 
 ---
 
-## 18. Schnellreferenz: Wo gehört was hin?
+## 20. Schnellreferenz: Wo gehört was hin?
 
 ```text
 Fachlicher Begriff                              → domain
@@ -826,22 +894,21 @@ Task-Schnitt prüfen. Dann Sprechakt. Nicht raten.
 
 ---
 
-## 19. Erfahrungsberichte
+## 21. Erfahrungsberichte
 
-Nach jeder nichttrivialen Agentensession wird ein Erfahrungsbericht geschrieben.
+Erfahrungsberichte werden nur bei systemisch lernrelevanten Auslösern geschrieben.
 
 Pflicht-Trigger:
 
 ```text
-E1  Nach abgeschlossener Agentensession mit Plan, MITTEL-Task,
-    Sprechakt, Task-Schnitt, öffentlicher API-Änderung oder Dokumentdrift.
+E1  Systemische Schwäche oder unerwartetes Regelversagen wurde sichtbar.
 E2  Nach jedem HARD-Abbruch.
-E3  Nach sichtbarer Systemschwäche.
+E3  Nach sichtbarer Systemschwäche oder neu erkanntem Governance-Muster.
 E4  Nach SOFT-Abbruch, wenn der Abbruchgrund systemisch ist.
 E5  Nach unerwarteter Interaktion zwischen Regeln.
 ```
 
-Ort: `tmp/erfahrungsberichte/YYYY-MM-DD-EB-kurzbeschreibung.md` (append-only)
+Ort: `tmp/erfahrungsberichte/YYYY-MM-DD-EB-<kurzbeschreibung>.md` (append-only)
 
 Vollständiges Protokoll: `erfahrungsbericht-protokoll.md`
 
@@ -851,9 +918,9 @@ nicht automatisch aus dem Bericht.
 
 ---
 
-## 20. Symbolsperren und Bridge-Begriffe
+## 22. Symbolsperren und Bridge-Begriffe
 
-Neben den Dateisperren in Abschnitt 9 gibt es Bedeutungssperren auf Symbole und Begriffe.
+Neben den Dateisperren in §11 gibt es Bedeutungssperren auf Symbole und Begriffe.
 
 Ein Symbol kann in einer frei beschreibbaren Datei stehen und trotzdem nicht mechanisch
 angefasst werden dürfen — weil es eine Bridge-Funktion trägt, eine laufende Migration
@@ -875,7 +942,7 @@ Umklassifizierung eines Bridge-Begriffs ist Sprechakt SP6.
 
 ---
 
-## 21. Schlussregel
+## 23. Schlussregel
 
 Der Agent optimiert nicht auf maximale Änderung.
 Der Agent optimiert auf kontrollierte, prüfbare und abbrechbare Änderung.
