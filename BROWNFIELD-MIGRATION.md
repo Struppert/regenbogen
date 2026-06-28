@@ -1,5 +1,12 @@
 # BROWNFIELD-MIGRATION.md — Python-Projekt: Brownfield-Verfahren
 
+> Ebene: MIXED-TRANSITION
+> Primaerer Anteil: PRIMING
+> Sekundaere Projektion: REPOSITORY
+> Rolle: Brownfield-Aufnahme- und Migrationsprotokoll
+> Autoritative Frage: Wie wird Bestand aufgenommen oder eine Box-Version migriert?
+> Nicht zustaendig fuer: Inhalt menschlicher Zielmodellentscheidungen
+
 **Dokumenttyp: Operativ / autoritativ fuer Brownfield-Arbeit**
 
 > Brownfield ist keine Greenfield-Instanziierung.
@@ -69,7 +76,7 @@ Migrationsmandat:
 ```
 
 Die Annahme einer Template-Regel startet keine Migration.
-Vor jeder transformativen Brownfield-Wirkung muss WG-AUSFUEHRUNG aus
+Vor jeder transformativen Brownfield-Wirkung muss WG-MUTATION aus
 `ausfuehrungsmandat-protokoll.md` gruen sein.
 
 ---
@@ -194,14 +201,18 @@ Brownfield-Aufnahme und Brownfield-Migration laufen in dieser Reihenfolge:
    Mensch bestaetigt akzeptierte Architektur, Defekte, Migration Candidates,
    Known Breaches oder offene Befunde.
 
-5. Project
-   Entscheidungen in AGENTS.md, package-schema.md, Glossare, Checker,
-   Migration Bridges und Testpflichten projizieren.
+5. Plan
+   Migrationsplan aus Zielmodellentscheidung, Baseline, Datei-Aktionsmatrix
+   und Risiken ableiten.
 
-6. Migrate
-   Geplante Aenderungen schrittweise durchfuehren.
+6. Mandate
+   Menschliches Migrationsmandat fuer Grundlage, Version und Scope
+   einholen oder nachweisen.
 
-7. Verify
+7. Migrate
+   Geplante Aenderungen nur mit aktivem Migrationsmandat durchfuehren.
+
+8. Verify
    Baseline, Zielregeln, Tests und Evidence gegeneinander pruefen.
 ```
 
@@ -210,7 +221,9 @@ Geltung:
 ```text
 Discover / Describe  = deskriptiv
 Classify             = vorlaeufig
-Decide / Project     = normativ
+Decide               = normativ
+Plan                 = vorbereitend
+Mandate              = deontisch
 Migrate              = transformativ
 Verify               = pruefend
 ```
@@ -248,6 +261,10 @@ Standardklassifikation:
 | `AGENTS.md` | `merge` |
 | frueheres `AGENTS-COMPACT.md` | `inspect` oder entfernen, wenn AGENTS.md als Router migriert ist |
 | `AGENT-SETUP.md` | `inspect` oder nach `docs/agent-box-instantiation.md` archivieren |
+| `.agent-box-template.md` | `inspect` im Template, `forbidden` im Zielprojekt |
+| `blocker-und-abbruch-protokoll.md` | `add` oder `merge` |
+| `ausfuehrungsmandat-protokoll.md` | `add` oder `merge` |
+| `grundsatz.md` | `add` oder `preserve` |
 | `package-schema.md` | `merge` |
 | `preflight-checkliste.md` | `merge` |
 | `task-schnitt.md` | `merge` |
@@ -256,6 +273,9 @@ Standardklassifikation:
 | `test-obligations.md` | `merge` |
 | `migration-bridges.md` | `merge` |
 | `learning-matrix.md` | `preserve` oder `merge` |
+| `erfahrungsbericht-protokoll.md` | `add` oder `merge` |
+| `docs/plans/template.md` | `merge` |
+| `docs/runs/checkpoint-template.md` | `add` oder `merge` |
 | `glossar-domain.md` | `preserve` oder `merge` |
 | `glossar-system.md` | `preserve` oder `merge` |
 | `glossar-meta.md` | `add` oder `merge` |
@@ -265,6 +285,7 @@ Standardklassifikation:
 | `tools/resolve_test_obligations.py` | `replace` wenn unveraendert, sonst `merge` |
 | `tools/instantiate/*` | `forbidden` fuer laufende Projekte |
 | `.agent-box/instantiation.md` | `forbidden` |
+| `.agent-box/adoption.md` | `forbidden`, ausser Verfahren A erzeugt den Marker |
 | `.agent-box/migrations/` | `add` |
 
 ---
@@ -289,6 +310,96 @@ Migrationsevidence:
 
 Diese Artefakte duerfen in einer kleinen Migration in einer Datei kombiniert
 werden, muessen dann aber durch Ueberschriften getrennt bleiben.
+
+Wenn eine Brownfield-Migration lokale Governance-Regeln oder deren
+Erzwingungsprojektionen korrigiert, aber das vollstaendige
+Governance-Provenienzsystem noch nicht eingefuehrt ist, muss vor Abschluss
+eine kleine vorlaeufige Evidence existieren. Sie ist dokumentierend, nicht
+normativ.
+
+Minimalformat:
+
+```markdown
+## Vorlaeufige Brownfield-Governance-Evidence
+
+Status: vorlaeufig
+Autoritaet: dokumentierend, nicht normativ
+Ausgangs-Template:
+Zielmodellentscheidungsreferenz:
+Contract-ID:
+Run-ID:
+Plan-ID:
+Plan-Version:
+Plan-Revision: <Plan-ID>@<Plan-Version>
+Priming-Revision:
+Scope-ID:
+Scope-Version:
+Migrationsmandat-ID:
+Mandatsrevision:
+Authorization-Revision: <Migrationsmandat-ID>@<Mandatsrevision>
+Lokaler Governance-Stand vor Aenderung:
+Lokaler Governance-Stand nach Aenderung:
+Vorher-Commit oder Snapshot:
+Nachher-Commit oder Snapshot:
+Anlass:
+
+## Bewusste lokale Governance-Aenderungen
+
+- ...
+
+## Zurueckgestellte Provenienzmechanismen
+
+- <fuer diese Migration bewusst zurueckgestellt>
+
+## Upstream-Status
+
+Rueckflussstatus: LOCAL-ONLY | ERFAHRUNGSBERICHT | TEMPLATE-CANDIDATE | TOOLING-CANDIDATE | UNKNOWN | NO-RETURN
+
+## Governance-Rueckfluss
+
+Lokale Governance geaendert: ja | nein
+
+### Lokaler Befund
+
+Was musste lokal geaendert werden?
+
+### Ursache
+
+Welche Schwäche des Templates oder der Migration wurde sichtbar?
+
+### Lokaler Anteil
+
+Was ist ausschliesslich projektspezifisch?
+
+### Verallgemeinerbarer Kern
+
+Welche allgemeine Regel oder Fehlerklasse koennte fuer das Template relevant
+sein?
+
+## Analyse nach Validierung
+
+Tatsaechlich geaenderte Governance-Dateien:
+Konformitaet mit Zielmodellentscheidung bestaetigt:
+Bestaetigt durch:
+Bestaetigungsdatum:
+Unbeabsichtigte Drift:
+Rueckflusskandidat:
+```
+
+Reihenfolge:
+
+```text
+alter Governance-Zustand festhalten
+-> Zielmodellentscheidung belegen
+-> Migrationsplan und Mandat belegen
+-> lokale Korrektur ausfuehren
+-> validieren
+-> tatsaechliche Aenderungen analysieren
+-> Konformitaet mit der Zielmodellentscheidung bestaetigen
+-> neuen Zustand als akzeptierten lokalen Stand festhalten
+```
+
+Keine neue Governance-Baseline vor Analyse und menschlicher Bestaetigung.
 
 Fuer groessere Brownfield-Aufnahmen bevorzugt:
 
@@ -316,7 +427,16 @@ Aufnahmetyp: brownfield
 Box-Name: box-python
 Box-Version: v<ziel>
 Datum:
-Freigabe:
+Zielmodellentscheidung:
+Migrationsmandat:
+  Mandat-ID:
+  Mandatstatus:
+  Mandatsgrundlage: Plan
+  Grundlagen-ID:
+  Grundlagen-Version:
+  Scope:
+  Geschuetzte Dateien:
+  Freigabereferenz:
 Erstes Migrationsartefakt:
 
 ## Geltung
@@ -347,10 +467,15 @@ Zielversion:
 Vorhandene Agentenartefakte:
 Projektmarker .agent-box/instantiation.md vorhanden: ja/nein
 Projektmarker .agent-box/adoption.md vorhanden: ja/nein
-Genau ein Projektmarker vorhanden: ja/nein
+Markerzustand fuer Fall:
+  A vor Aufnahme: kein Marker erwartet
+  A Abschluss: genau adoption.md erwartet
+  B: genau ein Herkunftsmarker erwartet
+  C: instantiation.md-Zustand erfassen, adoption.md darf nicht vorhanden sein
+Historischer Baseline-Anker:
+Aktuelle Ausfuehrungsbaseline:
 Vorhandene lokale Architekturregeln:
 Aktuelle Test-/Check-Befehle:
-Aktuelle Baseline:
 Bekannte rote Checks:
 Erkannte Regelverletzungen:
 Bereits akzeptierte Known Breaches:
@@ -365,11 +490,13 @@ Pflichtfragen:
 
 ```text
 Ist der Observed State ausreichend beschrieben?
-Ist die aktuelle Baseline bekannt?
+Ist die aktuelle Ausfuehrungsbaseline bekannt?
 Sind lokale Aenderungen an Box-Artefakten sichtbar?
 Gibt es eine bestehende .agent-box/instantiation.md?
 Gibt es eine bestehende .agent-box/adoption.md?
-Gilt genau einer der beiden Projektmarker?
+Welcher Markerzustand ist fuer den Brownfield-Fall korrekt?
+Ist der historische Baseline-Anker bestimmt?
+Ist die aktuelle Ausfuehrungsbaseline getrennt dokumentiert?
 Gibt es schon .agent-box/migrations/?
 Welche Dateien sind add / preserve / merge / replace / inspect / forbidden?
 Welche Befunde brauchen menschliche Entscheidung?
@@ -427,14 +554,18 @@ A4 Decide:
    Mensch legt lokale operative Wahrheit, Zielmodell, zu reparierende Defekte,
    vorlaeufige Known Breaches und offene Befunde fest.
 
-A5 Project:
-   AGENTS.md, package-schema.md, Glossare, Checker, Testpflichten und Bridges
-   aus den Entscheidungen ableiten.
+A5 Plan:
+   Migrationsplan fuer AGENTS.md, package-schema.md, Glossare, Checker,
+   Testpflichten, Bridges und Adoptionsmarker ableiten.
 
-A6 Migrate:
-   Nur freigegebene Schnitte umsetzen. Keine pauschale Template-Ersetzung.
+A6 Mandate:
+   Menschliches Migrationsmandat fuer Grundlage, Version und Scope einholen oder
+   nachweisen.
 
-A7 Verify:
+A7 Migrate:
+   Nur mandatsgedeckte Schnitte umsetzen. Keine pauschale Template-Ersetzung.
+
+A8 Verify:
    Checks gegen Zielmodell ausfuehren. Vorher rote Checks als Baseline belegen.
 ```
 
@@ -478,13 +609,20 @@ Vorgehen:
 7. Observed State und Baseline der betroffenen Artefakte erfassen.
 8. Lokale Divergenz gegen Baseline-Anker inventarisieren.
 9. Datei-Aktionsmatrix mit Merge-Richtung erstellen.
-10. Zielmodell-Abweichungen und Datei-Aktionen vorlegen.
-11. Menschliche Zielmodell-Entscheidungen einholen.
-12. Migrationsplan finalisieren (Plan-Version festlegen).
-13. Migrationsmandat fuer diese Plan-Version einholen (WG-AUSFUEHRUNG pruefen).
-14. add / merge / replace ausfuehren (Drei-Wege-Merge bei Tools mit lokaler Divergenz).
-15. Migrationsevidence schreiben.
-16. Abschlusschecks ausfuehren.
+10. Zielmodell-Abweichungen und Datei-Aktionsmatrix vorlegen.
+11. Menschliche Zielmodellentscheidungen einholen.
+12. Migrationsplan finalisieren und Grundlage/Version festlegen.
+13. Migrationsmandat fuer Grundlage, Version und Scope einholen.
+14. WG-MUTATION ist fortlaufende Invariante: bleibt asserted solange Gate-Zustand
+    unveraendert. Vor jeder Aktion pruefen ob sie in der freigegebenen Aktionsmatrix
+    liegt. Vollstaendige Neubewertung nur bei Zustandswechsel (Wirkungstyp, Scope,
+    Mandatsstatus, Grundlagenversion).
+15. Neue Artefakte mit Aktion add uebernehmen.
+16. Geschuetzte Regeldateien semantisch mergen.
+17. Tools mit lokaler Divergenz per Drei-Wege-Merge behandeln.
+18. Migrationsevidence fortschreiben.
+19. Abschlusschecks ausfuehren.
+20. Migrationsevidence versiegeln.
 ```
 
 Aktuelle Box-Version:
@@ -547,11 +685,20 @@ Zulaessig nur wenn:
 Projekt wurde noch nicht fachlich weiterentwickelt.
 Keine lokalen semantischen Projektentscheidungen wurden nach dem Fehlversuch getroffen.
 Der Fehlerzustand ist dokumentiert.
-Ein Mensch gibt die Reparatur ausdruecklich frei.
+Ein Mensch gibt die Reparatur mit Grundlage, Version und Scope ausdruecklich frei.
 ```
 
-In diesem Fall kann `tools/instantiate/instantiate_project_box.py --force`
-zulaessig sein.
+In diesem Fall gilt:
+
+```text
+1. Reparaturplan festhalten.
+2. Reparaturmandat fuer Plan, Version und Scope einholen.
+3. WG-MUTATION pruefen.
+4. --force nur innerhalb dieses Scopes verwenden.
+```
+
+Dann kann `tools/instantiate/instantiate_project_box.py --force` zulaessig
+sein.
 
 Nicht zulaessig fuer:
 
@@ -589,18 +736,20 @@ Brownfield-Fall: A | B | C
 Ausgangsversion:
 Zielversion:
 Datum:
-
-## Zielmodell-Entscheidungen
-
-Entscheidungsreferenzen: (Sprechakte, Plan-IDs)
-
-## Migrationsmandat
-
-Mandat-ID:
-Freigegebene Plan-ID:
-Freigegebene Plan-Version:
-Freigegebener Scope:
-Mandatsquelle:
+Contract-ID:
+Run-ID:
+Base-Snapshot:
+Ausfuehrungsprofil:
+Zielmodellentscheidung:
+Migrationsmandat:
+  Mandat-ID:
+  Mandatstatus:
+  Mandatsgrundlage: Plan
+  Grundlagen-ID:
+  Grundlagen-Version:
+  Scope:
+  Geschuetzte Dateien:
+  Freigabereferenz:
 
 ## Baseline
 
@@ -611,6 +760,10 @@ Mandatsquelle:
 ## Vorlaeufige Klassifikation
 
 ## Menschliche Entscheidungen
+
+## Migrationsplan
+
+## Migrationsmandat
 
 ## Zielmodell / Projektionen
 
@@ -625,6 +778,32 @@ Mandatsquelle:
 ## Ausgefuehrte Checks
 
 ## Offene Warnungen
+
+## Governance-Rueckfluss
+
+Lokale Governance geaendert: ja | nein
+
+### Lokaler Befund
+
+Was musste lokal geaendert werden?
+
+### Ursache
+
+Welche Schwaeche des Templates oder der Migration wurde sichtbar?
+
+### Lokaler Anteil
+
+Was ist ausschliesslich projektspezifisch?
+
+### Verallgemeinerbarer Kern
+
+Welche allgemeine Regel oder Fehlerklasse koennte fuer das Template relevant
+sein?
+
+### Rueckflussstatus
+
+LOCAL-ONLY | ERFAHRUNGSBERICHT | TEMPLATE-CANDIDATE | TOOLING-CANDIDATE |
+UNKNOWN | NO-RETURN
 
 ## Abschlussentscheidung
 ```

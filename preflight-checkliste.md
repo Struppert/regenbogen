@@ -1,5 +1,11 @@
 # preflight-checkliste.md — Python-Projekt
 
+> Ebene: PRIMING
+> Rolle: diagnostisches Einstiegsgate
+> Geltung: jeder nichttriviale Lauf
+> Autoritative Frage: Welche Vorbedingungen muessen vor Arbeit geprueft werden?
+> Nicht zustaendig fuer: lokale Architekturentscheidung, konkrete Ausfuehrungsfreigabe
+
 > Diese Checkliste wird vor jeder nichttrivialen Änderung ausgeführt.
 >
 > Sie operationalisiert `AGENTS.md`. Sie ersetzt es nicht.
@@ -28,26 +34,36 @@ Preflight ersetzt kein Ausfuehrungsmandat.
 
 ---
 
-## 0a. WG-AUSFUEHRUNG — Wirkungsgate
+## 0a. WG-MUTATION — Wirkungsgate
 
-WG-AUSFUEHRUNG wird unmittelbar vor jeder Repository-Mutation geprüft.
+WG-MUTATION ist eine fortlaufende Invariante. Es wird vor der ersten
+Repository-Mutation und erneut bei Wechsel von Wirkungstyp, Scope,
+Schutzklasse, Mandatsstatus oder Grundlage geprüft.
 
 ```text
-Welcher Arbeitsmodus gilt?
-Welche Wirkungsklasse hat die Mutation?
-  Diagnostisch (Plan, Evidence, Sprechakt):
-    Ist PLAN- oder AUSFUEHRUNGS-Modus aktiv?
-  Transformativ (Code, Checker, normative Artefakte):
-    Existiert ein aktives Ausfuehrungsmandat?
-    Passt die freigegebene Plan-Version?
-    Liegt die Mutation im Scope?
-Ist die Dateiklasse beschreibbar oder geschützt?
-Ist eine geschützte Datei ausdrücklich vom Mandat gedeckt?
+Wirkungstyp:
+  diagnostisch | normativ | projekt-transformativ
+
+Diagnostische Wirkung:
+  Arbeitsmodus PLAN oder AUSFUEHRUNG?
+  erlaubter diagnostischer Artefaktraum?
+  keine normative Statusaenderung?
+
+Normative oder projekt-transformative Wirkung:
+  Arbeitsmodus AUSFUEHRUNG?
+  aktives Ausfuehrungsmandat?
+  passende Grundlage und Version?
+  Mutation im Scope?
+  Schutzklasse gedeckt?
+  geschuetzte Datei ausdruecklich vom Mandat gedeckt?
 ```
 
-Wenn WG-AUSFUEHRUNG nicht grün ist: keine Mutation.
+Kurzform. Vollstaendige WG-MUTATION-Pruefliste:
+`ausfuehrungsmandat-protokoll.md`, Abschnitt "Wirkungsgate WG-MUTATION".
 
-Protokoll: `ausfuehrungsmandat-protokoll.md`
+Wenn WG-MUTATION nicht gruen ist: keine Mutation.
+
+WG-MUTATION ist kein Preflight-Schritt. Die `PF-*`-IDs bleiben stabil.
 
 ---
 
@@ -55,7 +71,7 @@ Protokoll: `ausfuehrungsmandat-protokoll.md`
 
 Vor dem vollständigen Preflight: welche Risikoklasse hat diese Aufgabe?
 
-Kanonische SICHER-Definition: `AGENTS.md` §8.
+Kanonische SICHER-Definition: `AGENTS.md`.
 
 **SICHER** (kein neuer Begriff, keine neue Importkante, kein neuer Raum):
 
@@ -80,16 +96,16 @@ Lokale Refactorings ohne neue öffentliche Symbole
 - keine Änderung an Tests, die Verhalten definieren
 ```
 
-→ **Fast-Path:** PF-ROUTER + PF-RAEUME + PF-IMPORTLAYER + PF-TESTPFLICHT + PF-SCHREIBRECHT.
-PF-SCHEMA, PF-GLOSSAR, PF-TASKSCHNITT, PF-PLAN entfallen.
+→ **Fast-Path:** PF-AGENTS + PF-RAEUME + PF-IMPORT + PF-TEST + PF-SCHREIBEN.
+PF-SCHEMA, PF-GLOSSAR, PF-SCHNITT, PF-PLAN entfallen.
 
-P7 (Schreibrechte) entfällt nie. Safe Task ist Risikoklasse, nicht Schreibrecht.
+PF-SCHREIBEN (Schreibrechte) entfällt nie. Safe Task ist Risikoklasse, nicht Schreibrecht.
 
-**MITTEL oder höher** (Definition: `AGENTS.md` §8):
+**MITTEL oder höher** (Definition: `AGENTS.md`):
 
-→ Vollständiger Preflight PF-ROUTER–PF-PLAN.
+→ Vollständiger Preflight PF-AGENTS–PF-PLAN.
 
-**Wenn Zweifel über die Risikoklasse:** vollständiger Preflight PF-ROUTER–PF-PLAN.
+**Wenn Zweifel über die Risikoklasse:** vollständiger Preflight PF-AGENTS–PF-PLAN.
 
 Brownfield-Arbeit ist nie SICHER. Jede Änderung die einen bekannten Bruch
 im Scope berührt, erhöht die Klasse automatisch auf MITTEL.
@@ -109,22 +125,22 @@ Nicht ersetzter Platzhalter in aktiver Regel → Abbruch H7.
 
 ---
 
-## 2. Kurzform (vollständiger Preflight)
+## 2. Kurzform
 
 ```text
-PF-ROUTER       AGENTS.md lesen
+PF-AGENTS       AGENTS.md lesen
 PF-SCHEMA       package-schema.md gezielt prüfen
 PF-RAEUME       betroffene semantische Räume bestimmen
 PF-GLOSSAR      relevante Glossareinträge gezielt laden; bei Modellarbeit MODELL-README.md prüfen
-PF-IMPORTLAYER  Import-/Layer-Checker ausführen
-PF-TESTPFLICHT  Testpflicht ableiten
-PF-SCHREIBRECHT Schreibrechte prüfen
-PF-TASKSCHNITT  Task-Schnitt prüfen (wenn T1–T5 eintreten)
+PF-IMPORT       Import-/Layer-Checker ausführen
+PF-TEST         Testpflicht ableiten
+PF-SCHREIBEN    Schreibrechte prüfen
+PF-SCHNITT      Task-Schnitt prüfen (wenn T1–T5 eintreten)
 PF-PLAN         Plan anlegen, wenn Änderung nicht trivial ist
 ```
 
-PF-IDs sind stabile semantische Identitäten. Reihenfolge und Gruppierung
-können sich ändern; IDs werden niemals umbenannt oder wiederverwendet.
+Die `PF-*`-IDs sind stabile semantische Identitäten. Reihenfolge und Gruppierung
+koennen sich aendern; IDs werden niemals umbenannt oder wiederverwendet.
 
 Jedes Nein oder Unklar ist entweder Sprechakt, Task-Schnitt, SOFT- oder HARD-Abbruch.
 Abbruchklassen: `blocker-und-abbruch-protokoll.md`, `BROWNFIELD-MIGRATION.md`.
@@ -133,7 +149,7 @@ Nicht raten.
 
 ---
 
-## 3. PF-ROUTER — AGENTS.md lesen
+## 3. PF-AGENTS — AGENTS.md lesen
 
 ```text
 Welche Safe-Task-Klasse hat die Aufgabe?
@@ -273,7 +289,7 @@ Wenn Begriff aktiv nötig und fehlt: Task-Schnitt T1, danach Sprechakt SP7.
 
 ---
 
-## 7. PF-IMPORTLAYER — Import-/Layer-Checker ausführen
+## 7. PF-IMPORT — Import-/Layer-Checker ausführen
 
 ```bash
 python tools/check_import_layers.py --preflight src tests tools
@@ -311,7 +327,7 @@ SA2 gilt nur wenn geänderter Code (src/, tests/) den Format-Check nicht besteht
 
 ---
 
-## 8. PF-TESTPFLICHT — Testpflicht ableiten
+## 8. PF-TEST — Testpflicht ableiten
 
 ```bash
 tools/resolve_test_obligations.py --changed-file <path>
@@ -345,16 +361,17 @@ Wenn keine Tests nötig: Begründung als Evidence notieren (Testfreiheitsformat:
 
 ---
 
-## 9. PF-SCHREIBRECHT — Schreibrechte prüfen
+## 9. PF-SCHREIBEN — Schreibrechte prüfen
 
-Kanonische Quelle: `regelmatrix.md`; `AGENTS.md` §11 enthält die Kategorien.
+Kanonische Quelle: `regelmatrix.md`; `AGENTS.md` enthält die Kategorien.
 
 Kurzform:
 
 ```text
-Erlaubt:        src/, tests/, docs/plans/, tmp/, CHANGELOG.md
-Append-only:    docs/sprechakte/, tmp/erfahrungsberichte/
+Erlaubt:        src/, tests/, docs/plans/, docs/runs/<Run-ID>/, tmp/, CHANGELOG.md
+Append-only:    docs/sprechakte/, .agent-box/evidence/erfahrungsberichte/
 Geschützt:      alle Agentendokumente, Checker-Tools, docs/plans/template.md,
+                docs/runs/checkpoint-template.md,
                 pyproject.toml, Lockfiles, .github/workflows/
 ```
 
@@ -362,7 +379,7 @@ Wenn geschützte Datei ohne Mandatsdeckung geändert werden müsste: HARD-Abbruc
 
 ---
 
-## 10. PF-TASKSCHNITT — Task-Schnitt prüfen
+## 10. PF-SCHNITT — Task-Schnitt prüfen
 
 Task-Schnitt bei:
 
@@ -415,7 +432,6 @@ Für nichttriviale Änderungen:
 
 ```text
 Preflight:
-  WG-AUSFUEHRUNG grün: ja
   AGENTS gelesen:    ja
   Schema geprüft:    ja
   Räume:
@@ -426,6 +442,7 @@ Preflight:
   Schreibrechte:
   Task-Schnitt:
   Plan:
+  WG-MUTATION:
   Ergebnis:
 ```
 

@@ -1,5 +1,12 @@
 # AGENTS.md — Python-Projekt: Operative Regeln für KI-Agenten
 
+> Ebene: MIXED-TRANSITION
+> Primaerer Anteil: PRIMING-ROUTER
+> Sekundaere Projektion: REPOSITORY
+> Rolle: bindender Einstieg und Ladeprotokoll
+> Autoritative Frage: Welche Kernregeln gelten immer und welche Detailquelle wird aktiviert?
+> Nicht zustaendig fuer: vollstaendige Detailprotokolle, konkrete Laufplanung
+
 > Immer aktive Kernregeln und Ladeprotokoll. Detailregeln nur bei konkretem
 > Task-Auslöser laden. Verlinkte Dokumente nicht pauschal laden.
 >
@@ -54,7 +61,9 @@ Köpfen lesen und schreiben.
 
 ## 1. Autoritaet, Ladeprinzip und Spezialdokumente
 
-`AGENTS.md` ist bindender Router und Einstieg. Spezialdokumente sind autoritativ für
+`AGENTS.md` ist einer der bindenden Router und der primäre Einstieg. Die
+bindende Router-Struktur wird durch die aktivierten Spezialdokumente ergänzt.
+Spezialdokumente sind autoritativ für
 ihre Detailfrage:
 
 ```text
@@ -68,7 +77,8 @@ Semantischer Task-Schnitt        -> task-schnitt.md
 Brownfield oder Altbruch         -> BROWNFIELD-MIGRATION.md
 Testpflicht                      -> test-obligations.md
 Schreibrechte, Schutz, Drift     -> regelmatrix.md
-Arbeitsmodus, Mandat, WG-AUSFUEHRUNG -> ausfuehrungsmandat-protokoll.md
+Arbeitsmodus, Mandat, WG-MUTATION -> ausfuehrungsmandat-protokoll.md
+Run-Checkpoint                  -> docs/runs/checkpoint-template.md
 Blocker, Abbruch, Wiedereinstieg -> blocker-und-abbruch-protokoll.md
 Bridge-Symbol                    -> migration-bridges.md
 Erfahrungsbericht-Ausloeser      -> erfahrungsbericht-protokoll.md
@@ -92,7 +102,7 @@ PLAN         diagnostische Wirkung: Plan, Evidence, Sprechakt anlegen
 AUSFUEHRUNG  freigegebenen Plan im Mandatsscope umsetzen
 ```
 
-Vor jeder Repository-Mutation WG-AUSFUEHRUNG aus
+Vor jeder Repository-Mutation WG-MUTATION aus
 `ausfuehrungsmandat-protokoll.md` pruefen. Diagnostische Wirkung (Plan,
 Evidence, Sprechakt) erfordert PLAN- oder AUSFUEHRUNGS-Modus. Transformative
 Wirkung (Code, Checker, normative Artefakte) erfordert zusaetzlich ein
@@ -100,6 +110,33 @@ aktives Ausfuehrungsmandat.
 
 Schreibrecht, Planexistenz, Fast-Path, festgelegter Sprechakt und fehlender
 Blocker ersetzen kein Ausfuehrungsmandat.
+
+### 2.1 Dreidimensionales Ausfuehrungsprofil
+
+Jeder nichttriviale Lauf arbeitet mit drei expliziten Profilachsen:
+
+```text
+Interaktionsprofil: interaktiv | autonom
+Recovery-Profil:    normal | overnight
+Arbeitsprofil:      feature | brownfield-migration | governance-migration
+```
+
+Diese Profile werden in Plan und Checkpoint gebunden. Sie beschreiben nicht
+die Fachsemantik, sondern den Laufvertrag der Agentenarbeit.
+
+### 2.2 Checkpoint-Pflichten
+
+Bei Interaktionsprofil `autonom`, Recovery-Profil `overnight` oder bei
+mehrphasigen Laeufen mit geplanter Wiederaufnahme gilt:
+
+```text
+Checkpoint vor der ersten normativen oder projekt-transformativen Wirkung erzeugen.
+Nach jeder abgeschlossenen Phase neuen Checkpoint erzeugen und vorherigen versiegeln.
+Vor Pause, Kontextwechsel oder Abbruch neuen Checkpoint erzeugen und vorherigen versiegeln.
+Letzten Checkpoint mit Run-Status COMPLETED und Checkpoint-Status sealed abschliessen.
+```
+
+Format und Pflichtfelder stehen in `docs/runs/checkpoint-template.md`.
 
 ---
 
@@ -414,7 +451,7 @@ Verboten:
 ### I11. Keine Repository-Mutation ohne aktives Ausfuehrungsmandat
 
 Beschreibbarkeit einer Datei ist kein Ausfuehrungsmandat.
-Vor der ersten Mutation WG-AUSFUEHRUNG aus `ausfuehrungsmandat-protokoll.md` prüfen.
+Vor der ersten Mutation WG-MUTATION aus `ausfuehrungsmandat-protokoll.md` prüfen.
 
 ---
 
@@ -547,7 +584,7 @@ CHANGELOG.md
 
 ```text
 docs/sprechakte/
-tmp/erfahrungsberichte/
+.agent-box/evidence/erfahrungsberichte/
 ```
 
 ### Geschützt — nur mit expliziter Mandatsdeckung
@@ -578,6 +615,7 @@ tools/check_agent_docs_consistency.py
 tools/instantiate/instantiate_project_box.py
 tools/instantiate/README.md
 docs/plans/template.md
+docs/runs/checkpoint-template.md
 .agent-box-template.md
 .agent-box/instantiation.md
 .agent-box/adoption.md
@@ -672,7 +710,7 @@ Die Abbruchklasse richtet sich nach der verletzten Regel, nicht nach dem Werkzeu
 Bei jedem Abbruch:
 
 ```text
-tmp/erfahrungsberichte/YYYY-MM-DD-ABBRUCH-<kurzbeschreibung>.md
+.agent-box/evidence/erfahrungsberichte/YYYY-MM-DD-ABBRUCH-<kurzbeschreibung>.md
 ```
 
 Format:
@@ -699,18 +737,18 @@ Bei BF-Abbruch gilt zusätzlich `BROWNFIELD-MIGRATION.md`.
 
 ## 14. Preflight
 
-Vor jeder nichttrivialen Änderung zuerst WG-AUSFUEHRUNG prüfen (→ `ausfuehrungsmandat-protokoll.md`),
+Vor jeder nichttrivialen Änderung zuerst WG-MUTATION prüfen (→ `ausfuehrungsmandat-protokoll.md`),
 dann Preflight:
 
 ```text
-PF-ROUTER       AGENTS.md lesen
+PF-AGENTS       AGENTS.md lesen
 PF-SCHEMA       package-schema.md gezielt prüfen
 PF-RAEUME       betroffene semantische Räume bestimmen
 PF-GLOSSAR      relevante Glossareinträge gezielt laden; bei Modellarbeit MODELL-README.md prüfen
-PF-IMPORTLAYER  Import-/Layer-Checker ausführen
-PF-TESTPFLICHT  Testpflicht ableiten
-PF-SCHREIBRECHT Schreibrechte prüfen
-PF-TASKSCHNITT  Task-Schnitt prüfen, wenn T1–T5 eintreten
+PF-IMPORT  Import-/Layer-Checker ausführen
+PF-TEST  Testpflicht ableiten
+PF-SCHREIBEN Schreibrechte prüfen
+PF-SCHNITT  Task-Schnitt prüfen, wenn T1–T5 eintreten
 PF-PLAN         Plan unter docs/plans/ anlegen, wenn Änderung nicht trivial ist
 ```
 
@@ -834,7 +872,7 @@ Nach Sprechakt:
 1. Sprechakt-Artefakt lesen
 2. menschliche Festlegung lesen
 3. Glossar-/Schema-Nachzug prüfen
-4. WG-AUSFUEHRUNG und Ausfuehrungsmandat prüfen
+4. WG-MUTATION und Ausfuehrungsmandat prüfen
 5. Preflight ausführen
 6. ab definiertem Wiedereintrittspunkt fortsetzen
 ```
@@ -904,14 +942,14 @@ Erfahrungsberichte werden nur bei systemisch lernrelevanten Auslösern geschrieb
 Pflicht-Trigger:
 
 ```text
-E1  Systemische Schwäche oder unerwartetes Regelversagen wurde sichtbar.
-E2  Nach jedem HARD-Abbruch.
-E3  Nach sichtbarer Systemschwäche oder neu erkanntem Governance-Muster.
-E4  Nach SOFT-Abbruch, wenn der Abbruchgrund systemisch ist.
-E5  Nach unerwarteter Interaktion zwischen Regeln.
+E1  Nach systemischem Abbruch oder unklarer Recovery.
+E2  Nach Regelwiderspruch oder Autoritätsdrift.
+E3  Nach Verifikationslücke oder blindem Checker.
+E4  Nach Pendeln, Stagnation oder wiederholtem Fehlverhalten.
+E5  Nach neuer verallgemeinerbarer Erkenntnis über die Agenten-Box.
 ```
 
-Ort: `tmp/erfahrungsberichte/YYYY-MM-DD-EB-<kurzbeschreibung>.md` (append-only)
+Ort: `.agent-box/evidence/erfahrungsberichte/YYYY-MM-DD-EB-<kurzbeschreibung>.md` (append-only)
 
 Vollständiges Protokoll: `erfahrungsbericht-protokoll.md`
 

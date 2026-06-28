@@ -1,5 +1,11 @@
 # grundsatz.md — Warum dieses System so gebaut ist
 
+> Ebene: PRIMING
+> Rolle: Theorie und Begruendung
+> Geltung: projektuebergreifender Hintergrund
+> Autoritative Frage: Warum sind Abbruch, Evidence und Semantikgrenzen noetig?
+> Nicht zustaendig fuer: operative Detailentscheidung, konkrete Ausfuehrung
+
 **Dokumenttyp: Theorie / Hintergrund**
 
 > Dieses Dokument ist kein Regelwerk und kein Änderungsauftrag.

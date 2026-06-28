@@ -1,5 +1,11 @@
 # package-schema.md — Python-Projekt: Semantische Paket- und Modulräume
 
+> Ebene: REPOSITORY
+> Rolle: lokaler Architektur- und Importvertrag
+> Geltung: dieses Projekt
+> Autoritative Frage: Welcher Modulpfad ist fuer welche Semantik zustaendig?
+> Nicht zustaendig fuer: menschliche Freigaben, Laufsteuerung, konkrete Aufgaben
+
 > Dieses Dokument beschreibt die semantischen Adressräume dieses Python-Projekts.
 >
 > Es beantwortet nicht: „Welche Ordner gibt es?"

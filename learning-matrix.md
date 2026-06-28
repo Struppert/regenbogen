@@ -1,5 +1,11 @@
 # learning-matrix.md — Python-Projekt: Aggregierte Lernmuster
 
+> Ebene: REPOSITORY
+> Rolle: lokaler Lernspeicher
+> Geltung: dieses Projekt
+> Autoritative Frage: Welche wiederkehrenden Muster sind Kandidaten fuer Entscheidungen?
+> Nicht zustaendig fuer: direkte Regelwirkung, konkrete Laufsteuerung
+
 > Dieses Dokument aggregiert wiederkehrende Muster aus Erfahrungsberichten.
 >
 > Es ist kein Regelwerk. Es ist Eingabe für Regelentscheidungen.
@@ -17,6 +23,8 @@ Systemänderung              → folgt aus menschlicher Entscheidung über Muste
 
 Ein Agent darf diese Matrix lesen, um bekannte Muster zu erkennen.
 Er darf sie nicht ohne explizite Freigabe schreiben oder ändern.
+
+---
 
 ## 1a. Muster-Schwelle
 
@@ -41,7 +49,7 @@ verhindert, dass Einmaleffekte als Systemschwächen eingestuft werden.
 ## M-<NR>: <Kurzbeschreibung des Musters>
 
 Erstellt:      YYYY-MM-DD
-Quellen:       tmp/erfahrungsberichte/YYYY-MM-DD-EB-...md (ein oder mehrere)
+Quellen:       .agent-box/evidence/erfahrungsberichte/YYYY-MM-DD-EB-...md (ein oder mehrere)
 Häufigkeit:    einmalig | wiederholt (N Mal) | systematisch
 Status:        beobachtet | als Verbesserung vorgeschlagen | in Planung | umgesetzt
 
@@ -72,8 +80,8 @@ Klar als Vorschlag markieren.>
 ## M-1: Ruff-Format-Check meldet Verstoß auf Tool-Dateien außerhalb des Schnitts
 
 Erstellt:      2026-06-20
-Quellen:       tmp/erfahrungsberichte/2026-06-20-ABBRUCH-globaler-format-check.md
-               tmp/erfahrungsberichte/2026-06-20-EB-uv-projektkonfiguration.md
+Quellen:       .agent-box/evidence/erfahrungsberichte/2026-06-20-ABBRUCH-globaler-format-check.md
+               .agent-box/evidence/erfahrungsberichte/2026-06-20-EB-uv-projektkonfiguration.md
 Häufigkeit:    wiederholt (2 Mal)
 Status:        als Verbesserung vorgeschlagen
 
@@ -93,7 +101,7 @@ passiver Altbefund in geschützten Dateien.
 
 ### Mögliche Maßnahme
 
-Im P7-Schritt des Preflight unterscheiden:
+Im Schritt PF-SCHREIBEN des Preflight unterscheiden:
 - Format-Check auf aktiv geänderte Dateien (`src/`, `tests/`) = normaler Prüfschritt
 - Format-Meldung auf `tools/` ohne Berührung in diesem Schnitt = SA6 (lokale
   Inkonsistenz ohne semantischen Widerspruch), nicht SA2
@@ -108,8 +116,8 @@ Oder: Ruff-Scope im Standard-Check auf `src/ tests/` einschränken.
 ## M-2: Fehlende Runtime-Abhängigkeiten blockieren Testvalidierung
 
 Erstellt:      2026-06-20
-Quellen:       tmp/erfahrungsberichte/2026-06-20-ABBRUCH-plz-validierung.md
-               tmp/erfahrungsberichte/2026-06-20-EB-plz-bestimmung.md
+Quellen:       .agent-box/evidence/erfahrungsberichte/2026-06-20-ABBRUCH-plz-validierung.md
+               .agent-box/evidence/erfahrungsberichte/2026-06-20-EB-plz-bestimmung.md
 Häufigkeit:    einmalig
 Status:        als Verbesserung vorgeschlagen
 
@@ -127,7 +135,7 @@ die Umgebung aufräumt. Kein Schaden am Code, aber unnötige Iteration.
 
 ### Mögliche Maßnahme
 
-Im Preflight-Schritt P8 (Testpflicht) früh prüfen:
+Im Schritt PF-TEST des Preflight früh prüfen:
 "Sind Test- und Runtime-Abhängigkeiten in der aktiven Umgebung installiert?"
 Bei Nein: nicht erst am Ende scheitern, sondern früh dokumentieren und
 Menschenentscheidung abwarten. Oder: als eigenen P0-Schritt im Fast-Path
@@ -142,9 +150,9 @@ für Aufgaben mit Laufzeitbezug.
 ## M-3: Glossareinträge dünner als Format fordert erzeugen SP7-Druck
 
 Erstellt:      2026-06-20
-Quellen:       tmp/erfahrungsberichte/2026-06-20-EB-readme-programmdoku.md
-               tmp/erfahrungsberichte/2026-06-20-EB-sonnenscheinanteil.md
-               tmp/erfahrungsberichte/2026-06-20-EB-modell-readme-und-framing.md
+Quellen:       .agent-box/evidence/erfahrungsberichte/2026-06-20-EB-readme-programmdoku.md
+               .agent-box/evidence/erfahrungsberichte/2026-06-20-EB-sonnenscheinanteil.md
+               .agent-box/evidence/erfahrungsberichte/2026-06-20-EB-modell-readme-und-framing.md
 Häufigkeit:    wiederholt (3 Mal)
 Status:        umgesetzt
 
@@ -178,7 +186,7 @@ Alle bestehenden Einträge als `minimal` markiert.
 ## M-4: Framing-Änderungen kaskadieren über mehrere gekoppelte Dokumente
 
 Erstellt:      2026-06-20
-Quellen:       tmp/erfahrungsberichte/2026-06-20-EB-modell-readme-und-framing.md
+Quellen:       .agent-box/evidence/erfahrungsberichte/2026-06-20-EB-modell-readme-und-framing.md
 Häufigkeit:    einmalig
 Status:        als Verbesserung vorgeschlagen
 
@@ -210,9 +218,9 @@ als eigener Preflight-Check vor dem Schreiben.
 ## M-5: Sprechaktmechanismus (SP2, SP7) verhindert stille semantische Fehler
 
 Erstellt:      2026-06-20
-Quellen:       tmp/erfahrungsberichte/2026-06-10-EB-domain-kern.md
-               tmp/erfahrungsberichte/2026-06-12-EB-gui-session.md
-               tmp/erfahrungsberichte/2026-06-20-EB-modell-readme-und-framing.md
+Quellen:       .agent-box/evidence/erfahrungsberichte/2026-06-10-EB-domain-kern.md
+               .agent-box/evidence/erfahrungsberichte/2026-06-12-EB-gui-session.md
+               .agent-box/evidence/erfahrungsberichte/2026-06-20-EB-modell-readme-und-framing.md
 Häufigkeit:    systematisch
 Status:        beobachtet
 
@@ -243,7 +251,7 @@ Keine Änderung. Bestätigt.
 ## M-6: UI-Text als eigenständiger Fehlerkanal neben Code
 
 Erstellt:      2026-06-20
-Quellen:       tmp/erfahrungsberichte/2026-06-20-EB-sonnenscheinanteil.md
+Quellen:       .agent-box/evidence/erfahrungsberichte/2026-06-20-EB-sonnenscheinanteil.md
 Häufigkeit:    einmalig
 Status:        als Verbesserung vorgeschlagen
 
@@ -263,7 +271,7 @@ Code-Fix. Checker hätte diesen Fehler nie gemeldet.
 
 ### Mögliche Maßnahme
 
-Im Preflight-Schritt P5 (Glossar laden) bei Änderungen in `cli/` explizit
+Im Schritt PF-GLOSSAR bei Änderungen in `cli/` explizit
 fragen: "Stimmt der angezeigte Begriff mit dem Glossareintrag überein?
 Ist er Anteil, Intensität, Wahrscheinlichkeit oder technisches API-Feld?"
 In test-obligations.md aufnehmen: UI-Text-Änderungen erfordern Glossarabgleich.

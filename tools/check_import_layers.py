@@ -12,7 +12,7 @@ Wenn eine Datei nicht klassifizierbar ist, meldet es einen Fehler — nie still.
 Modi:
   (Standard)   Vollständiger Output mit Farbe.
   --preflight  Agenten-Modus: kompakter Markdown-Output,
-               klare Exit-Codes. Für Preflight-Schritt P6.
+               klare Exit-Codes. Für Preflight-Schritt PF-IMPORT.
 
 Exit-Codes:
   0  Keine Verletzungen (bei --preflight: Preflight bestanden)
@@ -529,6 +529,8 @@ def check_file(path: Path) -> list[Finding]:
             continue
 
         if import_type == "relative":
+            if source_layer == "tests":
+                continue
             findings.append(
                 UnknownLayerFinding(
                     file=path,
@@ -637,7 +639,8 @@ def print_findings_standard(findings: list[Finding]) -> None:
             print(
                 f"{finding.file}:{finding.line}: PUBLIC_API: {finding.message}\n"
                 f"  module: {finding.module}\n"
-                f"  action: Freigabe nach AGENTS.md H9 / package-schema.md §7 prüfen"
+                f"  action: Freigabe nach AGENTS.md H9 / package-schema.md Abschnitt "
+                f"'Öffentliche API-Flächen' prüfen"
             )
         else:
             print(
@@ -648,7 +651,7 @@ def print_findings_standard(findings: list[Finding]) -> None:
 
 def print_preflight(findings: list[Finding], files_checked: int) -> None:
     """
-    Kompakter Agenten-Output für Preflight-Schritt P6.
+    Kompakter Agenten-Output für Preflight-Schritt PF-IMPORT.
     Maximale Lesbarkeit, minimale Länge.
     Markdown-Evidence bei Fehlern.
     """
@@ -671,7 +674,9 @@ def print_preflight(findings: list[Finding], files_checked: int) -> None:
         )
     elif has_public_api:
         print("ABBRUCH: Öffentliche API-Fläche berührt.")
-        print("H9: Public-API-Änderung braucht Freigabe (blocker-und-abbruch-protokoll.md).\n")
+        print(
+            "H9: Public-API-Änderung braucht Freigabe (blocker-und-abbruch-protokoll.md).\n"
+        )
     print("Evidence (Markdown):")
     for f in findings:
         if isinstance(f, ImportFinding):

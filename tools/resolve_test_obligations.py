@@ -42,6 +42,10 @@ PYTHON_TEST = "python -m pytest"
 
 AGENT_DOCS = {
     "AGENTS.md",
+    "AGENT-SETUP.md",
+    "BROWNFIELD-MIGRATION.md",
+    "blocker-und-abbruch-protokoll.md",
+    "ausfuehrungsmandat-protokoll.md",
     "package-schema.md",
     "preflight-checkliste.md",
     "task-schnitt.md",
@@ -51,6 +55,27 @@ AGENT_DOCS = {
     "migration-bridges.md",
     "erfahrungsbericht-protokoll.md",
     "learning-matrix.md",
+    "glossar-domain.md",
+    "glossar-system.md",
+    "glossar-meta.md",
+    "glossar-README.md",
+    "grundsatz.md",
+}
+
+# Normative Artefakte mit Pfad (nicht nur Dateiname).
+# Liegen unter DOCS_ROOT, werden aber wie AGENT_DOCS behandelt.
+NORMATIVE_DOC_PATHS = {
+    "docs/plans/template.md",
+    "docs/runs/checkpoint-template.md",
+}
+
+# Bekannte Root-Dateien die kein Hard-Stop auslösen sollen.
+KNOWN_ROOT_FILES = {
+    "CHANGELOG.md",
+    "README.md",
+    ".gitignore",
+    ".editorconfig",
+    ".agent-box-instantiated",
 }
 
 PACKAGING_FILES = {
@@ -182,10 +207,38 @@ def classify_path(path: Path) -> FileObligations:
                 checks={"agent-docs-consistency"},
                 notes=[
                     "Nach regelmatrix.md gekoppelte Dokumente prüfen (Inhalt, nicht nur Präsenz).",
-                    "Nach regelmatrix.md Drift-Regeln: Kopplungspflichten aktiv prüfen.",
-                    "ERFAHRUNGSBERICHT (E1): Agentendokument-Änderung ist nichttrivial — Erfahrungsbericht nach Session schreiben.",
+                    "AGENTS.md ist Router; Detailregeln in den aktivierten Spezialdokumenten prüfen.",
+                    "Erfahrungsbericht nur schreiben, wenn E1-E5 aus erfahrungsbericht-protokoll.md greifen.",
                 ],
                 requires_human=True,
+            )
+        )
+        return result
+
+    # Normative Dokumente mit Pfad (z.B. Plan- und Checkpoint-Templates)
+    if p.as_posix() in NORMATIVE_DOC_PATHS:
+        result.add(
+            Obligation(
+                reason="Normatives Box-Artefakt geändert.",
+                checks={"agent-docs-consistency"},
+                notes=[
+                    "Template-Änderungen müssen mit AGENTS.md und sprechakt-protokoll.md konsistent bleiben.",
+                    "Schema-Felder und Pflicht-Kommentare prüfen.",
+                ],
+                requires_human=True,
+            )
+        )
+        return result
+
+    # Bekannte Root-Dateien ohne normative Wirkung
+    if p.name in KNOWN_ROOT_FILES and len(p.parts) == 1:
+        result.add(
+            Obligation(
+                reason="Bekannte Root-Datei geändert.",
+                notes=[
+                    "Keine operative Agenten-Regel betroffen.",
+                    "Änderungen im CHANGELOG.md spiegeln die aktuelle Box-Version wider.",
+                ],
             )
         )
         return result
@@ -530,13 +583,11 @@ def selfcheck(strict: bool = False) -> int:
 
     print()
     print("Erfahrungsbericht-Trigger aktiv:")
-    print(
-        "  E1 — nach Session mit Plan/MITTEL/Sprechakt/Task-Schnitt/API/Dokumentdrift"
-    )
-    print("  E2 — nach HARD-Abbruch")
-    print("  E3 — nach sichtbarer Systemschwäche")
-    print("  E4 — nach systemischem SOFT-Abbruch")
-    print("  E5 — nach unerwarteter Regelinteraktion")
+    print("  E1 — nach systemischem Abbruch oder unklarer Recovery")
+    print("  E2 — nach Regelwiderspruch oder Autoritätsdrift")
+    print("  E3 — nach Verifikationslücke oder blindem Checker")
+    print("  E4 — nach Pendeln, Stagnation oder wiederholtem Fehlverhalten")
+    print("  E5 — nach neuer verallgemeinerbarer Erkenntnis über die Box")
     print("Protokoll: erfahrungsbericht-protokoll.md")
     return 0
 

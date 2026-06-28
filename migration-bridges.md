@@ -1,9 +1,15 @@
 # migration-bridges.md — Python-Projekt: Symbolsperren und Bridge-Begriffe
 
+> Ebene: REPOSITORY
+> Rolle: lokaler Bridge- und Symbolsperrenvertrag
+> Geltung: dieses Projekt
+> Autoritative Frage: Welche Begriffe und Symbole duerfen nicht mechanisch beruehrt werden?
+> Nicht zustaendig fuer: allgemeine Brownfield-Regeln, konkrete Migration
+
 > Dieses Dokument klassifiziert Symbole und Begriffe, die nicht mechanisch angefasst
 > werden dürfen — auch wenn sie in keiner geschützten Datei stehen.
 >
-> Geschützte Dateien: `regelmatrix.md` §7 Schreibstatus.
+> Geschützte Dateien: `regelmatrix.md` — "Geschuetzte Dateien".
 > Symbolsperren: dieses Dokument.
 
 ---
@@ -82,8 +88,6 @@ do-not-touch-mechanically
 > Jede aktive Nutzung eines Bridge-Symbols in neuem Code ist
 > standardmäßig ein HARD-Abbruch H3, außer die `Änderungsregel`
 > des Eintrags erlaubt sie explizit.
-> Dokumentiert = bekannt, nicht = erlaubt.
-
 Bekannte Bridge-Begriffe dieses Projekts eintragen.
 
 Format:
@@ -100,7 +104,19 @@ BR-<NR>:
   Begründung:         <warum dieser Status>
 ```
 
-Kein aktiver Bridge-Eintrag nach Instanziierung.
+Beispiel (Template — beim Instanziieren ersetzen oder entfernen):
+
+```text
+BR-001:
+  Symbol:             legacy_symbol
+  Ort:                src/regenbogen/adapters/legacy_symbol.py
+  Migrationsstatus:   legacy-bridge
+  Bevorzugter Nachfolger: CanonicalSymbol
+  Agent-Aktion:       do-not-touch-mechanically
+  Änderungsregel:     Nicht mechanisch umbenennen. Find-Replace verboten.
+  Ablaufplan:         docs/plans/YYYY-MM-DD-symbol-migration.md
+  Begründung:         Beispiel für einen projektspezifisch zu ersetzenden Bridge-Eintrag.
+```
 
 ---
 
@@ -137,14 +153,19 @@ ist die Textwarnung allein nicht ausreichend.
 ## 6. Verhältnis zu anderen Dokumenten
 
 ```text
-regelmatrix.md §7 Schreibstatus → schützt Dateien
+regelmatrix.md            → schützt Dateien
 migration-bridges.md       → schützt Bedeutungen / Symbole aus domain, system und meta
 package-schema.md          → klassifiziert Modulräume
 sprechakt-protokoll.md SP6  → regelt Umklassifizierungen von Known Breaches
 
-Bei Widerspruch:
-  AGENTS.md > migration-bridges.md > package-schema.md
-  (Autoritätsreihenfolge nach regelmatrix.md)
+Zustaendigkeit nach Detailfrage:
+  Bridge-Status und Symbolsperre:  migration-bridges.md
+  Modulraum und Importregel:       package-schema.md
+  Kernrouting und Kernregeln:      AGENTS.md
+
+  Wenn zwei zustaendige Quellen dieselbe Detailfrage unterschiedlich beantworten:
+  Drift-Signal → H3 oder Sprechakt. Nicht durch Totalordnung aufloesen.
+  (Zustaendigkeitsmodell: regelmatrix.md)
 ```
 
 ---
@@ -155,7 +176,7 @@ Bei Widerspruch:
 - Neue Bridge-Begriffe werden hier eingetragen, bevor Code geändert wird.
 - Abgeschlossene Migrationen werden als "canonical" markiert — nicht gelöscht.
 - Migrationsstatus-Änderung ist Sprechakt SP6.
-- Dieses Dokument ist geschützt (regelmatrix.md §7 Schreibstatus).
+- Dieses Dokument ist geschützt (regelmatrix.md Abschnitt "Geschuetzte Dateien").
 ```
 
 ---

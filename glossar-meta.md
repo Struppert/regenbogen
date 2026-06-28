@@ -1,42 +1,59 @@
 # glossar-meta.md — Agenten-Metasystem: Begriffe und Bedeutungen
 
+> Ebene: REPOSITORY
+> Rolle: lokaler Metabegriffsvertrag
+> Geltung: dieses Projekt
+> Autoritative Frage: Was bedeuten Agenten-, Regel-, Evidence- und Prozessbegriffe?
+> Nicht zustaendig fuer: fachliche Bedeutung, konkrete Ausfuehrung
+
 **Dokumenttyp: Operativ / autoritativ**
 
-> Dieses Glossar enthält die Metasystem-Begriffe der Agenten-Box.
-> Es beschreibt nicht die Fachdomäne oder Systemsemantik des Produkts —
-> sondern die Begriffe des Agenten-Betriebs selbst.
+> Dieses Glossar ist operative Infrastruktur, nicht Dokumentation.
 >
-> Autorität: wer das Agenten-System pflegt und weiterentwickelt.
+> Es ist der Sortierraum fuer Begriffe des Agenten-Metasystems:
+> Box, Instanziierung, Preflight, Sprechakt, Evidence, Abbruchcodes,
+> Migrationsstatus und aehnliche Begriffe der lokalen Agentensteuerung.
 >
-> Laderegel: nur laden wenn Agenten-Box-Arbeit aktiv stattfindet
-> (Systempflege, Regeländerungen, Instanziierung, Dokumentdrift-Prüfung).
-> Nicht laden bei normaler Fach- oder Systemarbeit am Produkt.
+> Ein Agent konsultiert es beim Preflight (PF-GLOSSAR), wenn aktive Begriffe aus dem
+> Agenten-, Regel- oder Evidence-System gebraucht werden.
 
 ---
 
-## 1. Laderegel
+## 0. Platzhalter
 
 ```text
-Laden bei:
-  - Arbeit an AGENTS.md, preflight-checkliste.md
-  - Arbeit an Glossar-Struktur oder Ladeprotokoll
-  - Instanziierung oder Re-Instanziierung
-  - Sprechakt-Protokoll-Änderungen
-  - Dokumentdrift-Prüfung im Metasystem
-  - Brownfield-Aufnahme oder Box-Versionsmigration
-
-Nicht laden bei:
-  - Domain-Facharbeit (glossar-domain.md reicht)
-  - Systemsemantik des Produkts (glossar-system.md reicht)
-  - normalen Produktionscode-Änderungen
+Regenbogen
+regenbogen
+src
 ```
 
-Fehlt für die geplante Nutzung ein ausreichend tiefer Metabegriff:
-zuerst Task-Schnitt T1, danach — wenn der Begriff aktiv nötig bleibt — Sprechakt SP7.
+---
+
+## 1. Laderegel (Preflight PF-GLOSSAR)
+
+```text
+Nur laden wenn Meta-Begriffe im aktuellen Arbeitspaket aktiv gebraucht werden:
+  - Agenten-Box, Instanziierung, Preflight, Sprechakt
+  - Evidence, Abbruch, H-Code, SP-Code
+  - Brownfield, Observed State, Accepted Local Truth, Known Breach
+  - Migration Bridge, Migrationsevidence, Semantic Working Set
+  - Schreibrechte, geschuetzte Dateien, Lern- und Erfahrungsartefakte
+
+Nicht laden wenn nur Domain- oder Systembegriffe des Zielprojekts beruehrt sind.
+```
+
+Konsequenz: Bei normaler Facharbeit (Feature, Refactoring, Test) wird dieses
+Glossar nicht geladen. Es ist kein Hintergrundwissen, sondern Werkzeug
+fuer System- und Migrationspflege.
 
 ---
 
 ## 2. Eintrag-Format
+
+Das folgende Vollformat zeigt alle verfuegbaren Felder. Fuer Standardeintraege
+genuegt das Minimalformat mit nur **Bedeutung** und **Invariante**. Das
+Vollformat ist verbindlich, wenn Projektionsorte, Abgrenzungsregeln oder
+normative Felder (Erlaubt/Verboten) benoetigt werden.
 
 ```markdown
 ### <Begriff>
@@ -45,21 +62,21 @@ zuerst Task-Schnitt T1, danach — wenn der Begriff aktiv nötig bleibt — Spre
 
 **Kompetenzfrage:**
 Beschreibt dieser Begriff das Agenten-Betriebssystem oder die lokale
-Projektsteuerung, ohne Fachdomäne oder konkrete technische Laufzeit
+Projektsteuerung, ohne Fachdomaene oder konkrete technische Laufzeit
 vorauszusetzen?
-→ Wenn nein: gehört nicht nach meta.
+→ Wenn nein: gehoert nicht nach meta.
 
 **Bedeutung:**
 <Was ist dieser Begriff im Agenten-Metasystem?>
 
 **Invarianten:**
-<Was gilt für alle Verwendungen dieses Begriffs?>
+<Was gilt fuer alle Verwendungen dieses Begriffs?>
 
 **Erlaubt:**
 <Welche Operationen oder Zustände sind erlaubt?>
 
 **Verboten:**
-<Welche Umdeutung würde das Agentensystem verletzen?>
+<Welche Umdeutung wuerde das Agentensystem verletzen?>
 
 **Projektionen:**
 - Regeln: <Regeldokument>
@@ -72,22 +89,21 @@ vorauszusetzen?
 **Migrationsstatus:** canonical | legacy-bridge | deprecated
 ```
 
-Die Einträge unten sind bewusst knapp gehalten (Bedeutung + Invariante).
-Ein Meta-Begriff beschreibt Agentenarbeit, Regelautorität, Evidence, Abbruch
-oder Brownfield-Steuerung — nicht die Fachdomäne oder die Systemsemantik des
-Produkts.
-
 ---
 
 ## 3. Begriffe
 
+Diese Begriffe beschreiben das Agenten-Metasystem. Sie stehen bewusst in
+`glossar-meta.md`, damit `glossar-system.md` fuer Betriebsbegriffe des
+Zielprojekts frei bleibt.
+
 ### Agenten-Box
 
-Bedeutung: Vollständiger Satz lokaler Markdown-Artefakte, Regeln und Tools, der
-einen Zielprojekt-Artefaktraum für Agentenarbeit operationalisiert.
+Bedeutung: Vollstaendiger Satz lokaler Markdown-Artefakte, Regeln und Tools,
+der einen Zielprojekt-Artefaktraum fuer Agentenarbeit operationalisiert.
 
 Invariante: Eine instanziierte Agenten-Box ist lokale Projektwahrheit; sie darf
-nicht auf eine externe gemeinsame Basis als operative Autorität verweisen.
+nicht auf eine externe gemeinsame Basis als operative Autoritaet verweisen.
 
 ### Instanziierungs-Sprechakt
 
@@ -105,38 +121,39 @@ Invariante: Der Projektanzeigename ist nicht automatisch ein Python-Importname.
 
 ### Python-Package-Name
 
-Bedeutung: Python-Import- und Pfadname unter `src`, z. B. `regenbogen`.
+Bedeutung: Python-Import- und Pfadname unter `src`, z. B.
+`regenbogen`.
 
-Invariante: Der Python-Package-Name ist kleingeschrieben und ein gültiger
+Invariante: Der Python-Package-Name ist kleingeschrieben und ein gueltiger
 Python-Identifier.
 
 ### Produktcode-Raum
 
 Bedeutung: Codeprojektion unter `src/regenbogen/`.
 
-Invariante: Produktive semantische Räume werden dort als Paketpfade
+Invariante: Produktive semantische Raeume werden dort als Paketpfade
 materialisiert.
 
 ### Operationsraum
 
-Bedeutung: Artefakträume wie `tools/`, `docs/`, `tests/` und `tmp/`, die
-Agentenarbeit prüfen, dokumentieren oder protokollieren.
+Bedeutung: Artefaktraeume wie `tools/`, `docs/`, `tests/` und `tmp/`, die
+Agentenarbeit pruefen, dokumentieren oder protokollieren.
 
-Invariante: Operationsräume sind nicht selbst Quelle fachlicher Bedeutung.
+Invariante: Operationsraeume sind nicht selbst Quelle fachlicher Bedeutung.
 
 ### Projektionsraum
 
 Bedeutung: Konkreter Artefaktbereich, in dem eine Bedeutung sichtbar wird, z. B.
-Code, Tests, Sprechakte, Pläne oder Evidence.
+Code, Tests, Sprechakte, Plaene oder Evidence.
 
-Invariante: Änderungen an Bedeutung müssen ihre relevanten Projektionen nennen.
+Invariante: Aenderungen an Bedeutung muessen ihre relevanten Projektionen nennen.
 
 ### Evidence
 
-Bedeutung: Nachweis, welche Prüfung, Beobachtung oder Entscheidung zu einem
-Agentenergebnis geführt hat.
+Bedeutung: Nachweis, welche Pruefung, Beobachtung oder Entscheidung zu einem
+Agentenergebnis gefuehrt hat.
 
-Invariante: Evidence wird in dieser Box als Markdown geführt.
+Invariante: Evidence wird in dieser Box als Markdown gefuehrt.
 
 ### Sprechakt-Artefakt
 
@@ -147,15 +164,19 @@ festgelegt, abgelehnt, superseded oder widerrufen.
 
 ### Known Breach
 
-Bedeutung: Bewusst klassifizierter Regelbruch mit Begründung und Folgeplan.
+Bedeutung: Bewusst klassifizierter, begrenzter und vorlaeufig geduldeter
+Regelbruch mit Begruendung, Folgeplan, No-growth-Regel und Freigabe.
 
-Invariante: Ein Known Breach entschärft nur die benannte Kante, nicht die ganze
+Invariante: Ein Known Breach entschaerft nur die benannte Kante, nicht die ganze
 Datei oder den ganzen Raum.
+
+Verboten: Ein Known Breach darf nicht automatisch aus Brownfield-Inventur oder
+blossem Bestand entstehen.
 
 ### Migration Bridge
 
-Bedeutung: Benannte Übergangsbrücke für laufende Symbol-, Bedeutungs- oder
-Kompatibilitätsmigrationen.
+Bedeutung: Benannte Uebergangsbruecke fuer laufende Symbol-, Bedeutungs- oder
+Kompatibilitaetsmigrationen.
 
 Invariante: Eine Bridge darf nicht mechanisch umgedeutet werden.
 
@@ -172,27 +193,30 @@ Bedeutung: Kennung einer Sprechaktklasse.
 Invariante: SP-Codes verlangen menschliche Festlegung, nicht agentische
 Erfindung.
 
+Beispiel: SP7 bezeichnet den Fall, dass ein aktiv benoetigter Begriff im
+zuständigen Glossar fehlt oder unvollstaendig ist.
+
 ### Semantic Working Set
 
 Bedeutung: Menge der Begriffe, Dateien, Regeln und Projektionen, die ein Agent
-für eine Aufgabe gleichzeitig korrekt halten muss.
+fuer eine Aufgabe gleichzeitig korrekt halten muss.
 
-Invariante: Wenn das Semantic Working Set zu groß oder unscharf wird, muss die
+Invariante: Wenn das Semantic Working Set zu gross oder unscharf wird, muss die
 Aufgabe geschnitten werden.
 
 ### Brownfield-Aufnahme
 
 Bedeutung: Ein bestehendes Projekt ohne bisherige Agenten-Box wird in die
-Regelwelt aufgenommen, ohne den Bestand zu überschreiben oder automatisch zu
-bestätigen.
+Regelwelt aufgenommen, ohne den Bestand zu ueberschreiben oder automatisch zu
+bestaetigen.
 
 Invariante: Brownfield-Aufnahme trennt Discover, Describe, Classify, Decide,
 Project, Migrate und Verify.
 
 ### Observed State
 
-Bedeutung: Tatsächlich vorgefundener Zustand im Bestand, z. B. Datei,
-Importkante, Test, Build-Konfiguration, Workaround oder API-Fläche.
+Bedeutung: Tatsaechlich vorgefundener Zustand im Bestand, z. B. Datei,
+Importkante, Test, Build-Konfiguration, Workaround oder API-Flaeche.
 
 Invariante: Observed State ist Befund, nicht Freigabe.
 
@@ -204,21 +228,21 @@ Invariante: Ein unklassifizierter Befund darf nicht normativ projiziert werden.
 
 ### Accepted Local Truth
 
-Bedeutung: Explizit bestätigte lokale operative Wahrheit eines Zielprojekts.
+Bedeutung: Explizit bestaetigte lokale operative Wahrheit eines Zielprojekts.
 
-Invariante: Accepted Local Truth entsteht durch zuständige Projektartefakte
-oder menschliche Entscheidung, nicht durch bloße Existenz von Code.
+Invariante: Accepted Local Truth entsteht durch zustaendige Projektartefakte
+oder menschliche Entscheidung, nicht durch blosse Existenz von Code.
 
 ### Accepted Alternative
 
 Bedeutung: Abweichung vom Template-Zielmodell, die lokal konsistent und
-ausdrücklich akzeptiert ist.
+ausdruecklich akzeptiert ist.
 
 Invariante: Eine Accepted Alternative ist keine Altlast und kein Known Breach.
 
 ### Migration Candidate
 
-Bedeutung: Befund, der an ein Zielmodell angenähert oder umgebaut werden soll,
+Bedeutung: Befund, der an ein Zielmodell angenaehert oder umgebaut werden soll,
 ohne bereits als akuter Defekt klassifiziert zu sein.
 
 Invariante: Ein Migration Candidate braucht Zielrichtung und Plan, aber nicht
@@ -226,14 +250,14 @@ automatisch einen Known Breach.
 
 ### Legacy Defect
 
-Bedeutung: Vorhandener Zustand, der einer gültigen lokalen Invariante oder dem
+Bedeutung: Vorhandener Zustand, der einer gueltigen lokalen Invariante oder dem
 entschiedenen Zielmodell widerspricht und nicht akzeptiert ist.
 
 Invariante: Legacy Defect ist nicht automatisch Known Breach.
 
 ### Baseline
 
-Bedeutung: Deskriptiver Nachweis des aktuellen Zustands vor einer Änderung
+Bedeutung: Deskriptiver Nachweis des aktuellen Zustands vor einer Aenderung
 oder Migration, inklusive bereits roter Checks.
 
 Invariante: Baseline beschreibt, was ist; sie entscheidet nicht, was gelten soll.
@@ -243,14 +267,14 @@ Invariante: Baseline beschreibt, was ist; sie entscheidet nicht, was gelten soll
 Bedeutung: Normativer Zielzustand, der durch Projektartefakte, Sprechakte oder
 menschliche Entscheidung festgelegt ist.
 
-Invariante: Zielmodell und Baseline dürfen nicht vermischt werden.
+Invariante: Zielmodell und Baseline duerfen nicht vermischt werden.
 
 ### Migrationsevidence
 
-Bedeutung: Markdown-Nachweis, was bei einer Brownfield-Migration tatsächlich
-geprüft, entschieden, geändert, verworfen oder offengelassen wurde.
+Bedeutung: Markdown-Nachweis, was bei einer Brownfield-Migration tatsaechlich
+geprueft, entschieden, geaendert, verworfen oder offengelassen wurde.
 
-Invariante: Migrationsevidence ersetzt keine Sprechakte für neue Bedeutung.
+Invariante: Migrationsevidence ersetzt keine Sprechakte fuer neue Bedeutung.
 
 ### Datei-Aktionsklasse
 
@@ -258,22 +282,71 @@ Bedeutung: Brownfield-Klassifikation einer Datei als add, preserve, merge,
 replace, inspect oder forbidden.
 
 Invariante: Die Aktionsklasse bestimmt den Umgang mit der Datei, nicht ihre
-semantische Gültigkeit.
+semantische Gueltigkeit.
+
+### Autonomieregel
+
+Bedeutung: Eigenschaft eines Glossareintrags oder semantischen Raums — ein
+einzelner Experte kann den Begriff vollstaendig beurteilen ohne andere
+semantische Raeume oder Fachdomaenen kennen zu muessen.
+
+Invariante: Ist die Autonomieregel verletzt, liegt eine falsch gezogene
+Grenze oder ein unvollstaendiger Eintrag vor. Reaktion: H10 ausloesen,
+Sprechakt oder Task-Schnitt pruefen.
+
+Projektionen:
+- Regeln: glossar-README.md §5
+- Preflight: preflight-checkliste.md PF-GLOSSAR
 
 ### BF-Code
 
 Bedeutung: Kennung eines Brownfield-spezifischen HARD-Abbruchs.
 
 Invariante: BF-Codes stoppen Brownfield-Arbeit, wenn Bestand, Zielmodell,
-Freigabe oder Evidence nicht tragfähig getrennt sind.
+Freigabe oder Evidence nicht tragfaehig getrennt sind.
+
+### Herkunftsmarker
+
+Bedeutung: Datei unter `.agent-box/`, die belegt, wie ein Projekt seine
+Agenten-Box erhalten hat.
+
+Invariante: Greenfield → `.agent-box/instantiation.md`; Brownfield →
+`.agent-box/adoption.md`. Fehlt die Datei, ist der Projektstatus unklar
+und Preflight PF-AGENTS schlaegt fehl.
+
+Projektionen:
+- Regeln: sprechakt-protokoll.md §2 (SP0)
+- Preflight: preflight-checkliste.md PF-AGENTS
+
+### Wirkungsgate
+
+Bedeutung: Kontrollpunkt, der vor einer Repository-Mutation geprueft wird.
+Ergibt gruen (Mutation erlaubt) oder sperrt die Aktion. In dieser Box ist
+`WG-MUTATION` das einzige definierte Wirkungsgate.
+
+Invariante: Ein Wirkungsgate ist eine fortlaufende Invariante, kein
+einmaliger Preflight-Schritt. Es bleibt asserted solange der Gate-Zustand
+unveraendert ist. Eine vollstaendige Neubewertung erfolgt bei Zustandswechsel
+(Wirkungstyp, Scope, Mandatsstatus oder Grundlagenversion). In Brownfield-
+Laeufen projiziert sich das Gate auf die freigegebene Datei-Aktionsmatrix.
+
+Projektionen:
+- Regeln: ausfuehrungsmandat-protokoll.md, Abschnitt „Wirkungsgate WG-MUTATION"
+- Preflight: preflight-checkliste.md §0a
 
 ---
 
-## 4. Abgrenzung zu anderen Glossaren
+## 4. Bekannte Luecken
+
+<!-- Meta-Begriffe die gebraucht werden aber noch keinen vollstaendigen Eintrag haben. -->
+
+---
+
+## 5. Abgrenzung zu anderen Glossaren
 
 ```text
 glossar-domain.md:
-  Fachbegriffe. Domänenexperte urteilt ohne Systemlaufzeit.
+  Fachbegriffe. Domaenenexperte urteilt ohne Systemlaufzeit.
 
 glossar-system.md:
   Betriebsbegriffe des Zielprojekts. Systemarchitekt urteilt ohne konkrete Plattform.
@@ -285,7 +358,7 @@ Dieses Glossar (glossar-meta.md):
 Bei Zweifel:
 
 ```text
-Beschreibt der Begriff Agentenarbeit, Regelautorität, Evidence oder Abbruch?
+Beschreibt der Begriff Agentenarbeit, Regelautoritaet, Evidence oder Abbruch?
   → Ja: meta
 
 Beschreibt der Begriff fachliche Bedeutung des Produkts?
@@ -297,7 +370,8 @@ Beschreibt der Begriff Betriebsverhalten des Produkts?
 
 ---
 
-## 5. Schutz
+## 6. Schlussregel
 
-Dieses Dokument ist geschützt (regelmatrix.md §7 Schreibstatus).
-Neue Metabegriffe entstehen durch Sprechakt SP2.
+Ein Meta-Glossareintrag ist fertig, wenn ein Projektmaintainer ihn lesen und
+die zugehoerigen Agentenregeln, Artefakte oder Tools damit pruefen kann, ohne
+Fachdomaene oder konkrete Laufzeitplattform zu kennen.

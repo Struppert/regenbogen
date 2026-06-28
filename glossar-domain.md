@@ -1,12 +1,18 @@
 # glossar-domain.md — Fachdomäne: Begriffe und Bedeutungen
 
+> Ebene: REPOSITORY
+> Rolle: lokaler Fachbegriffsvertrag
+> Geltung: dieses Projekt
+> Autoritative Frage: Was bedeuten Fachbegriffe im Projekt?
+> Nicht zustaendig fuer: Systemlaufzeit, Infrastruktur, konkrete Ausfuehrung
+
 **Dokumenttyp: Operativ / autoritativ**
 
 > Dieses Glossar ist operative Infrastruktur, nicht Dokumentation.
 >
 > Es ist der Sortierraum für Fachdomänenbegriffe.
 > Ein Domänenexperte kann Einträge prüfen ohne Systemlaufzeit oder Infrastruktur zu kennen.
-> Ein Agent konsultiert es beim Preflight (P5) und beim Task-Schnitt (T1, SP7).
+> Ein Agent konsultiert es beim Preflight (PF-GLOSSAR) und beim Task-Schnitt (T1, SP7).
 >
 > Neue Begriffe entstehen nicht durch Implementierung — sie entstehen durch Sprechakt SP1
 > und werden hier eingetragen, bevor Code entsteht.
@@ -23,11 +29,11 @@ src
 
 ---
 
-## 1. Laderegel (Preflight P5)
+## 1. Laderegel (Preflight PF-GLOSSAR)
 
 ```text
 Nicht das gesamte Glossar reflexhaft laden.
-Nur die Begriffe laden, die in der aktuellen Iteration aktiv gebraucht werden.
+Nur die Begriffe laden, die im aktuellen Arbeitspaket aktiv gebraucht werden.
 
 Laden wenn:
   - Begriff wird geändert, umbenannt oder verschoben
@@ -44,19 +50,29 @@ Nicht laden:
 
 ## 2. Eintrag-Format
 
-Jeder Glossareintrag hat folgende Felder:
+Jeder Glossareintrag hat folgende Felder. Das Feld `Eintragstiefe` ist
+Pflicht und zeigt ob ein Eintrag vollständig oder minimal ist.
+
+Ein **minimaler** Eintrag ist kein unvollständiger Eintrag — er ist ein
+explizit begrenzter Eintrag. Er signalisiert keine Vollständigkeit, die er
+nicht hat. Upgrade auf vollständig erfordert keinen Sprechakt.
+
+Minimaler Eintrag genügt für: Referenz, Suche, bestehende Projektion lesen,
+semantikneutrale oder mechanische Änderung.
+
+Vollständiger Eintrag nötig für: neue Implementierung, neue Invariante,
+neue Zustände oder Übergänge, neue API, fachliche oder systemische Entscheidung.
+
+Die Änderung der Eintragstiefe allein braucht keinen Sprechakt.
+Neue normative Bedeutung, Invarianten, Grenzen oder erlaubte Übergänge
+brauchen weiterhin die zuständige menschliche Festlegung.
 
 ```markdown
 ### <Begriff>
 
-**Semantischer Raum:** domain
 **Eintragstiefe:** vollständig | minimal
 
-Eintragstiefe-Definition:
-  minimal      = Bedeutung + Projektionen + Migrationsstatus vorhanden.
-                 Alle anderen Felder bewusst weggelassen, nicht vergessen.
-  vollständig  = alle Felder unten vorhanden.
-  Upgrade auf vollständig erfordert keinen Sprechakt — nur Pflege.
+**Semantischer Raum:** domain
 
 **Kompetenzfrage:**
 Kann ein Domänenexperte (nicht-technisch) diesen Begriff vollständig beurteilen
@@ -69,12 +85,15 @@ ohne Systemlaufzeit, Infrastruktur oder Retry-Mechanismen zu kennen?
 **Invarianten:**
 <Was gilt für alle Instanzen dieses Begriffs ohne Ausnahme?>
 <Wer kann eine Verletzung erkennen?>
+[nur bei vollständig]
 
 **Erlaubt:**
 <Welche Operationen, Zustände, Werte sind für diesen Begriff erlaubt?>
+[nur bei vollständig]
 
 **Verboten:**
 <Was darf dieser Begriff nicht tragen? Was würde seine Autonomie verletzen?>
+[nur bei vollständig]
 
 **Projektionen:**
 <Wo ist dieser Begriff sichtbar und prüfbar?>
@@ -84,6 +103,7 @@ ohne Systemlaufzeit, Infrastruktur oder Retry-Mechanismen zu kennen?
 
 **Abgrenzung:**
 <Von welchen verwandten Begriffen muss dieser Begriff klar unterschieden werden?>
+[nur bei vollständig]
 
 **Migrationsstatus:** canonical | legacy-bridge | deprecated
 <Wenn nicht canonical: Verweis auf migration-bridges.md>

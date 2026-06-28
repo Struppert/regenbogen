@@ -1,8 +1,19 @@
 # sprechakt-protokoll.md — Python-Projekt
 
+> Ebene: MIXED-TRANSITION
+> Primaerer Anteil: PRIMING
+> Sekundaere Projektion: REPOSITORY
+> Rolle: Protokoll menschlicher Festlegungen
+> Autoritative Frage: Wie werden fehlende Entscheidungen angefordert und materialisiert?
+> Nicht zustaendig fuer: eigenstaendige Ausfuehrungsfreigabe
+
 > Dieses Dokument wird geladen, wenn ein Sprechakt nötig ist oder erwartet wird.
 >
 > Vollständige operative Regeln: `AGENTS.md`.
+>
+> Abschnittsnummern mit `a`-Suffix (§4a, §9a) sind nachträglich eingefügte
+> Abschnitte, die bewusst nicht umnummeriert wurden, um bestehende
+> Querverweise stabil zu halten.
 
 ---
 
@@ -17,7 +28,7 @@ Vollständige Unterscheidung Sprechakt / Abbruch / Plan / Erfahrungsbericht: `re
 Eine eindeutige menschliche Anweisung im aktuellen Auftrag kann bereits ein
 festgelegter Sprechakt sein, wenn Klasse, Handlung und Scope eindeutig sind.
 Der Agent materialisiert dann das Sprechakt-Artefakt mit `Status: festgelegt`
-und prüft danach das Ausfuehrungsmandat. Nur fehlende, mehrdeutige oder
+und prueft danach das Ausfuehrungsmandat. Nur fehlende, mehrdeutige oder
 widersprüchliche Inhalte erfordern eine weitere Rückfrage.
 
 Ein festgelegter Sprechakt autorisiert nicht automatisch die Umsetzung seiner
@@ -114,6 +125,43 @@ Wenn nein: Sprechakt SP7.
 
 ---
 
+## 4a. Bereits erteilte Freigabe im aktuellen Auftrag
+
+Wenn der aktuelle Auftrag eine geschützte oder sprechaktpflichtige Handlung
+eindeutig benennt, gilt das als explizite Freigabe für genau diesen Scope.
+
+Beispiel:
+
+```text
+User: Fuehre httpx als Runtime-Dependency ein und verwende es fuer den Client.
+```
+
+Der Agent:
+
+```text
+1. prueft WG-MUTATION fuer die Evidence-Projektion (diagnostische Wirkung),
+2. legt SP4 mit Status: festgelegt an (wortgetreue Evidence-Projektion
+   der bereits menschlich getroffenen Entscheidung — kein normativer Akt
+   des Agenten),
+3. dokumentiert Scope und Quelle der Freigabe,
+4. prueft WG-MUTATION und Ausfuehrungsmandat fuer operative Datei-Mutationen,
+5. aendert operative Dateien nur bei aktivem Mandat,
+6. erzeugt neuen Checkpoint wenn kein Planinhalt sich aendert,
+   oder erhoeht Plan-Version und legt neuen Contract an wenn Planinhalt betroffen.
+```
+
+Nicht ausreichend:
+
+```text
+"mach es moderner"
+"nimm eine passende Bibliothek"
+"raeum die Architektur auf"
+```
+
+Solche Aussagen bleiben offen oder erzeugen Sprechakt/Abbruch.
+
+---
+
 ## 5. Was vor dem Sprechakt zu prüfen ist
 
 ```text
@@ -136,7 +184,21 @@ pyproject.toml ändern, um Problem praktisch zu lösen.
 
 ## 6. Sprechakt-Artefakt
 
-Ort: `docs/sprechakte/YYYY-MM-DD-kurzbeschreibung.md` (append-only, nicht in `tmp/`).
+Ort: `docs/sprechakte/YYYY-MM-DD-kurzbeschreibung.md`.
+
+Lifecycle:
+
+```text
+offen      → Akte darf bis zur Entscheidung ergänzt werden (Menschliche Antwort,
+              Analyse, Vorschlag). Die Datei selbst bleibt an ihrem Ort.
+festgelegt | abgelehnt | widerrufen | superseded
+           → Akte wird mit dem neuen Status versiegelt.
+             Nach der Versiegelung ist sie unveränderlich.
+             Jede Korrektur erzeugt eine neue Akte mit Verweis auf die alte.
+```
+
+Die Kollektion `docs/sprechakte/` ist append-only: Dateien werden hinzugefügt,
+nie gelöscht oder verschoben. Eine versiegelte Akte wird nicht überschrieben.
 
 Format:
 
@@ -235,8 +297,11 @@ Wiedereinstieg:     <konkreter Schritt>
 1. Sprechakt-Artefakt lesen
 2. Festlegung lesen
 3. Prüfen ob package-schema.md oder Glossar nachgezogen werden muss
-4. Planstand aktualisieren
-5. Ausfuehrungsmandat und W0 prüfen (→ ausfuehrungsmandat-protokoll.md)
+4. Planstand prüfen:
+     Verändert die Entscheidung den Planinhalt?
+       ja  → neue Plan-Version, neuen Contract anlegen, neuen Checkpoint erzeugen
+       nein → neuen Checkpoint erzeugen, vorherigen versiegeln
+5. Ausfuehrungsmandat und WG-MUTATION pruefen
 6. Schreibrechte prüfen
 7. Preflight erneut ausführen
 8. An Wiedereinstiegspunkt fortsetzen, wenn Mandat aktiv ist
@@ -267,14 +332,16 @@ Aussage A:
 Sprechakt B:
 Aussage B:
 erkannter Widerspruch:
-mögliche Auflösungen:
+moegliche Aufloesungen:
   - A widerrufen
   - B widerrufen
   - A durch neue Entscheidung ersetzen
   - B durch neue Entscheidung ersetzen
   - Scope trennen
-benötigte menschliche Entscheidung:
+benoetigte menschliche Entscheidung:
 ```
+
+Die Entscheidung wird als neuer Sprechakt oder Statusaenderung dokumentiert.
 
 ---
 

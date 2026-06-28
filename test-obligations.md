@@ -1,5 +1,11 @@
 # test-obligations.md — Python-Projekt: Test- und Checkpflichten
 
+> Ebene: REPOSITORY
+> Rolle: lokaler Validierungsvertrag
+> Geltung: dieses Projekt
+> Autoritative Frage: Welche Tests und Checks folgen aus welcher Änderung?
+> Nicht zustaendig fuer: Ausfuehrungsfreigabe, allgemeines Agentenverhalten
+
 > Dieses Dokument beschreibt, welche Validierungen aus Datei- und Bedeutungsänderungen folgen.
 >
 > Es ersetzt keine Tests. Es macht Testpflichten ableitbar.
@@ -344,7 +350,8 @@ Tooling darf keine Produktsemantik konstituieren.
 ### Agenten-Dokumente
 
 ```text
-AGENTS.md, package-schema.md,
+AGENTS.md, blocker-und-abbruch-protokoll.md, ausfuehrungsmandat-protokoll.md,
+package-schema.md,
 preflight-checkliste.md, task-schnitt.md, sprechakt-protokoll.md,
 regelmatrix.md, test-obligations.md
 ```
@@ -354,6 +361,7 @@ Pflicht:
 ```text
 check_agent_docs_consistency.py
 Manuelle Driftprüfung nach regelmatrix.md (Inhalt, nicht nur Präsenz).
+AGENTS.md-Routing gegen aktivierte Spezialdokumente abgleichen.
 Falls Schema betroffen: Import-Checker-Konfiguration prüfen.
 ```
 

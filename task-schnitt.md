@@ -1,18 +1,25 @@
 # task-schnitt.md — Python-Projekt: Schnitt von Aufgaben und Semantic Working Set
 
-> Vollständige operative Regeln: `AGENTS.md`.
+> Ebene: PRIMING
+> Rolle: Arbeitsschnitt-Protokoll
+> Geltung: Tasks mit moeglicher semantischer Schnittgrenze
+> Autoritative Frage: Wann ist ein echter Task-Schnitt noetig?
+> Nicht zustaendig fuer: lokale Fachentscheidung, Ausfuehrungsmandat
+
+> Bindender Einstieg und Kernregeln: `AGENTS.md`.
+> Vollständige Detailregeln: die durch den jeweiligen Trigger aktivierten Verträge.
 > Dieses Dokument wird geladen wenn ein Task-Schnitt bewertet oder korrigiert werden muss.
 
 ---
 
 ## 1. Was Task-Schnitt ist
 
-Task-Schnitt ist die Entscheidung, ob eine Aufgabe in mehrere eigenständige
+Task-Schnitt ist die Entscheidung, ob eine Aufgabe in mehrere eigenstaendige
 Arbeitspakete getrennt werden muss.
 
-Ein guter Schnitt hält den Semantic Working Set (SWS) klein und vollständig.
+Ein guter Schnitt haelt den Semantic Working Set (SWS) klein und vollständig.
 Ein schlechter Schnitt erzeugt entweder einen ContextGap (SWS unvollständig)
-oder unnötig hohe Tokenkosten (SWS zu groß).
+oder unnötig hohe Tokenkosten (SWS zu gross).
 
 Task-Schnitt ist semantisch, nicht datei-, mengen- oder zeilenbasiert.
 Blosse Teilbarkeit ist kein Schnittgrund.
@@ -31,18 +38,18 @@ Task-Schnitt wird nicht präventiv als Pflicht-Preflight ausgeführt.
 Er wird bewertet wenn eine der folgenden Bedingungen eintritt:
 
 ```text
-T1  SWS enthält einen Begriff, dessen Glossareintrag fehlt oder für die
+T1  SWS enthält einen Begriff, dessen Glossareintrag fehlt oder fuer die
     geplante Nutzung nicht ausreichend tief ist
     → zuerst prüfen: ist der Begriff durch zu breiten Schnitt im SWS?
     → wenn ja: Aufgabe enger schneiden — kein Sprechakt nötig
     → wenn Begriff für Teilaufgabe aktiv nötig bleibt: Sprechakt SP7 auslösen
 
 T2  Aufgabe berührt mehr als einen semantischen Raum gleichzeitig
-    → prüfen ob Teilung möglich ist
+    → prüfen ob unterschiedliche Urteilskompetenzen oder Validierungsgrenzen vorliegen
 
 T3  Aufgabe berührt eine Binding-Grenze
     → beide Seiten des Bindings werden aktiv
-    → prüfen ob eine Seite allein ausreicht
+    → prüfen ob interne Phasen reichen oder ein echter Schnitt nötig ist
 
 T4  Preflight zeigt bekannte Brüche die von der Aufgabe berührt werden
     → prüfen ob Schnitt den Bruch aktiv einschließt oder nur passiv streift
@@ -65,9 +72,9 @@ Schritt 1: Welche semantischen Räume werden aktiv berührt?
   infrastructure/ → konkrete Plattform-Details im SWS?
   adapters/       → wird eine Binding-Grenze überschritten?
 
-Schritt 2: Kann die Aufgabe auf einen Raum eingeschränkt werden?
-  Ja  → Teilaufgabe definieren, restliche Schritte zurückstellen
-  Nein → beide Räume sind strukturell nötig; beide Glossar-Dateien laden
+Schritt 2: Reichen interne Phasen innerhalb eines Arbeitspakets?
+  Ja  → Phasen im Plan notieren und im selben Lauf ausführen
+  Nein → echten Task-Schnitt definieren
 
 Schritt 3: Gibt es nach möglicher Schnitt-Verengung noch einen aktiv benötigten
            Begriff, dessen Glossareintrag fehlt oder für die geplante Nutzung nicht ausreichend tief ist?
@@ -96,10 +103,12 @@ Schritt 6: Autonomieregel prüfen
 
 ---
 
-## 4. Ausführungsbreite und Arbeitspaket/Phase
+## 4. Ausführungsbreite
 
 Gleichartige Änderungen innerhalb eines freigegebenen Arbeitspakets
 werden gebündelt ausgeführt.
+
+Begriffe:
 
 ```text
 Arbeitspaket  extern zugesagter, vollständig lieferbarer Endzustand.
@@ -107,9 +116,6 @@ Phase         interner Abschnitt desselben autonomen Laufs.
 Task-Schnitt  Grenze zwischen eigenständig lieferbaren oder unterschiedlich
               autorisierten Arbeitspaketen.
 ```
-
-Produktcode und zugehörige Tests sind normalerweise Phasen desselben Arbeitspakets.
-Eine Phasengrenze ist kein Benutzer-Checkpoint.
 
 Ein Schnitt ist nur erforderlich, wenn sich mindestens eines unterscheidet:
 
@@ -129,22 +135,23 @@ Phase B: zweite semantische Seite bearbeiten
 Phase C: Tests, Checks und Dokumentprojektionen nachziehen
 ```
 
+Phasen werden sequenziell ausgeführt. Eine Phasengrenze ist kein
+Benutzer-Checkpoint.
+
 Wenn eine echte Grenze vorliegt:
 
 ```text
-Arbeitspaket A: eine Seite des Schnitts
-  → SWS enthält nur Begriffe aus einem Raum
-  → Glossar-Ladeprotokoll lädt nur eine Datei
-  → Abschluss mit Evidence
-
-Arbeitspaket B: andere Seite des Schnitts
-  → erst nach Abschluss von Arbeitspaket A
-  → SWS aufgebaut auf Evidence aus A
-  → Binding erst wenn beide Seiten stabil sind
+Arbeitspaket A: eigener lieferbarer Zustand, eigene Evidence
+Arbeitspaket B: erst nach Abschluss oder Entscheidung zu A
 ```
 
-Kein Schritt aus Arbeitspaket B in Arbeitspaket A.
-Kein „kurz noch" — der Schnitt ist die Grenze.
+Wenn nur blosse Teilbarkeit vorliegt:
+
+```text
+100 gleichartige Importkorrekturen                → ein Arbeitspaket
+freigegebenes Symbol an allen Verwendungsstellen  → ein Arbeitspaket
+fehlende menschliche Festlegung                   → Sprechakt, kein Mikroschnitt
+```
 
 ---
 
@@ -156,9 +163,9 @@ SIGNAL: Glossar-README Ladeprotokoll erfordert beide Glossar-Dateien
   → Aufgabe ist zu breit geschnitten
   → oder: Typ liegt semantisch falsch (eigenes Problem)
 
-SIGNAL: SWS wächst während der Iteration durch unerwartete Abhängigkeiten
+SIGNAL: SWS wächst während des Arbeitspakets durch unerwartete Abhängigkeiten
   → Schnitt war zu früh gesetzt
-  → Agent hält an, bewertet ob Teilung noch möglich ist
+  → Agent hält an, bewertet ob eine echte semantische Grenze vorliegt
 
 SIGNAL: Agent lädt Glossar-Einträge die für die aktuelle Änderung
         nicht direkt relevant sind
@@ -169,9 +176,9 @@ SIGNAL: Wiederholte ContextGaps auf demselben Begriff
   → Begriff fehlt strukturell im Glossar
   → kein Schnitt-Problem — Sprechakt SP7
 
-SIGNAL: Aufgabe wechselt zwischen Produktionscode und Testcode in einer Iteration
-  → Iterations-Trennung verletzt (Tests vs. Produktion)
-  → schneiden: erst Produktcode, dann Tests, oder umgekehrt
+SIGNAL: Produktcode wurde geändert, Tests fehlen aber im Abschlusszustand
+  → Arbeitspaket ist unvollständig
+  → Tests sind normalerweise Phase desselben Arbeitspakets
 ```
 
 ---
@@ -179,20 +186,20 @@ SIGNAL: Aufgabe wechselt zwischen Produktionscode und Testcode in einer Iteratio
 ## 6. Verhältnis zu anderen Regeln
 
 ```text
-Task-Schnitt vs. Iterations-Trennung:
-  Iterations-Trennung: nicht gleichzeitig Testcode und Produktionscode ändern.
-  Task-Schnitt:        nicht gleichzeitig mehrere semantische Räume bearbeiten.
-  Beide gelten unabhängig. Ein Schnitt kann beide Grenzen ziehen.
+Task-Schnitt vs. Phase:
+  Phase:        interne Reihenfolge innerhalb eines autonomen Arbeitspakets.
+  Task-Schnitt: echte Grenze zwischen Arbeitspaketen.
+  Eine Phase erzeugt keine Benutzerinteraktion.
 
 Task-Schnitt vs. Sprechakt SP7:
   SP7 löst Task-Schnitt-Prüfung aus.
   Task-Schnitt kann SP7 einschränken:
-  wenn Teilung möglich, gilt SP7 nur für den Teilbereich
+  wenn eine echte semantische Grenze vorliegt, gilt SP7 nur für den Teilbereich
   der den fehlenden Begriff aktiv braucht.
 
 Task-Schnitt vs. Preflight:
-  Preflight ist eine Voraussetzungsprüfung — läuft immer (PF-ROUTER–PF-PLAN).
-  Task-Schnitt ist eine Strukturentscheidung — läuft wenn T1–T5 eintreten.
+  Preflight ist eine Voraussetzungsprüfung — läuft über stabile PF-* IDs.
+  Task-Schnitt ist eine Strukturentscheidung — läuft wenn T1-T5 eintreten.
   Preflight kann Task-Schnitt auslösen (wenn Brüche oder Lücken sichtbar).
 
 Task-Schnitt vs. migration-bridges.md:
@@ -209,10 +216,10 @@ Wenn ein Arbeitspaket wegen echtem Task-Schnitt unterbrochen wird:
 
 ```markdown
 Status:               IN BEARBEITUNG — TASK-SCHNITT
-Aktives Arbeitspaket: A | B
-Zurückgestellt:       [Liste der zurückgestellten Schritte]
-Wiedereintrittspunkt: [erster Schritt des nächsten Arbeitspakets]
-Voraussetzung:        [was vorher abgeschlossen oder entschieden sein muss]
+Aktives Arbeitspaket:  A | B
+Zurückgestellt:        [Liste der zurückgestellten Schritte]
+Wiedereintrittspunkt:  [erster Schritt des nächsten Arbeitspakets]
+Voraussetzung:         [was vorher abgeschlossen oder entschieden sein muss]
 ```
 
 ---
@@ -222,12 +229,15 @@ Voraussetzung:        [was vorher abgeschlossen oder entschieden sein muss]
 Ein Task-Schnitt ist gut, wenn der SWS nach dem Schnitt
 vollständig, klein und scharf ist.
 
+Ein Task-Schnitt ist schlecht, wenn er nur deshalb entsteht, weil eine
+umfangreiche, aber gleichartige Änderung mechanisch teilbar wäre.
+
 Wenn keine dieser drei Eigenschaften erreicht werden kann:
 nicht raten. Sprechakt oder Abbruch.
 
 ---
 
-*Vollständige Regeln: `AGENTS.md`*
+*Bindender Einstieg: `AGENTS.md` — Detailregeln in den aktivierten Verträgen*
 *Sprechakt-Protokoll: `sprechakt-protokoll.md`*
 *Glossar-Ladeprotokoll: `glossar-README.md`*
 *Preflight: `preflight-checkliste.md`*

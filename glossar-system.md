@@ -1,5 +1,11 @@
 # glossar-system.md — System Semantics: Betriebsbegriffe
 
+> Ebene: REPOSITORY
+> Rolle: lokaler Systemsemantik-Vertrag
+> Geltung: dieses Projekt
+> Autoritative Frage: Welche Betriebsbegriffe und Systementscheidungen gelten?
+> Nicht zustaendig fuer: Fachdomaene, Infrastrukturdetails, konkrete Ausfuehrung
+
 **Dokumenttyp: Operativ / autoritativ**
 
 > Dieses Glossar ist operative Infrastruktur, nicht Dokumentation.
@@ -8,7 +14,7 @@
 > Betriebsregeln des laufenden Systems, die ein Systemarchitekt ohne konkrete
 > Plattform-Details beurteilen kann.
 >
-> Ein Agent konsultiert es beim Preflight (P5) und beim Task-Schnitt (T1, SP7).
+> Ein Agent konsultiert es beim Preflight (PF-GLOSSAR) und beim Task-Schnitt (T1, SP7).
 > Neue System-Semantics entstehen durch Sprechakt SP2 — nicht durch Implementierung.
 
 ---
@@ -23,33 +29,42 @@ src
 
 ---
 
-## 1. Laderegel (Preflight P5)
+## 1. Laderegel (Preflight PF-GLOSSAR)
 
 ```text
-Nur laden wenn Betriebsbegriffe in der aktuellen Iteration aktiv gebraucht werden:
+Nur laden wenn Betriebsbegriffe im aktuellen Arbeitspaket aktiv gebraucht werden:
   - Use Cases, Policies, Lifecycle-Regeln
   - Fehlerklassifikation, Retry-Bedeutung, Idempotenz
   - Phasenbegriffe, Orchestrierung
 
-Nicht laden wenn nur Fachdomänenbegriffe geändert werden
-→ dann reicht glossar-domain.md
+Nicht laden wenn nur Fachdomänenbegriffe oder Meta-Begriffe geändert werden:
+  - Fachdomänenbegriffe → glossar-domain.md
+  - Agenten-/Regel-/Evidence-Begriffe → glossar-meta.md
 ```
 
 ---
 
 ## 2. Eintrag-Format
 
+Jeder Glossareintrag hat folgende Felder. Das Feld `Eintragstiefe` ist
+Pflicht. Ein minimaler Eintrag ist explizit begrenzt, nicht unvollständig.
+
+Minimaler Eintrag genügt für: Referenz, Suche, bestehende Projektion lesen,
+semantikneutrale oder mechanische Änderung.
+
+Vollständiger Eintrag nötig für: neue Implementierung, neue Invariante,
+neue Zustände oder Übergänge, neue API, systemische Entscheidung.
+
+Die Änderung der Eintragstiefe allein braucht keinen Sprechakt.
+Neue normative Bedeutung, Invarianten, Grenzen oder erlaubte Übergänge
+brauchen weiterhin die zuständige menschliche Festlegung.
+
 ```markdown
 ### <Begriff>
 
-**Semantischer Raum:** system
 **Eintragstiefe:** vollständig | minimal
 
-Eintragstiefe-Definition:
-  minimal      = Bedeutung + Projektionen + Migrationsstatus vorhanden.
-                 Alle anderen Felder bewusst weggelassen, nicht vergessen.
-  vollständig  = alle Felder unten vorhanden.
-  Upgrade auf vollständig erfordert keinen Sprechakt — nur Pflege.
+**Semantischer Raum:** system
 
 **Kompetenzfrage:**
 Beschreibt dieser Begriff wie das System korrekt operiert,
@@ -62,13 +77,16 @@ ohne eine konkrete technische Plattform festzulegen?
 **Invarianten:**
 <Was gilt für alle Instanzen dieses Begriffs ohne Ausnahme?>
 <Wer kann eine Verletzung erkennen?>
+[nur bei vollständig]
 
 **Erlaubt:**
 <Welche Zustände, Übergänge, Werte sind erlaubt?>
+[nur bei vollständig]
 
 **Verboten:**
 <Was darf dieser Begriff nicht modellieren?>
 <Welche konkreten Plattform-Details würden ihn verletzen?>
+[nur bei vollständig]
 
 **Projektionen:**
 - Code: <Modulpfad>
@@ -77,6 +95,7 @@ ohne eine konkrete technische Plattform festzulegen?
 
 **Abgrenzung:**
 <Von welchen verwandten Begriffen muss dieser Begriff klar unterschieden werden?>
+[nur bei vollständig]
 
 **Migrationsstatus:** canonical | legacy-bridge | deprecated
 ```

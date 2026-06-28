@@ -1,5 +1,11 @@
 # Glossar-README.md — Ladeprotokoll und Navigation
 
+> Ebene: REPOSITORY
+> Rolle: Glossar-Navigation
+> Geltung: dieses Projekt
+> Autoritative Frage: Welches Glossar ist fuer welchen Begriff zustaendig?
+> Nicht zustaendig fuer: neue Bedeutung ohne Sprechakt, Ausfuehrungsmandat
+
 **Dokumenttyp: Operativ / referenziell**
 
 > Dieses Dokument ist der Einstiegspunkt für das Glossar-System.
@@ -15,13 +21,13 @@ glossar-domain.md      → Fachdomänenbegriffe
                           Autorität: Domänenexperte (nicht-technisch)
                           Raum: domain/
 
-glossar-system.md      → System-Semantics-Begriffe (Produktbegriffe)
+glossar-system.md      → System-Semantics-Begriffe
                           Autorität: Systemarchitekt
                           Raum: system/
 
-glossar-meta.md        → Agenten-Metasystem-Begriffe
-                          Autorität: wer die Agenten-Box pflegt
-                          Nur bei Agenten-Box-Arbeit laden
+glossar-meta.md        → Agenten-, Regel-, Evidence- und Prozessbegriffe
+                          Autorität: Projektmaintainer / Agenten-Regelwerk
+                          Raum: meta
 
 migration-bridges.md   → Symbole mit Migrationsstatus und Bridge-Funktion
                           Nicht nach Bedeutung geordnet — nach Status
@@ -33,21 +39,21 @@ package-schema.md      → Raumregeln, Importmatrix, Known Breaches
 Diese Dokumente sind **keine Redundanz**. Jedes beantwortet eine andere Frage:
 
 ```text
-glossar-domain.md:    Was bedeutet dieser Begriff fachlich?
-glossar-system.md:    Wie verhält sich das System in diesem Zustand?
-glossar-meta.md:      Was bedeutet dieser Begriff im Agenten-Betrieb?
+glossar-domain.md:   Was bedeutet dieser Begriff fachlich?
+glossar-system.md:   Wie verhält sich das System in diesem Zustand?
+glossar-meta.md:     Was bedeutet dieser Agenten-/Regel-/Evidence-Begriff?
 migration-bridges.md: Darf dieser Begriff mechanisch angefasst werden?
-package-schema.md:    Welche Importe sind in diesem Raum erlaubt?
+package-schema.md:   Welche Importe sind in diesem Raum erlaubt?
 ```
 
 ---
 
-## 2. Ladeprotokoll (Preflight P5)
+## 2. Ladeprotokoll (Preflight PF-GLOSSAR)
 
 **Schritt 1: Aktive Begriffe bestimmen**
 
 ```text
-Welche Begriffe werden in dieser Iteration
+Welche Begriffe werden in diesem Arbeitspaket
   - geändert, umbenannt oder verschoben?
   - als Grundlage einer Entscheidung gebraucht?
   - in neuen Namen, Typen, Fehlern oder Tests eingeführt?
@@ -57,17 +63,11 @@ Welche Begriffe werden in dieser Iteration
 
 ```text
 Für jeden aktiven Begriff:
-  domain/              → glossar-domain.md laden
-  system/              → glossar-system.md laden
-  Agenten-Box-Arbeit   → glossar-meta.md laden
-  Beide (domain+system)→ beide laden (Signal für Task-Schnitt T5)
-  Unbekannt            → Sprechakt SP7 oder Task-Schnitt T1
-
-glossar-meta.md wird NUR bei Agenten-Box-Arbeit geladen:
-  Arbeit an AGENTS.md, preflight-checkliste.md,
-  Glossar-Struktur, Ladeprotokoll, Sprechakt-Protokoll,
-  Instanziierung oder Dokumentdrift im Metasystem.
-  Nicht bei normaler Fach- oder Produktsystemarbeit.
+  domain/   → glossar-domain.md laden
+  system/   → glossar-system.md laden
+  meta      → glossar-meta.md laden
+  Mehrere   → alle betroffenen Glossare laden (Signal für Task-Schnitt T5)
+  Unbekannt → Sprechakt SP7 oder Task-Schnitt T1
 ```
 
 **Schritt 3: Migrationsstatus prüfen**
@@ -80,13 +80,20 @@ Für jeden aktiven Begriff:
   → canonical: normal fortfahren
 ```
 
-**Schritt 4: Vollständigkeit prüfen**
+**Schritt 4: Eintragstiefe prüfen**
 
 ```text
-Hat jeder aktiv gebrauchte Begriff einen vollständigen Eintrag?
-  Ja → fortfahren
-  Nein → Task-Schnitt T1 prüfen
-         Wenn Begriff danach noch aktiv nötig: Sprechakt SP7
+Eintragstiefe des Glossareintrags prüfen:
+
+  Für Referenz, Suche, bestehende Projektion lesen,
+  semantikneutrale oder mechanische Änderung:
+    minimaler Eintrag genügt → fortfahren
+
+  Für neue Implementierung, neue Invariante, neue Zustände, neue API
+  oder fachliche/systemische Entscheidung:
+    vollständiger Eintrag nötig
+    Nein → Task-Schnitt T1 prüfen
+           Wenn Begriff danach noch aktiv nötig: Sprechakt SP7
 ```
 
 ---
@@ -99,8 +106,9 @@ Wenn ein Begriff fehlt:
      → Ja: enger schneiden, kein Sprechakt
      → Nein: Sprechakt SP7
 
-Wenn ein Begriff vorhanden aber unvollständig ist:
-  → Sprechakt SP7 mit Angabe welches Feld fehlt
+Wenn ein Begriff mit Eintragstiefe minimal vorhanden ist:
+  → prüfen ob minimaler Eintrag für diese Aufgabe ausreicht (Schritt 4)
+  → wenn nicht ausreichend: Sprechakt SP7 mit Angabe welches Feld fehlt
   → Nicht raten, nicht aus Code ableiten
 
 Wenn ein Begriff vorhanden und vollständig ist:
@@ -117,8 +125,8 @@ Nicht laden bei:
   - reinen Lint/Format-Fixes
   - Kommentar-Korrekturen ohne Begriffe
   - rein technischen Refactorings ohne neue Begriffe
-  - Änderungen ausschließlich in infrastructure/ oder tools/
-    (diese Räume brauchen kein Fachdomänenglossar)
+  - Änderungen ausschließlich in infrastructure/ ohne neue System- oder Meta-Begriffe
+  - Änderungen ausschließlich in tools/ ohne neue Agenten-/Regelbegriffe
 ```
 
 ---
@@ -142,18 +150,21 @@ Er ist ein Signal, dass die Grenze falsch gezogen ist.
 AGENTS.md                  → operative Regeln, Schreibrechte, Abbrüche
 glossar-domain.md          → Fachbegriffs-Bedeutungen
 glossar-system.md          → Betriebsbegriffs-Bedeutungen
+glossar-meta.md            → Agenten-, Regel-, Evidence- und Prozessbegriffe
 package-schema.md          → Raumregeln und Importmatrix
 migration-bridges.md       → Symbole mit Migrationsstatus
 grundsatz.md               → warum dieses System so aufgebaut ist
 
-Bei Widerspruch: Autoritätsreihenfolge in regelmatrix.md.
+Bei Widerspruch: Autoritätsmodell in regelmatrix.md.
 ```
 
 ---
 
 ## 7. Schlussregel
 
-Das Glossar ist fertig genug für eine Iteration wenn alle aktiv
-gebrauchten Begriffe vollständige Einträge haben.
+Das Glossar ist fertig genug für ein Arbeitspaket wenn alle aktiv
+gebrauchten Begriffe Einträge haben, deren Eintragstiefe ihrer Nutzung
+entspricht: minimal für semantikneutrale Arbeit, vollständig für normative
+Entscheidungen.
 
-Es muss nicht vollständig sein — nur vollständig für den aktuellen SWS.
+Es muss nicht vollständig sein — nur ausreichend für den aktuellen SWS.

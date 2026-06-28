@@ -1,5 +1,11 @@
 # blocker-und-abbruch-protokoll.md — Blocker, Abbruch, Wiedereinstieg
 
+> Ebene: PRIMING
+> Rolle: Abbruch- und Recovery-Protokoll
+> Geltung: jeder Aufgabenlauf
+> Autoritative Frage: Wann wird gueltig gestoppt und wie wird wieder eingestiegen?
+> Nicht zustaendig fuer: lokale Raumordnung, konkrete Transformation
+
 > Dieses Dokument ist die operative Quelle fuer H1-H10, SA1-SA6,
 > Abbruch-Evidence, Wiedereinstieg, Pendeln und Stagnation.
 
@@ -60,7 +66,7 @@ Keine Regel abschwaechen, um den roten Zustand zu umgehen.
 Ablageort:
 
 ```text
-tmp/erfahrungsberichte/YYYY-MM-DD-ABBRUCH-<kurzbeschreibung>.md
+.agent-box/evidence/erfahrungsberichte/YYYY-MM-DD-ABBRUCH-<kurzbeschreibung>.md
 ```
 
 Format:

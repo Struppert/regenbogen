@@ -1,8 +1,15 @@
 # erfahrungsbericht-protokoll.md — Python-Projekt
 
+> Ebene: PRIMING
+> Rolle: Reflexions- und Lernprotokoll
+> Geltung: systemisch relevante Laufbefunde
+> Autoritative Frage: Wann und wie wird ein Erfahrungsbericht geschrieben?
+> Nicht zustaendig fuer: direkte Regeländerung, konkrete Projektarchitektur
+
 > Dieses Dokument regelt wann, was und wie Erfahrungsberichte geschrieben werden.
 >
-> Vollständige operative Regeln: `AGENTS.md`.
+> Bindender Einstieg und Kernregeln: `AGENTS.md`.
+> Vollständige Detailregeln: die durch den jeweiligen Trigger aktivierten Verträge.
 
 ---
 
@@ -27,28 +34,28 @@ Sie verbessern das System — nicht die aktuelle Aufgabe.
 ### Pflicht
 
 ```text
-E1  Nach abgeschlossener Agentensession mit Plan, MITTEL-Task,
-    Sprechakt, Task-Schnitt, öffentlicher API-Änderung oder Dokumentdrift.
+E1  Nach systemischem Abbruch oder unklarer Recovery.
 
-E2  Nach jedem HARD-Abbruch.
-    Zusätzlich zum Abbruch-Artefakt — Abbruch-Artefakt beschreibt den Stopp,
-    Erfahrungsbericht beschreibt das Gelernte.
+E2  Nach Regelwiderspruch oder Autoritätsdrift.
+    Der Bericht beschreibt nicht die Änderung, sondern die Regelkollision.
 
-E3  Nach sichtbarer Systemschwäche.
+E3  Nach Verifikationslücke oder blindem Checker.
     Auch wenn die Session erfolgreich abgeschlossen wurde.
 
-E4  Nach SOFT-Abbruch, wenn der Abbruchgrund systemisch ist.
-    Nicht nur ein technisches Problem wie roter Test.
+E4  Nach Pendeln, Stagnation oder wiederholtem Fehlverhalten.
+    Nicht bei normalem roten Test oder normaler technischer Korrektur.
 
-E5  Nach unerwarteter Interaktion zwischen Regeln.
+E5  Nach neuer verallgemeinerbarer Erkenntnis über die Agenten-Box.
 ```
 
 ### Nicht nötig
 
 ```text
 - reine SICHER-Tasks ohne Überraschungen
+- normale erfolgreiche Implementierungen ohne Systembefund
 - Lint / Format-Fixes
 - reine Dokumentations-Korrekturen ohne inhaltliche Entscheidung
+- HARD-Abbruch mit bereits bekannter, klarer Ursache und klarer Recovery
 ```
 
 ---
@@ -60,6 +67,8 @@ E5  Nach unerwarteter Interaktion zwischen Regeln.
 
 Datum:
 Learning-Matrix-Kandidat: ja/nein
+  (ja wenn: HARD-Abbruch verursacht, oder ≥2 Sessions gleiches Muster,
+   oder Mensch markiert als systemic — siehe learning-matrix.md §1a)
 Vorgeschlagene Musterkennung:
 Session-Typ:  abgeschlossen | HARD-Abbruch | SOFT-Abbruch | gemischt
 Aufgabe:      <was war der Auftrag>
@@ -105,7 +114,7 @@ Dieser Bericht ist kein Änderungsauftrag.
 ## 4. Ort und Aufbewahrung
 
 ```text
-tmp/erfahrungsberichte/YYYY-MM-DD-EB-kurzbeschreibung.md
+.agent-box/evidence/erfahrungsberichte/YYYY-MM-DD-EB-kurzbeschreibung.md
 ```
 
 Nomenklatur:
@@ -115,7 +124,7 @@ ABBRUCH-  → Abbruch-Artefakt (auch in diesem Verzeichnis)
 EB-       → Erfahrungsbericht
 ```
 
-`tmp/erfahrungsberichte/` ist append-only.
+`.agent-box/evidence/erfahrungsberichte/` ist append-only.
 Bestehende Berichte werden nicht geändert.
 Korrekturen entstehen als neuer Bericht.
 
@@ -137,10 +146,9 @@ Erfahrungsbericht
 
 Ein Erfahrungsbericht der direkt AGENTS.md ändert, ist ein Regelverstoß.
 Erfahrungsberichte sind Eingabe für menschliche Entscheidungen, nicht Autorisierung.
-
-Die tatsächliche Übernahme in die Learning-Matrix wird ausschließlich in
-`learning-matrix.md` dokumentiert. Bestehende Erfahrungsberichte werden dafür
-nicht nachträglich geändert.
+Die tatsaechliche Uebernahme in die Learning-Matrix wird ausschliesslich in
+`learning-matrix.md` dokumentiert. Bestehende Erfahrungsberichte werden dafuer
+nicht nachtraeglich geaendert.
 
 ---
 
