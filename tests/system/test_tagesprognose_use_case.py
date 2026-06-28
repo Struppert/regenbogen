@@ -164,12 +164,10 @@ def test_sekundaerbogen_wahrscheinlichkeit_wird_befuellt():
     uc = make_uc(api)
     prognose = uc.berechne("Berlin")
     assert all(
-        isinstance(s.sekundaerbogen_wahrscheinlichkeit, int)
-        for s in prognose.stunden
+        isinstance(s.sekundaerbogen_wahrscheinlichkeit, int) for s in prognose.stunden
     )
     assert all(
-        0 <= s.sekundaerbogen_wahrscheinlichkeit <= 100
-        for s in prognose.stunden
+        0 <= s.sekundaerbogen_wahrscheinlichkeit <= 100 for s in prognose.stunden
     )
 
 

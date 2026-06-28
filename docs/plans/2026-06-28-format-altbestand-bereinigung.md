@@ -10,7 +10,7 @@
 Plan-ID: PLAN-2026-06-28-format-altbestand-bereinigung
 Plan-Version: 1
 Plan-Schema-Version: v0.3.7
-Planstatus: entscheidungsbereit
+Planstatus: angenommen
 Erstellt im Modus: PLAN
 Datum: 2026-06-28
 Bearbeiter: Codex
@@ -18,14 +18,14 @@ Bearbeiter: Codex
 ## Laufbindung
 
 Contract-ID: CONTRACT-2026-06-28-format-altbestand-bereinigung
-Contract-Status: proposed
+Contract-Status: active
 Run-ID: RUN-2026-06-28-format-altbestand-bereinigung
 Priming-Revision: AGENTS.md@2026-06-28
 Repository-Vertragsrevision: e370461
 Plan-Revision: PLAN-2026-06-28-format-altbestand-bereinigung@1
 Scope-ID: SCOPE-2026-06-28-format-altbestand-bereinigung
 Scope-Version: 1
-Authorization-Revision:
+Authorization-Revision: MD-2026-06-28-format-altbestand-bereinigung@1
 Base-Snapshot: e370461
 Interaktionsprofil: interaktiv
 Recovery-Profil: normal
@@ -34,18 +34,18 @@ Arbeitsprofil: feature
 ## Ausführungsmandat
 
 Mandat-ID: MD-2026-06-28-format-altbestand-bereinigung
-Mandatstatus: nicht erteilt
+Mandatstatus: aktiv
 Mandatsgrundlage: Plan
 Contract-ID: CONTRACT-2026-06-28-format-altbestand-bereinigung
 Run-ID: RUN-2026-06-28-format-altbestand-bereinigung
-Mandatsrevision:
-Authorization-Revision: <Mandat-ID>@<Mandatsrevision>
+Mandatsrevision: 1
+Authorization-Revision: MD-2026-06-28-format-altbestand-bereinigung@1
 Grundlagen-ID: PLAN-2026-06-28-format-altbestand-bereinigung
 Grundlagen-Version: 1
-Freigabezeitpunkt:
-Freigabetext oder Freigabereferenz:
-Freigegebener Scope:
-Freigegebene geschützte Dateien:
+Freigabezeitpunkt: 2026-06-28
+Freigabetext oder Freigabereferenz: "setze diesen Plan aktiv: PLAN-2026-06-28-format-altbestand-bereinigung" (Dieter Haag)
+Freigegebener Scope: vollständiger Plan
+Freigegebene geschützte Dateien: keine
 Nicht freigegeben: alle Dateien außerhalb des Ressourcenscopes
 Gültigkeit: bis Abschluss
 
@@ -159,7 +159,7 @@ Append-only: nicht relevant
 
 ## Bereits erteilte Freigaben / Sprechakte
 
-Keine Ausführungsfreigabe. Dieser Plan ist nur entscheidungsbereit.
+Ausführungsfreigabe erteilt. Maßgeblich sind die Mandatsfelder dieses Plans.
 
 ## Erwartete Änderungen
 

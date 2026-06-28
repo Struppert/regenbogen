@@ -62,6 +62,7 @@ def test_azimut_zu_himmelsrichtung_360_entspricht_nord():
 
 # --- Sekundaerbogen-Geometrie ---
 
+
 def test_sekundaerbogen_sonne_unter_horizont_ergibt_null():
     assert berechne_sonnenstands_faktor_sekundaerbogen(Sonnenstand(-5.0, 180.0)) == 0.0
 
@@ -86,7 +87,9 @@ def test_sekundaerbogen_uebergangsbereich_faellt_linear():
 def test_sekundaerbogen_zwischen_42_und_51_ist_positiv():
     """Zwischen 42 und 51 Grad: Sekundaerbogen moeglich, Primaerbogen nicht."""
     faktor_primaer = berechne_sonnenstands_faktor(Sonnenstand(46.0, 180.0))
-    faktor_sekundaer = berechne_sonnenstands_faktor_sekundaerbogen(Sonnenstand(46.0, 180.0))
+    faktor_sekundaer = berechne_sonnenstands_faktor_sekundaerbogen(
+        Sonnenstand(46.0, 180.0)
+    )
     assert faktor_primaer == 0.0
     assert faktor_sekundaer > 0.0
 

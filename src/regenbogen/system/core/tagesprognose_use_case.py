@@ -124,7 +124,9 @@ class TagesPrognoseUseCase:
         if faktor_s <= 0.0:
             return 0
         basis = zustand.sonnenschein_intensitaet * 0.6 + zustand.regen_intensitaet * 0.4
-        return max(0, min(100, round(basis * faktor_s * SEKUNDAERBOGEN_DAEMPFUNG * 100)))
+        return max(
+            0, min(100, round(basis * faktor_s * SEKUNDAERBOGEN_DAEMPFUNG * 100))
+        )
 
     def _berechne_sichtbarkeit(
         self,
