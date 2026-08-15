@@ -131,14 +131,14 @@ LAYER 3: TASK-PRIMING (Task)
 
 ```
 ✓ Neue Stärken:
-  - Mapping Glossar → Code formalisiert (Funktoren)
-  - Struktur-Erhaltung ist mathematisch definiert
+  - Mapping Glossar → Code strukturiert (Abhängigkeiten + Invarianten)
+  - Struktur-Erhaltung ist prüfbar (nicht nur gehofft)
   - Checker können Struktur-Verletzungen erkennen (nicht nur Syntax)
-  - Tests sind Funktoren T: Code → Validierung
-  - Komposition T ∘ F beweist Glossar-Invarianten
+  - Tests sind direkt an Glossar gebunden (@pytest.mark.oracle)
+  - Vollständige Validierungskette: Glossar → Code → Tests
   - Dreiteilung ermöglicht klare Verantwortlichkeiten
-  - Agent-Instruktionen werden präzise ("respektiere Funktoren")
-  - Funktor-Verletzungen sind detektierbar (HARD-Abbruch H11?)
+  - Agent-Instruktionen werden präzise ("respektiere Abhängigkeiten")
+  - Struktur-Verletzungen sind vor Commit sichtbar
 
 ✓ Erhält alle v1-Stärken:
   - Explizite Regeln
@@ -146,11 +146,11 @@ LAYER 3: TASK-PRIMING (Task)
   - Abbruch-Garantien
   - Checker für Automation
 
-✗ Neue Komplexität:
-  - Kategorietheorie verstehen (aber dokumentiert!)
-  - Glossar-Update (Morphismen hinzufügen)
-  - Neue Checker schreiben (aber klar definiert)
-  - Agent muss Funktoren verstehen (aber PF-FUNKTOR-Checkliste hilft)
+✗ Neue Anforderungen:
+  - Glossar-Struktur explizit machen (Morphismen dokumentieren)
+  - Checker erweitern (strukturelle Abhängigkeits-Prüfung)
+  - Tests als Oracle markieren (@pytest.mark.oracle)
+  - Agent muss Abhängigkeits-Logik verstehen (PF-FUNKTOR-Checkliste hilft)
 ```
 
 ---
@@ -161,13 +161,13 @@ LAYER 3: TASK-PRIMING (Task)
 
 | Aspekt | v1 | v2 |
 |--------|---|---|
-| **"Was ist RegenbogenWahrscheinlichkeit?"** | Glossar-Eintrag lesen | Glossar + Morphismen + Funktor F |
-| **"Wo ist das im Code?"** | Suche manuell | Glossar sagt: F = class RegenbogenWahrscheinlichkeit |
+| **"Was ist RegenbogenWahrscheinlichkeit?"** | Glossar-Eintrag lesen | Glossar + Morphismen + Invarianten |
+| **"Wo ist das im Code?"** | Suche manuell | Glossar sagt: class RegenbogenWahrscheinlichkeit |
 | **"Sind alle Abhängigkeiten in Code?"** | Hoffen, dann Code-Review | check_funktor_structure.py prüft automatisch |
 | **"Validieren Tests Glossar-Invarianten?"** | Hoffen, dann lesen | @pytest.mark.oracle("") dokumentiert Bindung |
 | **"Ist die Struktur erhalten?"** | Implizit | Explizit (PF-FUNKTOR Checkliste) |
 
-**Klarheit-Gewinn:** ⭐⭐⭐⭐ (sehr hoch)
+**Klarheit-Gewinn:** Sehr hoch — Abhängigkeiten sind nicht mehr implizit
 
 ---
 
@@ -187,15 +187,14 @@ LAYER 3: TASK-PRIMING (Task)
 
 ### 3. **Wartbarkeit: Ist das System leicht zu ändern?**
 
-| Szenario | v1 Aufwand | v2 Aufwand |
+| Szenario | v1 | v2 |
 |----------|---|---|
-| **Glossar-Begriff hinzufügen** | 1h (Eintrag) | 1.5h (Eintrag + Morphismen + Funktor) |
-| **Glossar-Abhängigkeit ändern** | 2h (Code-Review notwendig) | 1h (Update + Checker zeigt Fehler) |
-| **Code-Refactoring** | 3h (Glossar + Code + Tests prüfen) | 2h (PF-FUNKTOR + Tests korrigieren) |
-| **Neuer Raum (z.B. adapters)** | 4h (Manual Planung) | 2h (Dreiteilung klargemacht) |
-| **Checker erweitern** | 1.5h (manuell schreiben) | 1h (Funktor-Logik von v2 nutzen) |
+| **Glossar-Begriff hinzufügen** | Eintrag schreiben | + Morphismen + Funktor dokumentieren |
+| **Glossar-Abhängigkeit ändern** | Code-Review notwendig | Checker zeigt automatisch Fehler |
+| **Code-Refactoring** | Glossar/Code/Tests manuell abgleichen | PF-FUNKTOR-Checkliste strukturiert die Arbeit |
+| **Neuer semantischer Raum** | Manual konzipieren | Dreiteilung gibt Struktur vor |
 
-**Wartbarkeit-Gewinn:** ⭐⭐⭐ (moderat, aber qualitativ besser)
+**Wartbarkeit-Gewinn:** Qualitativ besser durch explizite Struktur; Quantitativ abhängig von Projekt.
 
 ---
 
@@ -254,19 +253,16 @@ LAYER 3: TASK-PRIMING (Task)
 
 ## 📈 Zusammenfassung: Die Verbesserung
 
-```
-EFFEKT DER MIGRATION v1 → v2
+**Effekt der Migration v1 → v2:**
 
-Klarheit:             ▓▓▓▓ →  ▓▓▓▓▓▓▓▓  (+100%)
-Sicherheit:           ▓▓▓▓ →  ▓▓▓▓▓▓▓▓  (+100%, präventiv)
-Wartbarkeit:          ▓▓▓▓ →  ▓▓▓▓▓    (+25%, qualitativ besser)
-Skalierbarkeit:       ▓▓▓   →  ▓▓▓▓▓▓   (+100%, systematisch)
-Automatisierbarkeit:  ▓▓▓▓ →  ▓▓▓▓▓▓▓▓  (+new class of tools)
-Agent-Guidance:       ▓▓▓   →  ▓▓▓▓▓▓   (+100%, präzise)
-Formale Garantien:    ▓     →  ▓▓▓▓▓▓▓▓  (+infinit, neu)
+- **Klarheit:** Glossar→Code-Mapping wird explizit (nicht implizit)
+- **Sicherheit:** Struktur-Verletzungen werden präventiv erkannt (nicht reaktiv via Code-Review)
+- **Skalierbarkeit:** Funktor-Pattern ist projektunabhängig anwendbar
+- **Automatisierbarkeit:** Neue Checker-Klasse möglich (Struktur-Erhaltung, nicht nur Syntax)
+- **Agent-Guidance:** Instruktionen werden präzise ("respektiere Funktoren: A→B ⟹ F(A)→F(B)")
+- **Formale Garantien:** Komposition T ∘ F beweist Glossar-Invarianten (neue Qualitätsklasse)
 
-GESAMTEFFEKT: Qualitätssprung von "hoffnungsvoll" zu "garantiert"
-```
+**Kern:** v2 macht das System von "hoffentlich korrekt" zu "strukturell verifiable".
 
 ---
 
@@ -274,13 +270,15 @@ GESAMTEFFEKT: Qualitätssprung von "hoffnungsvoll" zu "garantiert"
 
 ### Was ist MCP?
 
-**Model Context Protocol** = Standardprotokoll für Kontextverwaltung
+**Model Context Protocol** = Standardprotokoll für Tools (JSON-RPC over stdio)
 
 ```
 MCP Server (Data/Logic)
-  ↑↓ (Standardprotokoll)
+  ↑↓ (JSON-RPC via Tools + Resources)
 AI Client (Claude, Agent)
 ```
+
+MCP servers exposieren **Tools** (callable functions) und **Resources** (readable data), nicht HTTP-Endpunkte.
 
 ### Wie passen Funktoren in MCP?
 
@@ -290,36 +288,31 @@ AI Client (Claude, Agent)
 Drei neue MCP-Server für die Dreiteilung:
 
 1. AGENT-PRIMING-SERVER (Regeln)
-   Endpoints:
-   - GET /rules/modes          → ANALYSE | PLAN | AUSFUEHRUNG
-   - GET /rules/abort-codes    → H1–H10, SA1–SA6 Definitionen
-   - POST /validate/wg-mutation → WG-MUTATION prüfen
-   - POST /validate/preflight  → Alle PF-* Schritte durchlaufen
+   Tools:
+   - get_agent_rules() → returns ANALYSE/PLAN/AUSFUEHRUNG modes + abort-codes H1–H10
+   - validate_wg_mutation(mutation_spec) → checks WG-MUTATION validity
+   - validate_preflight(phase: 1-6) → runs PF-* checklist phase
+   Resources:
+   - rules://agent/modes, rules://agent/abort-codes, rules://agent/guardrails
 
 2. PROJECT-PRIMING-SERVER (Ontologie + Funktoren)
-   Endpoints:
-   - GET /glossar/[term]       → Glossar-Eintrag + Morphismen
-   - POST /functor/glossar-to-code
-     Input: {glossar_term: "RegenbogenWahrscheinlichkeit"}
-     Output: {code_symbol: "class RegenbogenWahrscheinlichkeit", 
-              file: "src/regenbogen/domain/wahrscheinlichkeit.py",
-              morphisms: [...]}
-   - POST /functor/validate-structure
-     Input: {glossar_morphisms: [A→B, B→C], 
-             code_morphisms: [F(A)→F(B), F(B)→F(C)]}
-     Output: {valid: true, violations: [...]}
-   - POST /functor/composition
-     Input: {glossar_term: "RegenbogenW.", glossar_dependency: "Sonnenstand"}
-     Output: {composition: [T ∘ F], 
-              test_oracle: "test_wahrscheinlichkeit_uses_sonnenstand"}
+   Tools:
+   - glossar_get_term(term: string) → returns term + morphisms + functor mappings
+   - functor_validate_structure(glossar_morphisms, code_morphisms) → checks if F preserves structure
+   - functor_check_composition(glossar_term, code_file, test_file) → validates T∘F chain
+   Resources:
+   - glossar://domain/[term], glossar://system/[term], glossar://morphisms
 
 3. TASK-PRIMING-SERVER (Aufgaben)
-   Endpoints:
-   - GET /plan/[task-id]       → Plan Struktur
-   - GET /scope/[task-id]      → IN/OUT Grenzen
-   - POST /sws/closure         → SWS geschlossen?
-   - POST /checkpoint/create   → Checkpoint nach Phase
+   Tools:
+   - get_plan_structure(task_id) → returns phases + scope
+   - validate_sws_closure(sws_terms) → checks if SWS is semantically closed
+   - create_checkpoint(phase: int) → record phase completion
+   Resources:
+   - task://plan/[id], task://scope/[id], task://mandate/[id]
 ```
+
+**Wichtig:** MCP-Tools sind *synchrone, callable functions*, nicht REST-Endpunkte. Sie werden von Claude direkt aufgerufen.
 
 ---
 
@@ -328,75 +321,51 @@ Drei neue MCP-Server für die Dreiteilung:
 ```
 SZENARIO: Agent will RegenbogenWahrscheinlichkeit-Code schreiben
 
-1. Agent lädt PROJECT-PRIMING-SERVER
-   GET /glossar/RegenbogenWahrscheinlichkeit
+1. Agent ruft MCP-Tool auf: glossar_get_term("RegenbogenWahrscheinlichkeit")
    
    Response:
    {
      "term": "RegenbogenWahrscheinlichkeit",
      "meaning": "Prozentwert [0,100]...",
-     "invariants": ["0 <= wert <= 100", "no sun → 0", ...],
+     "invariants": ["0 <= wert <= 100", "no sun → 0"],
      "morphisms": [
-       {from: "RegenbogenWahrscheinlichkeit", to: "Wetterzustand"},
-       {from: "RegenbogenWahrscheinlichkeit", to: "Sonnenstand"},
-       ...
+       {"from": "RegenbogenWahrscheinlichkeit", "to": "Wetterzustand"},
+       {"from": "RegenbogenWahrscheinlichkeit", "to": "Sonnenstand"}
      ],
      "functor_f": {
        "code_symbol": "class RegenbogenWahrscheinlichkeit(int)",
-       "file": "src/regenbogen/domain/wahrscheinlichkeit.py",
-       "semiotic_type": "ICONIC"  // Name gleich
+       "file": "src/regenbogen/domain/wahrscheinlichkeit.py"
      },
      "functor_t": {
        "test_oracle": "test_wahrscheinlichkeit_bounds",
-       "file": "tests/domain/test_wahrscheinlichkeit.py",
-       "marks": ["@pytest.mark.oracle('RegenbogenWahrscheinlichkeit.invariant')"]
+       "file": "tests/domain/test_wahrscheinlichkeit.py"
      }
    }
 
-2. Agent führt PF-FUNKTOR durch
-   POST /validate/pf-funktor
-   {
-     "glossar_term": "RegenbogenWahrscheinlichkeit",
-     "code_symbol": "class RegenbogenWahrscheinlichkeit",
-     "phase": 3,  // Funktor-Mapping prüfen
-   }
+2. Agent führt PF-FUNKTOR Phase 3 durch
+   MCP-Tool: validate_preflight(phase=3, glossar_term="RegenbogenWahrscheinlichkeit")
    
-   Response:
-   {
-     "phase": 3,
-     "status": "OK",
-     "morphism_check": {
-       "required": ["RegenbogenW → Wetterzustand", "RegenbogenW → Sonnenstand"],
-       "found_in_code": [
-         {"glossar": "→ Wetterzustand", "code": "imports Wetterzustand", "status": "✓"},
-         {"glossar": "→ Sonnenstand", "code": "imports Sonnenstand", "status": "✓"},
-       ],
-       "unexpected": []
-     }
-   }
+   Response: {status: "OK", required_morphisms_found: 2, violations: []}
 
-3. Agent schreibt Code (mit MCP-Validierung)
-   Agent schreibt: class RegenbogenWahrscheinlichkeit(int): ...
+3. Agent schreibt Code: class RegenbogenWahrscheinlichkeit(int): ...
    
-   MCP-Server prüft gegen Funktor F
+   MCP-Tool: functor_validate_structure(
+     glossar_morphisms=[{from: "RegenbogenW", to: "Wetterzustand"}],
+     code_morphisms=[{from: "RainbowProb", to: "Weather"}]
+   )
 
-4. Agent schreibt Tests
-   Agent schreibt: @pytest.mark.oracle("RegenbogenWahrscheinlichkeit.invariant")
-   
-   MCP-Server validiert oracle-Marking
+4. Agent schreibt Tests mit oracle-Marking
+   @pytest.mark.oracle("RegenbogenWahrscheinlichkeit.invariant")
+   def test_bounds(): assert 0 <= result <= 100
 
-5. Check-Phase: Composition T ∘ F
-   POST /functor/composition
-   {
-     "glossar_term": "RegenbogenWahrscheinlichkeit",
-     "code_file": "src/regenbogen/domain/wahrscheinlichkeit.py",
-     "test_file": "tests/domain/test_wahrscheinlichkeit.py"
-   }
+5. Finale Check: Composition T ∘ F
+   MCP-Tool: functor_check_composition(
+     glossar_term="RegenbogenWahrscheinlichkeit",
+     code_file="src/regenbogen/domain/wahrscheinlichkeit.py",
+     test_file="tests/domain/test_wahrscheinlichkeit.py"
+   )
    
-   Response:
-   {
-     "composition": "OK",
-     "glossar_invariant": "0 <= wert <= 100",
+   Response: {composition_valid: true, glossar_invariant_tested: true}
      "code_projection": "assert 0 <= self.wert <= 100",
      "test_oracle": "test_wahrscheinlichkeit_bounds validates invariant",
      "chain_complete": true
@@ -451,19 +420,19 @@ Ergebnis: v2 als dokumentiertes System, manuell angewendet
 
 ```
 □ PROJECT-PRIMING-SERVER (Ontologie + Funktoren)
-  └─ GET /glossar/[term]
-  └─ POST /functor/validate-structure
-  └─ POST /functor/composition
+  ├─ glossar_get_term(term)
+  ├─ functor_validate_structure(glossar_morphisms, code_morphisms)
+  └─ functor_check_composition(glossar_term, code_file, test_file)
 
 □ AGENT-PRIMING-SERVER (Regeln)
-  └─ POST /validate/wg-mutation
-  └─ POST /validate/preflight
+  ├─ validate_wg_mutation(spec)
+  └─ validate_preflight(phase)
 
 □ TASK-PRIMING-SERVER (Aufgaben)
-  └─ GET /plan/[task]
-  └─ POST /sws/closure
+  ├─ get_plan_structure(task_id)
+  └─ validate_sws_closure(terms)
 
-Ergebnis: v2 als Live-Services
+Ergebnis: v2 als Live-MCP-Services (JSON-RPC)
 ```
 
 ### Phase 3: Agent-Integration (2–4 Wochen)
@@ -481,24 +450,16 @@ Ergebnis: v2 + MCP als vollständiges, automatisiertes System
 
 ## 📊 Effekt: v1 vs. v2 vs. v2+MCP
 
-```
-                v1          v2              v2+MCP
-              (Status)    (Documented)     (Services)
+| Dimension | v1 | v2 | v2+MCP |
+|-----------|---|---|---|
+| **Klarheit** | Implizit ("hoffen") | Explizit (Funktor-dokumentiert) | Live (MCP-queries) |
+| **Sicherheit** | Reaktiv (Code-Review) | Präventiv (Checker vor Commit) | Proaktiv (Real-time während Arbeit) |
+| **Wartbarkeit** | Manuell kompliziert | Strukturiert, aber noch manuell | Automatisiert |
+| **Automation** | Begrenzt (Syntax-Checker) | Struktur-Checker möglich | Vollautomat |
+| **Agent-Guidance** | Vague ("mach ähnlich") | Präzise (Funktor-Regeln) | Präzis + Live |
+| **Komplexität** | Niedrig | Mittel-Hoch (aber dokumentiert) | Hoch (aber wert) |
 
-Klarheit       ▓▓▓▓        ▓▓▓▓▓▓▓▓         ▓▓▓▓▓▓▓▓
-Sicherheit     ▓▓▓▓        ▓▓▓▓▓▓▓▓         ▓▓▓▓▓▓▓▓
-Wartbarkeit    ▓▓▓▓        ▓▓▓▓▓           ▓▓▓▓▓▓
-Automation     ▓▓▓         ▓▓▓▓            ▓▓▓▓▓▓▓▓
-Agent-Exp      ▓▓▓         ▓▓▓▓▓▓          ▓▓▓▓▓▓▓▓
-Real-time      ▓           ▓▓              ▓▓▓▓▓▓▓▓
-
-Komplexität    Low         Medium-High     High (but worth it)
-
-QUALITÄT:
-v1 → v2:   +100% (dokumentiert + mathematisch)
-v2 → v2+MCP: +50% (live + automated)
-Gesamt:     v2+MCP ist 2-3x besser als v1
-```
+**Qualitätslinie:** v1 → v2 (dokumentiert + mathematisch) → v2+MCP (live + vollautomatisiert)
 
 ---
 

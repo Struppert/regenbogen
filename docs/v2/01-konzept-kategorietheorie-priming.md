@@ -79,45 +79,24 @@ Projektion: glossar-domain.md + Code + Tests
 
 ### 2.2 Kategorietheorie: Struktur zwischen Domänen
 
-**Kernidee:** Nicht die Objekte selbst sind wichtig, sondern die **Pfeile (Morphismen)** zwischen ihnen.
+**Kernidee:** In der Kategorietheorie ist Struktur nicht in Objekten, sondern in **Pfeilen (Morphismen)** definiert.
 
+**Drei Kategorien im System:**
+
+- **GLOSSAR-KATEGORIE G:** Objekte = Glossar-Begriffe, Pfeile = semantische Abhängigkeiten (A → B bedeutet "A hängt von B ab")
+- **CODE-KATEGORIE K:** Objekte = Code-Symbole, Pfeile = Code-Abhängigkeiten (imports, calls)
+- **VALIDIERUNGS-KATEGORIE V:** Objekte = Test-Oracles, Pfeile = Test-Abhängigkeiten
+
+**Wichtig:** Pfeile können komponiert werden. Wenn A → B → C, dann auch A → C (transitiv).
+
+Beispiel:
 ```
-Kategorie C:
-  Objekte:      A, B, C, ...
-  Morphismen:   A → B, B → C, ...
-  Komposition:  (B → C) ∘ (A → B) = A → C
-  Identität:    id_A: A → A
+GLOSSAR:    RegenbogenWahrscheinlichkeit → Wetterzustand → Temperatur
+CODE:       RainbowProbability imports Weather imports Temperature
+TEST:       oracle_rainbow requires oracle_weather requires oracle_temperature
 ```
 
-**Für dein System:**
-
-```
-GLOSSAR-KATEGORIE G:
-  Objekte: Glossar-Begriffe
-    RegenbogenWahrscheinlichkeit, Wetterzustand, SonnenstandsFaktor
-  Morphismen: semantische Abhängigkeiten
-    RegenbogenWahrscheinlichkeit → Wetterzustand (depends_on)
-    RegenbogenWahrscheinlichkeit → SonnenstandsFaktor (depends_on)
-  Komposition: transitive Abhängigkeiten
-    A → B → C bedeutet A hängt transitiv von C ab
-
-CODE-KATEGORIE K:
-  Objekte: Code-Symbole
-    class RegenbogenWahrscheinlichkeit, class Wetterzustand
-  Morphismen: Code-Abhängigkeiten
-    RegenbogenWahrscheinlichkeit → Wetterzustand (imports)
-    RegenbogenWahrscheinlichkeit → SonnenstandsFaktor (calls)
-  Komposition: transitive Imports/Calls
-    import A; A imports B bedeutet transitiv von B abhängig
-
-VALIDIERUNGS-KATEGORIE V:
-  Objekte: Test-Oracles, Assertions
-    test_wahrscheinlichkeit_bounds, assert(0 ≤ value ≤ 100)
-  Morphismen: Test-Abhängigkeiten
-    test_wahrscheinlichkeit_bounds → RegenbogenWahrscheinlichkeit (validates)
-  Komposition: Test-Suites können andere Tests aufrufen
-    Suite A → Test B → Test C
-```
+Der Funktor sagt: Diese Pfeile müssen erhalten bleiben.
 
 ---
 

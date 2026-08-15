@@ -140,6 +140,39 @@ Format und Pflichtfelder stehen in `docs/runs/checkpoint-template.md`.
 
 ---
 
+## 2.3 Regel E-X: Keine ungefragten Schätzungen oder Scorecard-Zahlen
+
+**Keine quantifizierten Schätzungen, Prozentangaben oder Scores ohne explizite Anfrage.**
+
+```text
+Verboten (ungefragte Agentenerfindung):
+  ✗ "Aufwand: 2-3 Stunden"
+  ✗ "Klarheit: +50%"
+  ✗ "Risiko: ⭐⭐⭐⭐ (4/5)"
+  ✗ "Fortschritt: ▓▓▓▓ (80%)"
+
+Erlaubt:
+  ✓ "Das erfordert länger als das" (relativ, keine Zahlen)
+  ✓ "Aufwandsschätzung angefordert? (Annahmen nötig, bin ich bereit?)" (reflektiv)
+  ✓ Tabellen/Scores nur auf explizite Anfrage: "Vergleiche diese 3 Ansätze"
+```
+
+**Grund:**
+
+Modelle erzeugen Zahlen durch Genre-Modus (Beratungsberichte sehen mit Tabellen "fertig" aus),
+nicht durch Grundlage. Ungefragte Prozente wirken wie Datenanalyse, sind aber freihändige Schätzung mit
+Dezimalstellen dran, und werden in Dokumenten als autoritativ zitiert ("Es kostet +1.5h wie der Agent sagte").
+
+Diese Regel ist nicht eine Frage der Präzision, sondern der epistemischen Integrität:
+Zahlen ohne Messgrundlage als Zahlen ausgeben ist falsch, unabhängig davon, ob jemand
+danach fragt.
+
+**Handlung:** Wenn eine Schätzung nötig ist, frage: "Soll ich einen Aufwandsrahmen skizzieren?
+Welche Annahmen sind tragbar (Code-Größe, Abhängigkeits-Komplexität, etc.)?" Dann transparent,
+was gemessen ist und was spekulativ.
+
+---
+
 ## 3. Instanziierungs-Sprechakt
 
 Die Box wird genau einmal vom Template-Zustand in den Projekt-Zustand überführt.
