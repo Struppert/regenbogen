@@ -334,6 +334,67 @@ Projektionen:
 - Regeln: ausfuehrungsmandat-protokoll.md, Abschnitt „Wirkungsgate WG-MUTATION"
 - Preflight: preflight-checkliste.md §0a
 
+### Korrespondenzsatz
+
+Bedeutung: Nachvollziehbare Bindung zwischen einer normativen Quelle, ihrer
+Implementierungsprojektion, ihrer Validierungsprojektion und der zugehoerigen
+Evidence.
+
+Invariante: Ein Korrespondenzsatz erzeugt keine neue Produktsemantik. Seine
+Quelle muss bereits in einem zustaendigen Projektartefakt gelten.
+
+### Modellreview
+
+Bedeutung: Pruefung, ob Implementierung, Testoracle und Evidence eines
+Korrespondenzsatzes der benannten normativen Quelle entsprechen.
+
+Invariante: Modellreview ist nicht Qualitaetsreview und wird nicht durch
+gruene technische Checks ersetzt.
+
+### Oracle-Treue
+
+Bedeutung: Eigenschaft einer Validierungsprojektion, nur bereits entschiedene
+Invarianten zu pruefen und keine neue Produktsemantik zu definieren.
+
+Invariante: Ein Testoracle ohne zustaendige normative Quelle ist keine
+ausreichende Korrespondenzevidence.
+
+### Aussenkorrespondenz
+
+Bedeutung: Evidenzgestuetzte Beziehung zwischen einer Modellbehauptung und
+einer benannten Beobachtung oder Messung der Aussenwelt.
+
+Invariante: Kontrollierte Tests belegen nur ihre Bedingungen; sie beweisen
+nicht ohne Messmodell allgemeine Aussagen ueber die Aussenwelt.
+
+### Anti-Zeno
+
+Bedeutung: Operativ-Regel, die verhindert, dass ein Agent bei unveraendertem
+Ziel, Mandat und Remaining SWS den Arbeitsschnitt nur allein wegen weiterer
+Teilbarkeit wiederholt verkleinert.
+
+Invarianten:
+- Nach zwei identischen Blockern ohne neue Evidence: kein dritter Versuch
+- Arbeitsschnitt darf nur verkleinert werden, wenn Ziel, Mandat oder SWS sich aendert
+- Stagnation ist messbar: Blocker unveraendert nach zwei Schritten
+
+Erlaubt:
+- Phasengrenze innerhalb desselben Arbeitspakets ohne Checkpoint
+- erneuter Versuch nach neuer Evidence oder Entscheidung
+- Verzweigung in unabhaengig lieferbare Zustaende
+
+Verboten:
+- identischer Versuch mit identischen Vorbedingungen
+- schrittweise Verkleinerung ohne neue Ursache
+- Pendeln zwischen Alternativen ohne Fortschritt
+
+Projektionen:
+- Regeln: blocker-und-abbruch-protokoll.md § 6
+- Evidence: sws-glossar-fortschrittsinvariante.md § 5
+- Governance-Kategorien: erfahrungsbericht-protokoll.md E4
+
+Migrationsstatus: canonical (seit v0.3.0)
+
 ---
 
 ## 4. Bekannte Luecken
