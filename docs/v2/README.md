@@ -81,6 +81,132 @@ Validierungs-Kategorie V
 
 ---
 
+### 3. **03-dreiteilung-priming-architektur.md** – Die Architektur
+
+**Zielgruppe:** Architekten, Framework-Designer
+
+**Inhalte:**
+- Orthogonale Dreiteilung des Priminig-Systems
+- AGENT-PRIMING (Prozess): AGENTS.md, Checker, PF-FUNKTOR
+- PROJECT-PRIMING (Semantik): Glossare, Funktoren, Validierung
+- TASK-PRIMING (Spezifikation): Plan, Scope, Mandate, Checkpoints
+- Warum Orthogonalität (Wartung, Skalierung, Wiederverwendbarkeit)
+- Interaktion der drei Schichten
+- Anwendungsbeispiel
+
+**Zeitaufwand:** 45–90 Minuten
+
+**Kernfrage:** Wie organisiert sich das System strukturell?
+
+---
+
+### 4. **04-analyse-v1-vs-v2-und-mcp.md** – Die Integration
+
+**Zielgruppe:** Architekten, Entscheidungsträger
+
+**Inhalte:**
+- Vergleich v1 (aktuelles System) vs. v2 (neues Framework) über 7 Dimensionen
+- Clarity, Safety, Maintainability, Scalability, Automatability, Formal Guarantees
+- MCP (Model Context Protocol) Integration:
+  - Warum MCP für Funktoren ideal ist
+  - Drei MCP-Services: Agent-Priming, Project-Priming, Task-Priming
+  - Dreiphasen-Rollout (4-6 wk, 6-8 wk, 2-4 wk)
+- Implementierungs-Roadmap
+- Governance und Rückfluss in Template-System
+
+**Zeitaufwand:** 1–2 Stunden (Details lesen)
+
+**Kernfrage:** Wie integrieren wir das in die Praxis?
+
+---
+
+### 5. **05-philosophische-grundlagen.md** – Epistemologie
+
+**Zielgruppe:** Theoretisch Interessierte, Framework-Architekten
+
+**Inhalte:**
+- Epistemologie: Wie Agenten "verstehen" ohne Psychologie
+- Strukturelles vs. psychologisches Verständnis
+- Korrespondentz-Modell der Wahrheit (nicht Kohärenz)
+- Searles Chinese Room und semiotische Grounding
+- Transzendentale Argumente (Kant): Was muss wahr sein für Priming?
+- Freges Problem in der Softwarearchitektur (Sinn vs. Referent)
+- Warum Philosophie in praktischer Softwareentwicklung zählt
+
+**Zeitaufwand:** 1–2 Stunden (konzeptuell dicht)
+
+**Kernfrage:** Warum ist dieses Framework philosophisch konsistent?
+
+---
+
+### 6. **06-linguistische-struktur.md** – Linguistik
+
+**Zielgruppe:** Glossar-Designer, Language-Engineers
+
+**Inhalte:**
+- Glossare als Sprachsysteme (nicht Wörterbücher)
+- Saussure: Bedeutung aus Unterscheidungen (Morphismen), nicht Objekte
+- Dependenzgrammatik: Glossar-Begriffe wie Verben mit Argumenten
+- Markedness: markiert vs. unmarkiert (Spezialisierung)
+- Polysemie, Homonymie, Ambiguität
+- Wortbildungsregeln (Morphologie) im Glossar
+- Metaphern und konzeptuelle Strukturen
+- Register und Kontextualisierung (mehrere Stakeholder)
+- Sieben-Ebenen-Hierarchie einer Sprache
+- Syntax vs. Semantik vs. Pragmatik im Code
+
+**Zeitaufwand:** 1.5–2 Stunden
+
+**Kernfrage:** Wie strukturieren sich Glossare wie echte Sprachsysteme?
+
+---
+
+### 7. **07-semiotische-validierung.md** – Semiotik in der Praxis
+
+**Zielgruppe:** Agenten, Test-Designer, Validierungs-Architekten
+
+**Inhalte:**
+- Peirce's Zeichendreieck: Sign, Object, Interpretant
+- Drei semiotische Typen: Ikonisch (Form), Indexikalisch (Kausalität), Symbolisch (Konvention)
+- Ikonische Validierung: Test-Form spiegelt Glossar-Definition
+- Indexikalische Validierung: Prüfung von Ursache-Wirkungs-Relationen
+- Symbolische Validierung: Projekt-Konventionen und Normen
+- Validierungs-Pyramide: Alle drei Ebenen braucht ein Oracle-Test
+- Anti-Pattern: Validierung ohne Semiotik
+- Sieben Ebenen der Validierung (Qualiszeichen bis Symbol-Index-Ikon)
+- Test-Checkliste: Ist dieser Test semiotisch vollständig?
+- Rückfluss ins Glossar wenn Tests brechen
+
+**Zeitaufwand:** 2–3 Stunden (mit Code-Beispielen)
+
+**Kernfrage:** Wie validiert man wirklich? (Nicht nur oberflächlich)
+
+---
+
+### 8. **08-funktoren-epistemologie.md** – Mathematische Garantien
+
+**Zielgruppe:** Architekten, Mathematik-Interessierte
+
+**Inhalte:**
+- Was ist ein Funktor mathematisch (struktur-erhaltende Abbildung)
+- Die drei Kategorien formal: Glossar (G), Code (K), Validierung (V)
+- Funktor F: G → K (Glossar zu Code)
+- Funktor T: K → V (Code zu Tests)
+- Komposition T ∘ F: G → V (Vollständige Validierungskette)
+- **Haupttheorem:** Wenn F und T Funktoren sind, ist auch T ∘ F ein Funktor
+- Implikation: Mathematische Garantie für Korrektheit (nicht nur Hoffnung)
+- Was "Struktur erhalten" praktisch bedeutet
+- Natürliche Transformationen (Advanced)
+- PF-FUNKTOR Checker: Wie man automatisch prüft, ob F wirklich ein Funktor ist
+- Epistemische Schichtung durch Funktoren
+- Universalität: Das Modell ist projektunabhängig
+
+**Zeitaufwand:** 1.5–2.5 Stunden (mathematisch präzise)
+
+**Kernfrage:** Wie können wir Korrektheit mathematisch garantieren?
+
+---
+
 ## 🚀 Schnelleinstieg für Agenten
 
 ### Wenn du einen Glossar-Begriff in Code abbildest:
@@ -177,41 +303,63 @@ AGENTS.md
 ### Anfänger (Glossar-Nutzer)
 
 1. Lese: **02-beispiel-regenbogenwahrscheinlichkeit.md** (Teile 1–3)
-2. Tu: Wende PF-FUNKTOR-Checkliste auf einen Begriff an
-3. Frage: Agenten um Review ("Ist der Funktor korrekt?")
+2. Lese: **07-semiotische-validierung.md** (Praktischer Teil, nicht Theorie)
+3. Tu: Wende PF-FUNKTOR-Checkliste auf einen Begriff an
+4. Tu: Schreibe einen semiotisch vollständigen Test
+5. Frage: Agenten um Review ("Ist der Funktor korrekt? Ist der Test semiotisch?")
 
 ### Fortgeschrittene (Agenten/Architekten)
 
 1. Lese: **01-konzept-kategorietheorie-priming.md** vollständig
 2. Lese: **02-beispiel-regenbogenwahrscheinlichkeit.md** vollständig
-3. Tu: Durcharbeite ein neues Beispiel (z.B. Wetterzustand)
-4. Implement: Schreibe einen Checker für Funktor-Struktur
+3. Lese: **03-dreiteilung-priming-architektur.md** (Systemisches Verständnis)
+4. Lese: **07-semiotische-validierung.md** (Test-Qualität)
+5. Tu: Durcharbeite ein neues Beispiel (z.B. Wetterzustand)
+6. Implement: Schreibe einen Checker für Funktor-Struktur
 
-### Experten (Theory)
+### Experten (Theory + Practice)
 
-1. Lese: beide Dokumente mit allen Details
-2. Extend: Überlege Erweiterungen (z.B. Natural Transformations)
-3. Research: Verknüpfe mit anderen Theorie-Ansätzen
+1. Lese: alle acht Dokumente in dieser Ordnung: 01, 02, 03, 04, 05, 06, 07, 08
+2. Tiefe: **05-philosophische-grundlagen.md** (Epistemologie)
+3. Tiefe: **06-linguistische-struktur.md** (Semantische Struktur)
+4. Tiefe: **08-funktoren-epistemologie.md** (Mathematische Garantien)
+5. Extend: Überlege Erweiterungen (z.B. Natural Transformations, Kan Extensions)
+6. Research: Verknüpfe mit anderen Theorie-Ansätzen (Homotopy Type Theory, etc.)
+7. Implement: MCP-Server für Funktoren (siehe 04)
 
 ---
 
 ## ⚡ Schnelle Verweisung für Agenten
 
 **Frage: "Wie bilde ich einen Glossar-Begriff in Code ab?"**
-
 → Siehe: **02-beispiel-regenbogenwahrscheinlichkeit.md, Phase 1–3**
 
 **Frage: "Was ist ein Funktor?"**
-
-→ Siehe: **01-konzept-kategorietheorie-priming.md, § 2.3**
+→ Siehe: **01-konzept-kategorietheorie-priming.md, § 2.3** ODER **08-funktoren-epistemologie.md, § 1–2**
 
 **Frage: "Wie prüfe ich Struktur-Erhaltung?"**
-
-→ Siehe: **02-beispiel-regenbogenwahrscheinlichkeit.md, Phase 5** (PF-FUNKTOR)
+→ Siehe: **02-beispiel-regenbogenwahrscheinlichkeit.md, Phase 5** (PF-FUNKTOR) ODER **08-funktoren-epistemologie.md, § 6**
 
 **Frage: "Was sind ikonische vs. indexikalische Korrespondenzen?"**
+→ Siehe: **02-beispiel-regenbogenwahrscheinlichkeit.md, Phase 6** ODER **07-semiotische-validierung.md, § 3–5**
 
-→ Siehe: **02-beispiel-regenbogenwahrscheinlichkeit.md, Phase 6**
+**Frage: "Wie schreibe ich einen echten Oracle-Test?"**
+→ Siehe: **07-semiotische-validierung.md, § 6** (Die Validierungs-Pyramide)
+
+**Frage: "Warum ist dieses Framework epistemologisch solide?"**
+→ Siehe: **05-philosophische-grundlagen.md** (ganze Lektüre, 1–2h)
+
+**Frage: "Wie sind Glossare wie Sprachsysteme strukturiert?"**
+→ Siehe: **06-linguistische-struktur.md** (ganze Lektüre, 1.5–2h)
+
+**Frage: "Wieso sind Funktoren mathematische Garantien?"**
+→ Siehe: **08-funktoren-epistemologie.md, § 3–5** (Das Haupttheorem)
+
+**Frage: "Was ist die Dreiteilung von Agent/Project/Task Priming?"**
+→ Siehe: **03-dreiteilung-priming-architektur.md**
+
+**Frage: "Wie wird v2 in die Praxis integriert? MCP?"**
+→ Siehe: **04-analyse-v1-vs-v2-und-mcp.md**
 
 ---
 
@@ -240,22 +388,38 @@ Integration:
 
 ---
 
-## 📖 Literatur-Verweise (für Tiefergehendes)
+## 📖 Literatur-Verweise
 
-### Semiotik
-- **Charles Sanders Peirce** (1896): The Definition of Pragmatic Sign
-- **Umberto Eco** (1976): A Theory of Semiotics
-- Kernidee: Zeichen = Signifikant + Signifikat + Referent
+### Semiotik und Bedeutungstheorie
+- **Charles Sanders Peirce** (1896): The Definition of Pragmatic Sign — Die Basis des Zeichendreiecks
+- **Umberto Eco** (1976): A Theory of Semiotics — Semiotische Theorie in großem Detail
+- **Ferdinand de Saussure** (1916): Cours de Linguistique Générale — Bedeutung aus Unterscheidungen
+- **Roman Jakobson** (1960): Closing Statement: Linguistics and Poetics — Markedness und Funktionen der Sprache
+- Kernidee: Zeichen = Signifikant + Signifikat + Referent; Bedeutung entsteht durch Kontraste
 
-### Kategorietheorie
-- **Saunders Mac Lane** (1971): Categories for the Working Mathematician
-- **Steve Awodey** (2010): Category Theory
-- Kernidee: Struktur liegt in Morphismen, nicht Objekten
+### Kategorie- und Funktoren-Theorie
+- **Saunders Mac Lane** (1971): Categories for the Working Mathematician — Das Standardwerk
+- **Steve Awodey** (2010): Category Theory (Oxford Logic Guides)
+- **Tom Leinster** (2014): Basic Category Theory — Moderner Zugang
+- Kernidee: Struktur liegt in Morphismen, nicht Objekten; Funktoren erhalten diese Struktur
 
-### Funktoren
-- **Definition:** Funktor F: C → D erhält Objekt- und Morphismus-Struktur
-- **Struktur-Erhaltung:** F(A → B) = F(A) → F(B)
-- **Komposition:** (T ∘ F)(X) = T(F(X))
+### Linguistische Struktur
+- **Lucien Tesnière** (1959): Éléments de Syntaxe Structurale — Dependenzgrammatik
+- **George Lakoff & Mark Johnson** (1980): Metaphors We Live By — Konzeptuelle Metaphern
+- **Michael Halliday** (1978): Language as Social Semiotic — Register und Kontextualisierung
+- Kernidee: Sprache ist strukturiert durch Abhängigkeiten, Metaphern und Kontext
+
+### Epistemologie und Philosophie der KI
+- **Immanuel Kant** (1781): Kritik der reinen Vernunft — Transzendentale Argumente
+- **John Searle** (1980): Minds, Brains and Programs — Das Chinese Room Argument
+- **Aristoteles** (~350 BC): Metaphysics — Korrespondenztheorie der Wahrheit
+- **Gottlob Frege** (1892): "Über Sinn und Bedeutung" — Das Frege-Problem
+- Kernidee: Verstehen ist strukturell, nicht psychologisch; Wahrheit ist Korrespondentz
+
+### Praktische Anwendungen
+- **Robert C. Martin** (2009): Clean Code — Code als Sprache
+- **Eric Evans** (2003): Domain-Driven Design — Glossare und Ubiquitous Language
+- Kernidee: Gutes Code-Design respektiert Glossar-Struktur
 
 ---
 
@@ -285,8 +449,46 @@ Integration:
 ---
 
 **Erstellt:** 2026-08-15  
-**Version:** 0.1 (Pilotphase)  
-**Autor:** Claude + Dieter (Kategorietheorie-Forschung)  
+**Version:** 0.2 (Komplette Serie: 8 Dokumente)
+
+**Dokumente:**
+- 01-konzept: Theorie (Kategorietheorie + Semiotik)
+- 02-beispiel: Praxis (RegenbogenWahrscheinlichkeit)
+- 03-dreiteilung: Architektur (Agent/Project/Task Priming)
+- 04-analyse: Integration (v1 vs v2, MCP)
+- 05-philosophische: Epistemologie (Strukturelles Verständnis)
+- 06-linguistische: Semantik (Glossare als Sprachsysteme)
+- 07-semiotische: Validierung (Peirce in der Praxis)
+- 08-funktoren: Garantien (Mathematische Korrektheit)
+
+**Autor:** Claude + Dieter  
+**Forschungs-Kontext:** Agent-Priming als formales System (nicht nur Regenbogen-Projekt)  
+**Status:** Theoretische Basis komplett; nächste Phase: MCP-Implementierung + Brownfield-Migration
+
+---
+
+## 🚀 Nächste Arbeitsschritte
+
+Diese v2-Serie bildet die theoretische Basis. Um sie praktisch zu machen:
+
+### Phase 1: Template-Integration
+- v2-Dokumentation in `agent-templates/docs/v2` oder separates Verzeichnis integrieren
+- `AGENTS.md` in Template mit Funktor-Regeln aktualisieren
+- `preflight-checkliste.md` mit PF-FUNKTOR-Schritt erweitern
+
+### Phase 2: Referenz-Implementierung
+- `tools/check_funktor_structure.py` im Template (oder Regenbogen als Pilot)
+- Oracle-Test-Marker (@pytest.mark.oracle) standardisieren
+- Semiotische Test-Klassifikation toolunterstützen
+
+### Phase 3: MCP-Services
+- Agent-Priming-Server (AGENTS.md, Checker)
+- Project-Priming-Server (Glossar-Funktoren)
+- Task-Priming-Server (Plan, Scope, Checkpoints)
+
+### Phase 4: Brownfield-Migration v2
+- Regenbogen komplett nach v2 migrieren
+- Erfahrungsbericht und Learning-Rückfluss
 
 ---
 
