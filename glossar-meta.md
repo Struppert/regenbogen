@@ -37,6 +37,7 @@ Nur laden wenn Meta-Begriffe im aktuellen Arbeitspaket aktiv gebraucht werden:
   - Evidence, Abbruch, H-Code, SP-Code
   - Brownfield, Observed State, Accepted Local Truth, Known Breach
   - Migration Bridge, Migrationsevidence, Semantic Working Set
+  - Korrespondenzsatz, Modellreview, Oracle-Treue, Aussenkorrespondenz
   - Schreibrechte, geschuetzte Dateien, Lern- und Erfahrungsartefakte
 
 Nicht laden wenn nur Domain- oder Systembegriffe des Zielprojekts beruehrt sind.
@@ -154,6 +155,39 @@ Bedeutung: Nachweis, welche Pruefung, Beobachtung oder Entscheidung zu einem
 Agentenergebnis gefuehrt hat.
 
 Invariante: Evidence wird in dieser Box als Markdown gefuehrt.
+
+### Korrespondenzsatz
+
+Bedeutung: Nachvollziehbare Bindung zwischen einer normativen Quelle, ihrer
+Implementierungsprojektion, ihrer Validierungsprojektion und der zugehoerigen
+Evidence.
+
+Invariante: Ein Korrespondenzsatz erzeugt keine neue Produktsemantik. Seine
+Quelle muss bereits in einem zustaendigen Projektartefakt gelten.
+
+### Modellreview
+
+Bedeutung: Pruefung, ob Implementierung, Testoracle und Evidence eines
+Korrespondenzsatzes der benannten normativen Quelle entsprechen.
+
+Invariante: Modellreview ist nicht Qualitaetsreview und wird nicht durch
+gruene technische Checks ersetzt.
+
+### Oracle-Treue
+
+Bedeutung: Eigenschaft einer Validierungsprojektion, nur bereits entschiedene
+Invarianten zu pruefen und keine neue Produktsemantik zu definieren.
+
+Invariante: Ein Testoracle ohne zustaendige normative Quelle ist keine
+ausreichende Korrespondenzevidence.
+
+### Aussenkorrespondenz
+
+Bedeutung: Evidenzgestuetzte Beziehung zwischen einer Modellbehauptung und
+einer benannten Beobachtung oder Messung der Aussenwelt.
+
+Invariante: Kontrollierte Tests belegen nur ihre Bedingungen; sie beweisen
+nicht ohne Messmodell allgemeine Aussagen ueber die Aussenwelt.
 
 ### Sprechakt-Artefakt
 
@@ -334,39 +368,6 @@ Projektionen:
 - Regeln: ausfuehrungsmandat-protokoll.md, Abschnitt „Wirkungsgate WG-MUTATION"
 - Preflight: preflight-checkliste.md §0a
 
-### Korrespondenzsatz
-
-Bedeutung: Nachvollziehbare Bindung zwischen einer normativen Quelle, ihrer
-Implementierungsprojektion, ihrer Validierungsprojektion und der zugehoerigen
-Evidence.
-
-Invariante: Ein Korrespondenzsatz erzeugt keine neue Produktsemantik. Seine
-Quelle muss bereits in einem zustaendigen Projektartefakt gelten.
-
-### Modellreview
-
-Bedeutung: Pruefung, ob Implementierung, Testoracle und Evidence eines
-Korrespondenzsatzes der benannten normativen Quelle entsprechen.
-
-Invariante: Modellreview ist nicht Qualitaetsreview und wird nicht durch
-gruene technische Checks ersetzt.
-
-### Oracle-Treue
-
-Bedeutung: Eigenschaft einer Validierungsprojektion, nur bereits entschiedene
-Invarianten zu pruefen und keine neue Produktsemantik zu definieren.
-
-Invariante: Ein Testoracle ohne zustaendige normative Quelle ist keine
-ausreichende Korrespondenzevidence.
-
-### Aussenkorrespondenz
-
-Bedeutung: Evidenzgestuetzte Beziehung zwischen einer Modellbehauptung und
-einer benannten Beobachtung oder Messung der Aussenwelt.
-
-Invariante: Kontrollierte Tests belegen nur ihre Bedingungen; sie beweisen
-nicht ohne Messmodell allgemeine Aussagen ueber die Aussenwelt.
-
 ### Anti-Zeno
 
 Bedeutung: Operativ-Regel, die verhindert, dass ein Agent bei unveraendertem
@@ -390,10 +391,98 @@ Verboten:
 
 Projektionen:
 - Regeln: blocker-und-abbruch-protokoll.md § 6
-- Evidence: sws-glossar-fortschrittsinvariante.md § 5
 - Governance-Kategorien: erfahrungsbericht-protokoll.md E4
 
 Migrationsstatus: canonical (seit v0.3.0)
+
+### Begriffsindex
+
+Bedeutung: Menschenlesbare Tabelle in `BEGRIFFSINDEX.md`, die Namen auf Raum,
+Ort im Code, Test, Glossareintrag, Status und Aliase abbildet. Sie enthaelt nur
+semantisch relevante Begriffe.
+
+Invariante: Der Begriffsindex fuehrt keine neuen Begriffe ein. Ein neuer Begriff
+entsteht durch Sprechakt und wird erst danach indiziert. Ein Tool erzeugt nur
+einen Entwurf; ein Mensch gibt ihn frei oder aendert ihn. Werkzeuge lesen den
+Index und melden Befunde, sie entscheiden nichts.
+
+Projektionen:
+- Regeln: regelmatrix.md, glossar-README.md
+- Tools: tools/erzeuge_index_entwurf.py, tools/check_agent_docs_consistency.py
+- Evidence: docs/sprechakte/2026-11-16-dokumentstruktur-und-begriffsindex.md
+
+### Task-Dokument
+
+Bedeutung: Dokument, das die jeweilige Aufgabe in natuerlicher Sprache
+beschreibt: Ziel, Modus, erlaubte Dateien, benoetigte Begriffe, Testpflicht,
+Abbruchkriterien und Freigabe. Aktuell ist das der Plan unter `docs/plans/`;
+die Kurzform steht in `docs/plans/task-kurz-template.md` (siehe Plan-Form).
+
+Invariante: Die Freigabe im Task-Dokument stammt vom Menschen. Das Dokument ist
+fuer Menschen lesbar; die KI folgt ihm.
+
+Projektionen:
+- Regeln: docs/plans/template.md, ausfuehrungsmandat-protokoll.md
+
+### Plan-Form
+
+Bedeutung: Angabe, ob ein Plan als Vollplan oder als Kurzform gefuehrt wird. Die Kurzform
+(`Plan-Form: Kurz`) ist ein einseitiges Task-Dokument fuer kleine, wiederaufnehmbare Arbeit.
+
+Invariante: Der Vollplan ist Pflicht, sobald ein Kriterium aus
+`aufgaben-lebenszyklus-protokoll.md` zutrifft (Profil, geschuetzte Datei, Sprechakt, Schema,
+API, Dependency, Bridge, mehrere semantische Schnitte). Die Wahl ist semantisch, nicht
+mengenbasiert.
+
+Projektionen:
+- Regeln: aufgaben-lebenszyklus-protokoll.md
+- Tools: tools/check_agent_docs_consistency.py
+
+### Merge-Gate
+
+Bedeutung: Review-Checkliste unmittelbar vor dem Merge eines Feature-Branches in den
+Hauptzweig. Sie prueft, dass Plaene, Zwischen-Checkpoints und Run-Verzeichnisse verdichtet
+sind und Abschlussdokument und Aufgabenindex vorliegen.
+
+Invariante: Das Merge-Gate ist eine Checkliste fuer den Menschen, kein erzwungener Checker.
+Der Mensch entscheidet und fuehrt den Merge aus.
+
+Projektionen:
+- Regeln: aufgaben-lebenszyklus-protokoll.md
+- Tools: tools/verdichte_aufgaben.py (nur Entwurf)
+
+### Abschlussdokument
+
+Bedeutung: Eigenes Dokument je Aufgabe, das bei Squash-Merge bleibt. Zweck, Ort, Inhalt und
+Form bestimmt die Aufgabe, das Template schreibt keine vor.
+
+Invariante: Das Task-Dokument benennt es im Feld `Abschlussdokument`. Der Checker meldet nur
+ein fehlendes oder leeres Dokument als Hinweis und bewertet den Inhalt nicht.
+
+Projektionen:
+- Regeln: aufgaben-lebenszyklus-protokoll.md
+
+### Aufgabenindex
+
+Bedeutung: Tabelle `docs/aufgabenindex.md` mit einer Zeile je abgeschlossener Aufgabe
+(Plan-ID, Datum, Ziel, Ergebnis, Abschlussdokument, Rueckfluss-Status).
+
+Invariante: Die Zeile bleibt bestehen, wenn die Datei des Plans entfernt wird. Der
+Aufgabenindex enthaelt keine Bedeutung neuer Begriffe.
+
+Projektionen:
+- Regeln: aufgaben-lebenszyklus-protokoll.md
+
+### Meta-Index
+
+Bedeutung: Tabelle in `REGELN-UND-TOOLS.md`, die Agenten- und Regelbegriffe auf
+das zustaendige Regeldokument abbildet. Die Bedeutung der Begriffe steht in
+diesem Glossar.
+
+Invariante: Der Meta-Index verweist nur, er definiert nichts.
+
+Projektionen:
+- Regeln: REGELN-UND-TOOLS.md
 
 ---
 

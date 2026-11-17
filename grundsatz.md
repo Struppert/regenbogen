@@ -222,7 +222,31 @@ ein Mensch muss sie festlegen."
 
 ---
 
-## 10. Leitsatz
+## 10. Kohaerenz und Korrespondenz
+
+Die Box trennt zwei verschiedene Arten von Pruefaussagen:
+
+```text
+Kohaerenz:
+  Ein Artefakt ist innerhalb seines formalen oder lokalen Regelraums stimmig.
+
+Korrespondenz:
+  Eine normative Bedeutung, ihre Codeprojektion, ihr Testoracle und ihre
+  Evidence sind nachvollziehbar aufeinander bezogen.
+```
+
+Compiler, Typechecker und Layer-Checker pruefen vor allem Kohaerenz. Tests
+pruefen nur dann Korrespondenz, wenn ihr erwartetes Verhalten aus einer
+zustaendigen Quelle abgeleitet ist. Aussenbeobachtung braucht zusaetzlich ein
+benanntes Mess- oder Beobachtungsmodell.
+
+Menschen haben Modell und Implementierung schon immer uebersetzt. KI macht
+diese Uebersetzung delegiert, schnell und damit driftanfaellig. Deshalb wird
+die Modelltreue zwischen entschiedener Bedeutung und erzeugtem Artefakt zu
+einer ausdruecklichen Pruefbeziehung. Das operative Verfahren steht in
+`korrespondenz-protokoll.md`.
+
+## 11. Leitsatz
 
 ```text
 Frei arbeiten.

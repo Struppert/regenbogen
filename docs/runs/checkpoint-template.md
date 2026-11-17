@@ -42,6 +42,11 @@ Naechster zulaessiger Schritt:
 
 Evidence:
 
+Korrespondenzstatus:
+- K-<Plan-ID>-<Nr>: bestaetigt | teilweise bestaetigt | widerlegt | offen
+  Evidence:
+  Offene Geltungsgrenze:
+
 Blocker:
 
 <!-- Fortsetzungspruefung — nur bei Recovery-Profil: overnight                                    -->

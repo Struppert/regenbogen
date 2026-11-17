@@ -33,6 +33,10 @@ Wenn eine Änderung nicht klassifizierbar ist: HARD-Abbruch H6.
 Tests sind keine Autorität.
 Tests sind Projektionen von Invarianten.
 
+Tests sind nur dann Korrespondenzevidence, wenn ihr Oracle auf eine benannte
+normative Quelle zurueckfuehrbar ist. Ein gruener Test ohne diese Bindung
+belegt hoechstens Ausfuehrung gegen eine ungeklaerte Erwartung.
+
 Eine Änderung ist erst fertig, wenn die betroffenen Invarianten bestimmt und angemessen validiert wurden.
 
 ---
@@ -61,6 +65,7 @@ Sie erfüllen die Testpflicht nur dann, wenn die betroffene Invariante lokal ent
 ```text
 Änderung
   → betroffene Invarianten bestimmen
+  → normative Quelle, Implementierungs- und Validierungsprojektion binden
   → stärkste praktikable Validierung wählen
   → Evidence erzeugen
 ```
@@ -71,6 +76,8 @@ Nicht:
 Änderung
   → Unit-Test schreiben
 ```
+
+Das Format und der Modellreview stehen in `korrespondenz-protokoll.md`.
 
 ### Teststärke-Hierarchie
 
@@ -350,7 +357,9 @@ Tooling darf keine Produktsemantik konstituieren.
 ### Agenten-Dokumente
 
 ```text
-AGENTS.md, blocker-und-abbruch-protokoll.md, ausfuehrungsmandat-protokoll.md,
+AGENTS.md, PROJEKT.md, REGELN-UND-TOOLS.md, BEGRIFFSINDEX.md,
+aufgaben-lebenszyklus-protokoll.md,
+blocker-und-abbruch-protokoll.md, ausfuehrungsmandat-protokoll.md,
 package-schema.md,
 preflight-checkliste.md, task-schnitt.md, sprechakt-protokoll.md,
 regelmatrix.md, test-obligations.md
@@ -362,6 +371,9 @@ Pflicht:
 check_agent_docs_consistency.py
 Manuelle Driftprüfung nach regelmatrix.md (Inhalt, nicht nur Präsenz).
 AGENTS.md-Routing gegen aktivierte Spezialdokumente abgleichen.
+PROJEKT.md gegen die tatsächliche Dateistruktur abgleichen.
+BEGRIFFSINDEX.md: Prüfbefunde des Checkers lesen; Aufnahme von Hinweisen
+entscheidet der Mensch.
 Falls Schema betroffen: Import-Checker-Konfiguration prüfen.
 ```
 
@@ -511,6 +523,8 @@ Testfreiheit:
 
 ```text
 Betroffene Invarianten:
+Normative Quellen:
+Korrespondenzsatz-IDs:
 Stärkste gewählte Validierung:
 Warum diese Validierung ausreichend ist:
 Unit-Test ausreichend: ja/nein/begründung

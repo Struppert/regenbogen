@@ -37,6 +37,25 @@ AGENTS.md
    Bindender Einstieg, Kerninvarianten, Ladeprotokoll, Code-Familien.
    AGENTS.md wiederholt Detailregeln nicht vollstaendig.
 
+PROJEKT.md
+   Projektlandkarte: Architektur in Prosa, Einstiegspunkte, wo liegt was.
+   Fuehrt keine Begriffe und keine Regeln ein.
+
+BEGRIFFSINDEX.md
+   Name -> Raum, Ort im Code, Test, Glossareintrag, Status, Aliase.
+   Menschenlesbare Tabelle. Werkzeuge lesen und melden, sie entscheiden nicht.
+
+aufgaben-lebenszyklus-protokoll.md
+   Lokaler Pilot (Sprechakt 2026-11-16-lebenszyklus-aufgaben-artefakte): Plan-Form,
+   Run-Ende, Merge-Gate (Review-Checkliste), Abschlussdokument, Aufgabenindex.
+   Kein Template-Dokument. Template-Regeln gehen bei Widerspruch vor (H3).
+
+REGELN-UND-TOOLS.md
+   Lokale Ergaenzung zum Template-Router (Sprechakt 2026-11-16-migration-v0.3.11-
+   entscheidungen, D1): Projektbefehle, Werkzeugkatalog, Importsperre, Coding-Sperren,
+   Tests, Safe Tasks, Git, Dokumentdrift, ausfuehrliche Invarianten, H10-Erkennung,
+   Meta-Index. Kein Template-Dokument.
+
 package-schema.md
    Semantische Paket-/Modulraeume, Importregeln, Known Breaches.
 
@@ -52,6 +71,9 @@ preflight-checkliste.md
 
 test-obligations.md
    Ableitung der Test- und Checkpflichten.
+
+korrespondenz-protokoll.md
+   Bindung von normativer Quelle, Implementierung, Validierung und Evidence.
 
 sprechakt-protokoll.md
    Ablauf menschlicher Festlegungen.
@@ -92,6 +114,9 @@ Drift melden. Keine Quelle still bevorzugen.
 | Frage | Autoritative Quelle | Agent tut |
 | --- | --- | --- |
 | Was liest der Agent zuerst? | `AGENTS.md` | Router und Kernregeln laden |
+| Wie ist das Projekt aufgebaut, was liegt wo? | `PROJEKT.md` | Landkarte lesen |
+| In welcher Datei steht dieser Begriff? | `BEGRIFFSINDEX.md` | Index nachschlagen, dann Glossar |
+| Welcher Befehl, welche allgemeine Arbeitsregel? | `REGELN-UND-TOOLS.md` | Regel oder Werkzeug anwenden |
 | Welche Detaildokumente werden geladen? | `AGENTS.md` | Aktivierung nach Task-Ausloeser |
 | Was darf der Agent aendern? | `regelmatrix.md` | Schreibrechte pruefen |
 | Welche Dateien sind geschuetzt? | `regelmatrix.md` | Bei Bedarf H1 |
@@ -109,6 +134,7 @@ Drift melden. Keine Quelle still bevorzugen.
 | Welche Known Breaches existieren? | `package-schema.md` + Checker | Aktiv/passiv pruefen |
 | Darf dieses Symbol angefasst werden? | `migration-bridges.md` | Migrationsstatus pruefen |
 | Welche Checks sind Pflicht? | `test-obligations.md` | Testpflicht ableiten |
+| Wie wird Modelltreue nachgewiesen? | `korrespondenz-protokoll.md` | Korrespondenzsatz und Modellreview pruefen |
 | Wie wird Preflight ausgefuehrt? | `preflight-checkliste.md` | Schrittfolge ausfuehren |
 | Wann wird Task-Schnitt geprueft? | `task-schnitt.md` | Semantischen Schnitt bewerten |
 | Wann ist ein Sprechakt noetig? | `AGENTS.md` + `sprechakt-protokoll.md` | Sprechakt-Artefakt erzeugen |
@@ -139,6 +165,8 @@ Drift melden. Keine Quelle still bevorzugen.
 Zwingend pruefen:
 
 ```text
+REGELN-UND-TOOLS.md
+PROJEKT.md
 preflight-checkliste.md
 task-schnitt.md
 regelmatrix.md
@@ -152,6 +180,40 @@ ausfuehrungsmandat-protokoll.md
 Hinweis: `check_agent_docs_consistency.py --changed-file AGENTS.md` gibt
 Kopplungshinweise. Das Tool prueft Dateipraesenz und Stichwort-Vorkommen,
 keinen Inhaltsabgleich. Inhaltsabgleich ist manueller Review.
+
+---
+
+### Aenderung an `PROJEKT.md`, `BEGRIFFSINDEX.md` oder `REGELN-UND-TOOLS.md`
+
+Zwingend pruefen:
+
+```text
+PROJEKT.md          bei Aenderung an Dateien, Raeumen, Einstiegspunkten, Abhaengigkeiten
+BEGRIFFSINDEX.md    bei neuem, verschobenem oder umbenanntem Symbol oder Begriff
+REGELN-UND-TOOLS.md bei geaenderten Werkzeugen oder Projektbefehlen
+glossar-README.md   bei Aenderung am Begriffsindex
+AGENTS.md           wenn ein Verweis oder das Ladeprotokoll betroffen ist
+```
+
+Der Begriffsindex ist eine Projektion. Er fuehrt keine neuen Begriffe ein.
+Ein neuer Begriff entsteht durch Sprechakt und wird erst danach indiziert.
+
+---
+
+### Aenderung an `aufgaben-lebenszyklus-protokoll.md`
+
+Zwingend pruefen:
+
+```text
+docs/plans/task-kurz-template.md       bei Aenderung der Plan-Form oder der Kurzform-Felder
+tools/check_agent_docs_consistency.py  bei Aenderung der Hinweise (Abschlussdokument, Kurzform)
+tools/verdichte_aufgaben.py            bei Aenderung der Verdichtung oder des Aufgabenindex
+REGELN-UND-TOOLS.md                    bei geaenderten Werkzeugen
+AGENTS.md                              wenn die Routing-Zeile betroffen ist
+```
+
+`docs/aufgabenindex.md` ist beschreibbar. Entfernen von Plaenen und versiegelten
+Checkpoints am Merge-Gate braucht ein Mandat mit Dateiliste.
 
 ---
 
@@ -255,7 +317,23 @@ Zwingend pruefen:
 ```text
 AGENTS.md
 preflight-checkliste.md
+korrespondenz-protokoll.md
 tools/resolve_test_obligations.py
+```
+
+### Aenderung an `korrespondenz-protokoll.md`
+
+Zwingend pruefen:
+
+```text
+AGENTS.md
+grundsatz.md
+preflight-checkliste.md
+test-obligations.md
+docs/plans/template.md
+docs/runs/checkpoint-template.md
+glossar-meta.md
+tools/check_agent_docs_consistency.py
 ```
 
 ---
@@ -356,6 +434,8 @@ Geschuetzt sind:
 AGENTS.md
 AGENT-SETUP.md
 BROWNFIELD-MIGRATION.md
+REGELN-UND-TOOLS.md
+BEGRIFFSINDEX.md
 blocker-und-abbruch-protokoll.md
 ausfuehrungsmandat-protokoll.md
 package-schema.md
@@ -364,6 +444,7 @@ task-schnitt.md
 sprechakt-protokoll.md
 regelmatrix.md
 test-obligations.md
+korrespondenz-protokoll.md
 migration-bridges.md
 erfahrungsbericht-protokoll.md
 learning-matrix.md
@@ -377,6 +458,10 @@ docs/runs/checkpoint-template.md
 tools/check_agent_docs_consistency.py
 tools/check_import_layers.py
 tools/resolve_test_obligations.py
+tools/erzeuge_index_entwurf.py
+tools/verdichte_aufgaben.py
+aufgaben-lebenszyklus-protokoll.md
+docs/plans/task-kurz-template.md
 tools/instantiate/instantiate_project_box.py
 tools/instantiate/README.md
 .agent-box-template.md
@@ -389,6 +474,10 @@ Lockfiles
 
 Aenderung nur mit aktivem Ausfuehrungsmandat und ausdruecklicher Deckung der
 geschuetzten Datei.
+
+`PROJEKT.md` ist beschreibbar. Es ist bei Aenderung an Dateien, Raeumen,
+Einstiegspunkten oder Abhaengigkeiten nachzufuehren, fuehrt aber weder Begriffe
+noch Regeln ein.
 
 Konkrete Checkpoints unter `docs/runs/<Run-ID>/` sind nur im zugehoerigen
 Contract und Run beschreibbar. Versiegelte Checkpoints sind unveraenderlich.

@@ -42,6 +42,9 @@ PYTHON_TEST = "python -m pytest"
 
 AGENT_DOCS = {
     "AGENTS.md",
+    "PROJEKT.md",
+    "REGELN-UND-TOOLS.md",
+    "BEGRIFFSINDEX.md",
     "AGENT-SETUP.md",
     "BROWNFIELD-MIGRATION.md",
     "blocker-und-abbruch-protokoll.md",
@@ -60,6 +63,8 @@ AGENT_DOCS = {
     "glossar-meta.md",
     "glossar-README.md",
     "grundsatz.md",
+    "korrespondenz-protokoll.md",
+    "aufgaben-lebenszyklus-protokoll.md",
 }
 
 # Normative Artefakte mit Pfad (nicht nur Dateiname).

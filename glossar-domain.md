@@ -128,8 +128,7 @@ Mehrere Phaenomene koennen gleichzeitig auftreten.
 - Der Sonnenscheinanteil ist keine Wahrscheinlichkeit.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/wetter.py
-- Tests: tests/domain/test_regenbogen.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -157,10 +156,8 @@ Der Wert wird im aktuellen Modell aus `sunshine_duration / 3600` abgeleitet.
 - Interpretation als Sonnenstand oder Direktstrahlung.
 
 **Projektionen:**
-- Code: src/regenbogen/system/core/wahrscheinlichkeit_use_case.py
-- Anzeige: src/regenbogen/cli/gui_format.py
-- Tests: tests/cli/test_gui_format.py
 - Modell: MODELL-README.md
+- Index: BEGRIFFSINDEX.md
 
 **Abgrenzung:**
 `SonnenscheinAnteil` beschreibt beobachtete Sonnenscheindauer innerhalb einer
@@ -198,8 +195,7 @@ Sonnenstands-Faktor.
   eines Meteorologieereignisses.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/regenbogen.py
-- Tests: tests/domain/test_regenbogen.py
+- Index: BEGRIFFSINDEX.md
 
 **Abgrenzung:**
 - `RegenbogenSichtbarkeit`: bewertet die *optische Qualität* eines Bogens
@@ -220,8 +216,7 @@ Sonnenstands-Faktor.
 Position der Sonne relativ zum Beobachter, beschrieben durch Sonnenhoehe und Sonnenazimut.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/regenbogen_geometrie.py
-- Tests: tests/domain/test_regenbogen_geometrie.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -239,8 +234,7 @@ Faktor in [0, 1], der ausdrueckt, ob der Sonnenstand fuer einen sichtbaren Haupt
 - 0 Grad < Sonnenhoehe <= 25 Grad: 1.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/regenbogen_geometrie.py
-- Tests: tests/domain/test_regenbogen_geometrie.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -253,8 +247,7 @@ Faktor in [0, 1], der ausdrueckt, ob der Sonnenstand fuer einen sichtbaren Haupt
 Score in [0, 100], der die erwartete Sichtbarkeit eines normalen Sonnen-Regenbogens beschreibt.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/regenbogen_optik.py
-- Tests: tests/domain/test_regenbogen_optik.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -267,8 +260,7 @@ Score in [0, 100], der die erwartete Sichtbarkeit eines normalen Sonnen-Regenbog
 Faktor in [0, 1] fuer die Eignung des vorhandenen Niederschlags zur Bildung eines sichtbaren Regenbogens.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/regenbogen_optik.py
-- Tests: tests/domain/test_regenbogen_optik.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -288,8 +280,7 @@ des aktuellen Kalendertags an einem Beobachtungsort.
 - Reihenfolge: aufsteigend nach Stunde.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/tagesprognose.py
-- Tests: tests/domain/test_tagesprognose.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -316,8 +307,7 @@ PrognoseStunde ist keine Prognoseunsicherheit und kein Konfidenzintervall.
 Sie ist eine Punktbewertung nach dem Regenbogen-Modell fuer diesen Zeitslot.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/tagesprognose.py
-- Tests: tests/domain/test_tagesprognose.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -352,7 +342,7 @@ ca. 51° vom antissolaren Punkt.
 **Projektionen:**
 - Code: src/regenbogen/domain/regenbogen_geometrie.py (berechne_sonnenstands_faktor_sekundaerbogen)
 - Code: src/regenbogen/domain/tagesprognose.py (PrognoseStunde.sekundaerbogen_wahrscheinlichkeit)
-- Tests: tests/domain/test_regenbogen_geometrie.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -376,8 +366,7 @@ Sekundaerbogen günstig ist. Analogon zu SonnenstandsFaktor, aber mit Cutoff 51�
 - SonnenstandsFaktorSekundaerbogen: Sekundaerbogen, Cutoff 51°.
 
 **Projektionen:**
-- Code: src/regenbogen/domain/regenbogen_geometrie.py
-- Tests: tests/domain/test_regenbogen_geometrie.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -397,6 +386,7 @@ relativ zum Primärbogen. Konstante: 0.57 (der Sekundaerbogen ist ca. 43 % schw�
 
 **Projektionen:**
 - Code: src/regenbogen/domain/regenbogen_geometrie.py (SEKUNDAERBOGEN_DAEMPFUNG)
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 
@@ -422,7 +412,7 @@ wobei basis identisch zur RegenbogenWahrscheinlichkeit-Formel ist.
 
 **Projektionen:**
 - Code: src/regenbogen/domain/tagesprognose.py (PrognoseStunde.sekundaerbogen_wahrscheinlichkeit)
-- Code: src/regenbogen/system/core/tagesprognose_use_case.py
+- Index: BEGRIFFSINDEX.md
 
 **Migrationsstatus:** canonical
 

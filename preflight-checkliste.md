@@ -71,7 +71,7 @@ WG-MUTATION ist kein Preflight-Schritt. Die `PF-*`-IDs bleiben stabil.
 
 Vor dem vollständigen Preflight: welche Risikoklasse hat diese Aufgabe?
 
-Kanonische SICHER-Definition: `AGENTS.md`.
+Kanonische SICHER-Definition: `REGELN-UND-TOOLS.md`, Abschnitt Safe Tasks und Grenzen.
 
 **SICHER** (kein neuer Begriff, keine neue Importkante, kein neuer Raum):
 
@@ -101,7 +101,7 @@ PF-SCHEMA, PF-GLOSSAR, PF-SCHNITT, PF-PLAN entfallen.
 
 PF-SCHREIBEN (Schreibrechte) entfällt nie. Safe Task ist Risikoklasse, nicht Schreibrecht.
 
-**MITTEL oder höher** (Definition: `AGENTS.md`):
+**MITTEL oder höher** (Definition: `REGELN-UND-TOOLS.md`, Abschnitt Safe Tasks und Grenzen):
 
 → Vollständiger Preflight PF-AGENTS–PF-PLAN.
 
@@ -355,6 +355,22 @@ Wenn die Aufgabe Laufzeitbezug hat (HTTP-Adapter, DB, externe API):
            SA4-Bedingung als bekannte Einschränkung notieren.
            Menschenentscheidung abwarten, bevor Testvalidierung beansprucht wird.
 ```
+
+Bei nichttrivialer Verhaltensaenderung zusaetzlich fuer jede betroffene
+Invariante bestimmen:
+
+```text
+Normative Quelle:
+Implementierungsprojektion:
+Validierungsprojektion:
+Korrespondenzklasse:
+```
+
+Diese Bindung wird im Plan als Korrespondenzsatz gefuehrt. Wenn die normative
+Quelle fehlt: Task-Schnitt pruefen, dann Sprechakt SP7. Wenn die passende
+Validierung nicht bestimmbar ist: HARD-Abbruch H6. Vollstaendiges Verfahren:
+`korrespondenz-protokoll.md`. Modelltreue wird dort im Modellreview geprueft;
+eine gruene Ausfuehrung allein ist kein Modelltreue-Nachweis.
 
 Wenn Testpflicht nicht ableitbar: HARD-Abbruch H6.
 Wenn keine Tests nötig: Begründung als Evidence notieren (Testfreiheitsformat: `test-obligations.md`).

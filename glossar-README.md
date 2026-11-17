@@ -34,7 +34,14 @@ migration-bridges.md   → Symbole mit Migrationsstatus und Bridge-Funktion
 
 package-schema.md      → Raumregeln, Importmatrix, Known Breaches
                           Nicht Begriffe — Räume und ihre Grenzen
+
+BEGRIFFSINDEX.md       → Name → Raum, Ort im Code, Test, Glossareintrag, Status
+                          Nachschlagewerk, keine Bedeutung
 ```
+
+`korrespondenz-protokoll.md` ist kein Glossar und keine Semantikquelle. Es
+bindet bei nichttrivialen Verhaltensaenderungen bereits geltende Begriffe und
+Invarianten an ihre Implementierungs-, Validierungs- und Evidenceprojektionen.
 
 Diese Dokumente sind **keine Redundanz**. Jedes beantwortet eine andere Frage:
 
@@ -49,6 +56,16 @@ package-schema.md:   Welche Importe sind in diesem Raum erlaubt?
 ---
 
 ## 2. Ladeprotokoll (Preflight PF-GLOSSAR)
+
+**Schritt 0: Nachschlagen**
+
+```text
+Ist der Name bekannt, aber nicht der Raum oder die Datei?
+  → BEGRIFFSINDEX.md lesen. Er nennt Raum, Ort im Code, Test und Glossareintrag.
+Fehlt der Name im Index?
+  → kein Befund an sich: der Index enthält nur semantisch relevante Begriffe.
+    Ist der Begriff aktiv nötig: Task-Schnitt T1, dann SP7. Nicht raten.
+```
 
 **Schritt 1: Aktive Begriffe bestimmen**
 
@@ -147,7 +164,10 @@ Er ist ein Signal, dass die Grenze falsch gezogen ist.
 ## 6. Verhältnis zu AGENTS.md
 
 ```text
-AGENTS.md                  → operative Regeln, Schreibrechte, Abbrüche
+AGENTS.md                  → Sicherheitskern, Schreibrechte, Abbrüche
+PROJEKT.md                 → Projektlandkarte: Architektur, was liegt wo
+REGELN-UND-TOOLS.md        → allgemeine Regeln, Werkzeugkatalog, Meta-Index
+BEGRIFFSINDEX.md           → Name → Raum, Datei, Test, Eintrag
 glossar-domain.md          → Fachbegriffs-Bedeutungen
 glossar-system.md          → Betriebsbegriffs-Bedeutungen
 glossar-meta.md            → Agenten-, Regel-, Evidence- und Prozessbegriffe

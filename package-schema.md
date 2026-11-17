@@ -60,7 +60,7 @@ regenbogen/
 ```
 
 Wenn das Projekt andere Namen verwendet:
-Alle betroffenen Stellen nachziehen: dieses Dokument, `AGENTS.md` (Semantische Räume),
+Alle betroffenen Stellen nachziehen: dieses Dokument, `AGENTS.md` (Semantische Räume), `PROJEKT.md` (Raumkarte mit Pfaden),
 `LAYER_BY_PACKAGE_PART` sowie `SOURCE_ROOTS` / `TEST_ROOTS` / `TOOLS_ROOTS`
 in `tools/check_import_layers.py`.
 
@@ -316,7 +316,7 @@ Verboten:
 **Invariants**
 
 ```text
-cli enthält keine Domänenlogik (→ AGENTS.md, Semantische Räume).
+cli enthält keine Domänenlogik (→ REGELN-UND-TOOLS.md, Import- und Abhaengigkeitsregeln).
 Neue CLI-Option mit semantischer Bedeutung ist freigabepflichtig.
 ```
 
@@ -604,7 +604,7 @@ Tests:            relative Imports tolerierbar, aber absolut bevorzugt.
 ```
 
 Wenn ein Projekt relative Imports bewusst zulassen will:
-Diese Regel hier und in AGENTS.md ändern und den Checker entsprechend anpassen.
+Diese Regel hier und in REGELN-UND-TOOLS.md (Python-spezifische Coding-Sperren) ändern und den Checker entsprechend anpassen.
 Default der Box: relative Imports im Produktionscode werden gemeldet.
 
 ### 8.2 Dynamische Imports

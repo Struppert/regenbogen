@@ -18,6 +18,7 @@ Exit-Codes:
 from __future__ import annotations
 
 import argparse
+import ast
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -42,6 +43,7 @@ REQUIRED_FILES_CORE = [
     Path("migration-bridges.md"),
     Path("erfahrungsbericht-protokoll.md"),
     Path("grundsatz.md"),
+    Path("korrespondenz-protokoll.md"),
     Path("glossar-domain.md"),
     Path("glossar-system.md"),
     Path("glossar-meta.md"),
@@ -63,6 +65,11 @@ CURRENT_DOCUMENTATION_FILES: list[Path] = []
 
 LEVEL_HEADER_FILES = [
     Path("AGENTS.md"),
+    Path("PROJEKT.md"),
+    Path("REGELN-UND-TOOLS.md"),
+    Path("BEGRIFFSINDEX.md"),
+    Path("aufgaben-lebenszyklus-protokoll.md"),
+    Path("docs/aufgabenindex.md"),
     Path("BROWNFIELD-MIGRATION.md"),
     Path("blocker-und-abbruch-protokoll.md"),
     Path("ausfuehrungsmandat-protokoll.md"),
@@ -75,6 +82,7 @@ LEVEL_HEADER_FILES = [
     Path("migration-bridges.md"),
     Path("erfahrungsbericht-protokoll.md"),
     Path("grundsatz.md"),
+    Path("korrespondenz-protokoll.md"),
     Path("glossar-domain.md"),
     Path("glossar-system.md"),
     Path("glossar-meta.md"),
@@ -102,8 +110,18 @@ def forbidden_files_for(mode: str) -> list[Path]:
     return [Path("README.md")]
 
 
+# Vorlagen unter docs/plans/, die keine Planinstanzen sind.
+PLAN_TEMPLATE_NAMES = {"template.md", "task-kurz-template.md"}
+
 OPTIONAL_FILES = [
     Path("learning-matrix.md"),
+    # Lokale Ergaenzungen (Sprechakt 2026-11-16-migration-v0.3.11-entscheidungen, D3):
+    # optional, nicht Teil der Template-Pflichtliste.
+    Path("PROJEKT.md"),
+    Path("REGELN-UND-TOOLS.md"),
+    Path("BEGRIFFSINDEX.md"),
+    Path("aufgaben-lebenszyklus-protokoll.md"),
+    Path("docs/aufgabenindex.md"),
 ]
 
 REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
@@ -123,9 +141,22 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "erfahrungsbericht-protokoll.md",
         "glossar-domain.md",
         "glossar-meta.md",
+        "korrespondenz-protokoll.md",
         "H10",
         "BF1",
         ".agent-box/adoption.md",
+    ],
+    Path("PROJEKT.md"): [
+        "Einstiegspunkte",
+        "semantischen Raeumen",
+        "BEGRIFFSINDEX.md",
+        "REGELN-UND-TOOLS.md",
+    ],
+    Path("REGELN-UND-TOOLS.md"): [
+        "Projektbefehle",
+        "Werkzeugkatalog",
+        "Meta-Index",
+        "AGENTS.md",
     ],
     Path("AGENT-SETUP.md"): [
         "Template-Zustand",
@@ -234,6 +265,8 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "PF-SCHREIBEN",
         "PF-PLAN",
         "WG-MUTATION",
+        "Korrespondenzsatz",
+        "Modelltreue",
     ],
     Path("task-schnitt.md"): [
         "Semantic Working Set",
@@ -270,6 +303,7 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "ausfuehrungsmandat-protokoll.md",
         "beschreibbar",
         "freigegeben",
+        "korrespondenz-protokoll.md",
     ],
     Path("test-obligations.md"): [
         "Testpflicht",
@@ -277,6 +311,8 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "system",
         "infrastructure",
         "adapters",
+        "Korrespondenzevidence",
+        "Korrespondenzsatz",
     ],
     Path("migration-bridges.md"): [
         "legacy-bridge",
@@ -303,6 +339,8 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Glossar",
         "Sprechakt",
         "Abbruch",
+        "Kohaerenz",
+        "Korrespondenz",
     ],
     Path("glossar-domain.md"): [
         "Kompetenzfrage",
@@ -336,6 +374,10 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Migrationsevidence",
         "BF-Code",
         "widerrufen",
+        "Korrespondenzsatz",
+        "Modellreview",
+        "Oracle-Treue",
+        "Aussenkorrespondenz",
     ],
     Path("glossar-README.md"): [
         "Ladeprotokoll",
@@ -360,6 +402,19 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         ".agent-box-template.md",
         "ausfuehrungsmandat-protokoll.md",
         "docs/runs/checkpoint-template.md",
+        "korrespondenz-protokoll.md",
+    ],
+    Path("korrespondenz-protokoll.md"): [
+        "Kohaerenz",
+        "Korrespondenz",
+        "Korrespondenzsatz",
+        "Modelltreue",
+        "Oracle-Treue",
+        "Ausfuehrungsverhalten",
+        "Aussenkorrespondenz",
+        "Modellreview",
+        "Sprechakt SP7",
+        "H6",
     ],
     Path("docs/plans/template.md"): [
         "Planstatus:",
@@ -399,6 +454,11 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Explizit erlaubte Wirkungen",
         "Abgeleitete Wirkungen",
         "Verbotene Wirkungen",
+        "Korrespondenzsaetze und Modellreview",
+        "Korrespondenzsatz-ID",
+        "Normative Quelle",
+        "Implementierungsprojektion",
+        "Validierungsprojektion",
     ],
     Path("docs/runs/checkpoint-template.md"): [
         "Run-ID",
@@ -425,6 +485,8 @@ REQUIRED_TERMS_BY_FILE: dict[Path, list[str]] = {
         "Recovery artifact",
         "Recovery status",
         "Naechster zulaessiger Schritt",
+        "Korrespondenzstatus",
+        "Offene Geltungsgrenze",
     ],
 }
 
@@ -441,8 +503,11 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "test-obligations.md",
         "erfahrungsbericht-protokoll.md",
         "ausfuehrungsmandat-protokoll.md",
+        "korrespondenz-protokoll.md",
     ],
     "AGENTS.md": [
+        "PROJEKT.md",
+        "REGELN-UND-TOOLS.md",
         "preflight-checkliste.md",
         "task-schnitt.md",
         "sprechakt-protokoll.md",
@@ -454,6 +519,7 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "grundsatz.md",
         "glossar-README.md",
         "BROWNFIELD-MIGRATION.md",
+        "korrespondenz-protokoll.md",
     ],
     "package-schema.md": [
         "AGENTS.md",
@@ -463,7 +529,30 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "glossar-system.md",
         "glossar-meta.md",
     ],
-    "grundsatz.md": ["AGENTS.md", "glossar-README.md", "regelmatrix.md"],
+    "PROJEKT.md": ["AGENTS.md", "package-schema.md", "glossar-README.md"],
+    "REGELN-UND-TOOLS.md": [
+        "AGENTS.md",
+        "preflight-checkliste.md",
+        "regelmatrix.md",
+        "package-schema.md",
+    ],
+    "grundsatz.md": [
+        "AGENTS.md",
+        "glossar-README.md",
+        "regelmatrix.md",
+        "korrespondenz-protokoll.md",
+    ],
+    "korrespondenz-protokoll.md": [
+        "AGENTS.md",
+        "grundsatz.md",
+        "preflight-checkliste.md",
+        "test-obligations.md",
+        "docs/plans/template.md",
+        "docs/runs/checkpoint-template.md",
+        "glossar-meta.md",
+        "regelmatrix.md",
+        "tools/check_agent_docs_consistency.py",
+    ],
     "glossar-domain.md": [
         "AGENTS.md",
         "glossar-README.md",
@@ -480,6 +569,7 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "AGENTS.md",
         "glossar-README.md",
         "migration-bridges.md",
+        "korrespondenz-protokoll.md",
     ],
     "glossar-README.md": [
         "AGENTS.md",
@@ -504,6 +594,8 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "glossar-README.md",
         "blocker-und-abbruch-protokoll.md",
         "ausfuehrungsmandat-protokoll.md",
+        "korrespondenz-protokoll.md",
+        "test-obligations.md",
     ],
     "task-schnitt.md": [
         "AGENTS.md",
@@ -523,6 +615,7 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "preflight-checkliste.md",
         "tools/resolve_test_obligations.py",
         "package-schema.md",
+        "korrespondenz-protokoll.md",
     ],
     "regelmatrix.md": [
         "AGENTS.md",
@@ -530,6 +623,7 @@ COUPLING_HINTS: dict[str, list[str]] = {
         "blocker-und-abbruch-protokoll.md",
         "ausfuehrungsmandat-protokoll.md",
         "preflight-checkliste.md",
+        "korrespondenz-protokoll.md",
     ],
     "ausfuehrungsmandat-protokoll.md": [
         "AGENTS.md",
@@ -735,11 +829,24 @@ def check_plan_and_checkpoint_instances() -> list[Finding]:
         "Mandatsrevision:",
     ]
     for path in Path("docs/plans").glob("*.md"):
-        if path.name == "template.md":
+        if path.name in PLAN_TEMPLATE_NAMES:
             continue
         text = read_text(path)
         m = re.search(r"^Plan-Schema-Version:\s*(\S+)", text, flags=re.MULTILINE)
         schema_version = m.group(1).strip() if m else None
+        is_kurz = re.search(r"^Plan-Form:\s*Kurz\b", text, flags=re.MULTILINE)
+        if schema_version is None and is_kurz:
+            # Kurzform (aufgaben-lebenszyklus-protokoll.md): nur Kernfelder, keine Schema-Warnung.
+            for term in plan_required_core:
+                if term not in text:
+                    findings.append(
+                        Finding(
+                            "ERROR",
+                            path,
+                            f"Kurzform: Kernfeld fehlt: {term!r}",
+                        )
+                    )
+            continue
         if schema_version is None:
             findings.append(
                 Finding(
@@ -1425,7 +1532,7 @@ def check_plan_checkpoint_enums() -> list[Finding]:
         return val
 
     for path in Path("docs/plans").glob("*.md"):
-        if path.name == "template.md":
+        if path.name in PLAN_TEMPLATE_NAMES:
             continue
         text = read_text(path)
         if "Plan-Schema-Version:" not in text:
@@ -1499,7 +1606,7 @@ def check_dash_in_autonomous_plans() -> list[Finding]:
     findings: list[Finding] = []
     dash_forbidden_fields = ["Contract-ID", "Run-ID", "Base-Snapshot"]
     for path in Path("docs/plans").glob("*.md"):
-        if path.name == "template.md":
+        if path.name in PLAN_TEMPLATE_NAMES:
             continue
         text = read_text(path)
         if "Plan-Schema-Version:" not in text:
@@ -1540,7 +1647,7 @@ def check_plan_checkpoint_not_template_copy() -> list[Finding]:
         "MD-YYYY-MM-DD-",
     ]
     for path in Path("docs/plans").glob("*.md"):
-        if path.name == "template.md":
+        if path.name in PLAN_TEMPLATE_NAMES:
             continue
         text = read_text(path)
         if "Plan-Schema-Version:" not in text:
@@ -1580,7 +1687,7 @@ def check_plan_instance_level() -> list[Finding]:
     """Plan-Instanzen muessen Ebene: PLAN/RUN haben, nicht REPOSITORY. (#32)"""
     findings: list[Finding] = []
     for path in Path("docs/plans").glob("*.md"):
-        if path.name == "template.md":
+        if path.name in PLAN_TEMPLATE_NAMES:
             continue
         text = read_text(path)
         if "Plan-Schema-Version:" not in text:
@@ -1655,7 +1762,7 @@ def check_plan_checkpoint_crossrefs() -> list[Finding]:
         plan_id = next(iter(cp_plans), None)
         if plan_id:
             for plan_path in Path("docs/plans").glob("*.md"):
-                if plan_path.name == "template.md":
+                if plan_path.name in PLAN_TEMPLATE_NAMES:
                     continue
                 text = read_text(plan_path)
                 m = re.search(r"^Plan-ID:\s*(\S+)", text, flags=re.MULTILINE)
@@ -1758,6 +1865,288 @@ def check_version_consistency(mode: str) -> list[Finding]:
                 )
             )
 
+    return findings
+
+
+# ---------------------------------------------------------------------------
+# Begriffsindex (menschenlesbare Markdown-Tabelle, Checker liest nur)
+# ---------------------------------------------------------------------------
+
+INDEX_FILE = Path("BEGRIFFSINDEX.md")
+INDEX_SPACES = (
+    "domain",
+    "system",
+    "infrastructure",
+    "adapters",
+    "cli",
+    "tests",
+    "tools",
+)
+_INDEX_BACKTICK_RE = re.compile(r"`([^`]+)`")
+_INDEX_GLOSSAR_RE = re.compile(r"(glossar-[a-z]+\.md)(?:#([^\s`|)]+))?")
+_INDEX_SEPARATOR_RE = re.compile(r":?-{2,}:?")
+
+
+def _split_table_cells(line: str) -> list[str]:
+    return [cell.strip() for cell in line.strip().strip("|").split("|")]
+
+
+def _parse_markdown_table(
+    text: str, required_columns: tuple[str, ...]
+) -> list[dict[str, str]]:
+    """Liest Tabellenzeilen anhand des Tabellenkopfs (Spaltenreihenfolge frei)."""
+    rows: list[dict[str, str]] = []
+    header: list[str] | None = None
+    for line in text.splitlines():
+        if not line.strip().startswith("|"):
+            header = None
+            continue
+        cells = _split_table_cells(line)
+        if header is None:
+            if all(col in cells for col in required_columns):
+                header = cells
+            continue
+        if all(_INDEX_SEPARATOR_RE.fullmatch(c) for c in cells if c):
+            continue
+        rows.append(dict(zip(header, cells)))
+    return rows
+
+
+def _parse_index_rows(text: str) -> list[dict[str, str]]:
+    return _parse_markdown_table(text, ("Name", "Raum"))
+
+
+def _index_code_refs(cell: str) -> list[tuple[str, str | None]]:
+    """Pfad- und Symbolverweise (`pfad` oder `pfad::Symbol`) einer Zelle."""
+    refs: list[tuple[str, str | None]] = []
+    for token in _INDEX_BACKTICK_RE.findall(cell):
+        path_part, _, symbol = token.partition("::")
+        if "/" in path_part or path_part.endswith((".py", ".md")):
+            refs.append((path_part.strip(), symbol.strip() or None))
+    return refs
+
+
+def _index_space_of(path: str) -> str | None:
+    parts = Path(path).parts
+    if parts and parts[0] in ("tests", "tools"):
+        return parts[0]
+    if len(parts) >= 3 and parts[0] == "src" and parts[2] in INDEX_SPACES:
+        return parts[2]
+    return None
+
+
+def check_begriffsindex(root: Path = Path(".")) -> list[Finding]:
+    """Liest BEGRIFFSINDEX.md und meldet Befunde. Keine Entscheidung, kein Format-Diktat.
+
+    ERROR: verwiesener Pfad, Symbol oder Glossardatei existiert nicht.
+    WARN:  Raum passt nicht zum Pfad, doppelter Name, Glossar-Anker fehlt,
+           keine Tabelle lesbar.
+    INFO:  öffentliche Symbole in src/ ohne Indexzeile (Hinweis fuer den Menschen).
+    """
+    findings: list[Finding] = []
+    index_path = root / INDEX_FILE
+    if not index_path.exists():
+        return findings
+
+    rows = _parse_index_rows(read_text(index_path))
+    if not rows:
+        findings.append(
+            Finding(
+                "WARN",
+                INDEX_FILE,
+                "Keine Tabellenzeilen gelesen. Erwartet wird eine Markdown-Tabelle "
+                "mit mindestens den Spalten 'Name' und 'Raum'.",
+            )
+        )
+        return findings
+
+    seen_names: dict[str, str] = {}
+    mentioned: set[str] = set()
+
+    for row in rows:
+        name = row.get("Name", "").strip()
+        if not name:
+            continue
+        mentioned.add(name)
+        aliases = [a.strip() for a in row.get("Aliase", "").split(",") if a.strip()]
+        mentioned.update(aliases)
+
+        for label in [name, *aliases]:
+            key = label.lower()
+            if key in seen_names and seen_names[key] != name:
+                findings.append(
+                    Finding(
+                        "WARN",
+                        INDEX_FILE,
+                        f"Name/Alias {label!r} kommt mehrfach vor "
+                        f"(bei {seen_names[key]!r} und {name!r}).",
+                    )
+                )
+            seen_names.setdefault(key, name)
+
+        code_refs: list[tuple[str, str | None]] = []
+        for column in ("Ort", "Test"):
+            code_refs.extend(_index_code_refs(row.get(column, "")))
+
+        for path_str, symbol in code_refs:
+            target = root / path_str
+            if not target.exists():
+                findings.append(
+                    Finding(
+                        "ERROR",
+                        INDEX_FILE,
+                        f"{name}: Pfad existiert nicht: {path_str}",
+                    )
+                )
+                continue
+            if symbol:
+                mentioned.add(symbol.split(".")[-1])
+                if target.is_file() and not re.search(
+                    rf"\b{re.escape(symbol.split('.')[-1])}\b", read_text(target)
+                ):
+                    findings.append(
+                        Finding(
+                            "ERROR",
+                            INDEX_FILE,
+                            f"{name}: Symbol {symbol!r} nicht in {path_str} gefunden.",
+                        )
+                    )
+
+        ort_refs = _index_code_refs(row.get("Ort", ""))
+        raum = row.get("Raum", "").strip().lower()
+        if ort_refs and raum:
+            derived = _index_space_of(ort_refs[0][0])
+            if derived and derived not in raum:
+                findings.append(
+                    Finding(
+                        "WARN",
+                        INDEX_FILE,
+                        f"{name}: Raum {row.get('Raum', '')!r} passt nicht zum Pfad "
+                        f"{ort_refs[0][0]} (abgeleitet: {derived}).",
+                    )
+                )
+
+        for glossar_file, anchor in _INDEX_GLOSSAR_RE.findall(row.get("Glossar", "")):
+            glossar_path = root / glossar_file
+            if not glossar_path.exists():
+                findings.append(
+                    Finding(
+                        "ERROR",
+                        INDEX_FILE,
+                        f"{name}: Glossardatei existiert nicht: {glossar_file}",
+                    )
+                )
+            elif anchor and f"### {anchor}" not in read_text(glossar_path):
+                findings.append(
+                    Finding(
+                        "WARN",
+                        INDEX_FILE,
+                        f"{name}: Glossar-Eintrag {anchor!r} nicht in {glossar_file} gefunden.",
+                    )
+                )
+
+    unindexed: list[str] = []
+    src_root = root / "src"
+    if src_root.exists():
+        for py_file in sorted(src_root.rglob("*.py")):
+            if py_file.name == "__init__.py":
+                continue
+            tree = ast.parse(read_text(py_file))
+            for node in tree.body:
+                if (
+                    isinstance(node, (ast.ClassDef, ast.FunctionDef))
+                    and not node.name.startswith("_")
+                    and node.name not in mentioned
+                ):
+                    unindexed.append(node.name)
+    if unindexed:
+        shown = ", ".join(unindexed[:10])
+        more = "" if len(unindexed) <= 10 else f" (+{len(unindexed) - 10} weitere)"
+        findings.append(
+            Finding(
+                "INFO",
+                INDEX_FILE,
+                f"{len(unindexed)} öffentliche Symbole in src/ ohne Indexzeile "
+                f"(nur Hinweis, Aufnahme entscheidet der Mensch): {shown}{more}",
+            )
+        )
+    return findings
+
+
+AUFGABENINDEX_FILE = Path("docs/aufgabenindex.md")
+
+
+def check_aufgaben_lebenszyklus(root: Path = Path(".")) -> list[Finding]:
+    """Hinweise zum Aufgaben-Lebenszyklus (aufgaben-lebenszyklus-protokoll.md).
+
+    Reine Hinweise (WARN, INFO), kein Gate. Das Merge-Gate ist eine Review-Checkliste.
+    Geprueft wird Existenz und Nichtleere des Abschlussdokuments, nicht sein Inhalt.
+    """
+    findings: list[Finding] = []
+
+    index_path = root / AUFGABENINDEX_FILE
+    if index_path.exists():
+        rows = _parse_markdown_table(read_text(index_path), ("Plan-ID",))
+        for row in rows:
+            plan_id = row.get("Plan-ID", "").strip()
+            doc = row.get("Abschlussdokument", "").strip().strip("`").strip()
+            if not plan_id:
+                continue
+            if doc in ("", "—", "-", "offen"):
+                findings.append(
+                    Finding(
+                        "WARN",
+                        AUFGABENINDEX_FILE,
+                        f"{plan_id}: kein Abschlussdokument benannt.",
+                    )
+                )
+                continue
+            target = root / doc
+            if not target.is_file() or not target.read_text(encoding="utf-8").strip():
+                findings.append(
+                    Finding(
+                        "WARN",
+                        AUFGABENINDEX_FILE,
+                        f"{plan_id}: Abschlussdokument fehlt oder ist leer: {doc}",
+                    )
+                )
+
+    plans_dir = root / "docs" / "plans"
+    if plans_dir.exists():
+        for plan_path in sorted(plans_dir.glob("*.md")):
+            if plan_path.name in PLAN_TEMPLATE_NAMES:
+                continue
+            text = read_text(plan_path)
+            if re.search(r"^Plan-Form:\s*Kurz\b", text, flags=re.MULTILINE) and (
+                "Abschlussdokument" not in text
+            ):
+                findings.append(
+                    Finding(
+                        "WARN",
+                        Path("docs/plans") / plan_path.name,
+                        "Kurzform ohne Abschnitt 'Abschlussdokument'.",
+                    )
+                )
+
+    runs_dir = root / "docs" / "runs"
+    checkpoint_re = re.compile(r"^checkpoint-\d{4}\.md$")
+    if runs_dir.exists():
+        for run_dir in sorted(p for p in runs_dir.iterdir() if p.is_dir()):
+            checkpoints = sorted(
+                p for p in run_dir.glob("*.md") if checkpoint_re.match(p.name)
+            )
+            if len(checkpoints) < 2:
+                continue
+            last = read_text(checkpoints[-1])
+            if "Run-Status: COMPLETED" in last and "Checkpoint-Status: sealed" in last:
+                findings.append(
+                    Finding(
+                        "INFO",
+                        Path("docs/runs") / run_dir.name,
+                        f"{len(checkpoints) - 1} Zwischen-Checkpoints koennen am Run-Ende "
+                        "entfernt werden (aufgaben-lebenszyklus-protokoll.md).",
+                    )
+                )
     return findings
 
 
@@ -1887,6 +2276,8 @@ def main(argv: list[str] | None = None) -> int:
     findings.extend(check_plan_checkpoint_crossrefs())
     findings.extend(check_template_mode_clean(mode))
     findings.extend(check_instantiate_tool_residue(mode))
+    findings.extend(check_begriffsindex())
+    findings.extend(check_aufgaben_lebenszyklus())
     findings.extend(check_coupling_hints(args.changed_file))
 
     if args.preflight:

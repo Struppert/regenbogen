@@ -130,6 +130,27 @@ stehen ausschließlich im Checkpoint.
 
 ## Testpflicht
 
+## Korrespondenzsaetze und Modellreview
+
+Fuer jede nichttriviale Verhaltensaenderung pro betroffener Invariante einen
+Korrespondenzsatz nach `korrespondenz-protokoll.md` eintragen.
+
+```text
+Korrespondenzsatz-ID:
+Normative Quelle:
+Behauptung:
+Implementierungsprojektion:
+Validierungsprojektion:
+Korrespondenzklasse:
+Evidence:
+Geltungsgrenze:
+Status: bestaetigt | teilweise bestaetigt | widerlegt | offen
+Modellreview:
+```
+
+Bei keiner nichttrivialen Verhaltensaenderung: `nicht anwendbar` mit
+Begruendung. Offene oder widerlegte Saetze verhindern den Abschluss.
+
 ## Abbruchbedingungen
 
 ## Echter Task-Schnitt
